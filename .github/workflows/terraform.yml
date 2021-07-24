@@ -23,7 +23,7 @@ jobs:
   plan_ci:
     runs-on: ubuntu-latest
     environment: stg
-    if: ${{ success() && (github.event_name == 'pull_request' || (github.ref != 'refs/heads/master' && github.ref != 'refs/heads/master')) }}
+    if: ${{ success() && (github.event_name == 'pull_request' || (github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop')) }}
     steps:
       - name: git checkout
         uses: actions/checkout@v2
