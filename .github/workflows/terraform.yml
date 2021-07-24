@@ -40,9 +40,12 @@ jobs:
         working-directory: stg
 
       - name: replace secrets in file
-        uses: cschleiden/replace-tokens@v1
+        uses: falnyr/replace-env-vars-action@master
+        env:
+          FOO: foo
+          BAR: bar
         with:
-          files: '["./secrets.tfvars.json"]'
+          filename: secrets.tfvars.json
 
       - name: terraform plan
         run: terraform plan -var-file ../secrets.tfvars.json -out ../tfplan
@@ -68,9 +71,12 @@ jobs:
         working-directory: stg
 
       - name: replace secrets in file
-        uses: cschleiden/replace-tokens@v1
+        uses: falnyr/replace-env-vars-action@master
+        env:
+          FOO: foo
+          BAR: bar
         with:
-          files: '["./secrets.tfvars.json"]'
+          filename: secrets.tfvars.json
 
       - name: test
         run: cat ./secrets.tfvars.json
@@ -106,9 +112,12 @@ jobs:
         working-directory: stg
 
       - name: replace secrets in file
-        uses: cschleiden/replace-tokens@v1
+        uses: falnyr/replace-env-vars-action@master
+        env:
+          FOO: foo
+          BAR: bar
         with:
-          files: '["./secrets.tfvars.json"]'
+          filename: secrets.tfvars.json
 
       - name: terraform plan
         run: terraform plan -var-file ../secrets.tfvars.json -out ../tfplan
