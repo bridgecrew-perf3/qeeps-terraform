@@ -15,3 +15,9 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+module "rg" {
+  source = "../modules/rg"
+  location = var.default_location
+  name = "rg-${var.app_name}-${var.env}"
+}
