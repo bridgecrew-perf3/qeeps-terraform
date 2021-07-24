@@ -16,8 +16,23 @@ provider "azurerm" {
   features {}
 }
 
+locals {
+  secrets = {
+    adminPassword = var.adminPassword
+  }
+}
+
+
 module "rg" {
   source = "../modules/rg"
-  location = var.default_location
+  location = "West Europe"
   name = "rg-${var.app_name}-${var.env}"
+}
+
+module "zone" {
+  source = "../modules/zone"
+  location = "West Europe"
+  app_name = var.app_name
+  env = var.env
+  secrets = local.secrets
 }

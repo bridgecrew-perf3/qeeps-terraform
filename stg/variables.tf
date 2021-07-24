@@ -3,12 +3,12 @@ variable "env" {
   default = "stg"
 }
 
-variable "default_location" {
-  type = string
-  default = "West Europe"
-}
-
 variable "app_name" {
     type = string
     default = "qeeps"
+}
+
+variable "adminPassword" {
+    type = string
+    sensitive = true
 }

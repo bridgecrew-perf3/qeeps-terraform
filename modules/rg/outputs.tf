@@ -10,7 +10,3 @@ output "name" {
 output "location" {
   value = azurerm_resource_group.resource_group.location
 }
-
-output "location_short" {
-  value = replace(lower(azurerm_resource_group.resource_group.location), " ", "")
-}
