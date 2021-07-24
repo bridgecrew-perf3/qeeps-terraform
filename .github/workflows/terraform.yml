@@ -19,11 +19,11 @@ jobs:
         uses: actions/checkout@v2
       - name: setup terraform
         uses: hashicorp/setup-terraform@v1.2.1
-      - name: set stg ENV
-        if: github.ref == 'ref/head/develop'
+      - name: set ENV=stg
+        if: github.ref == 'refs/heads/develop'
         run: echo "ENV=stg" >> $GITHUB_ENV
-      - name: set prod ENV
-        if: github.ref == 'ref/head/master'
+      - name: set ENV=prod
+        if: github.ref == 'refs/heads/master'
         run: echo "ENV=stg" >> $GITHUB_ENV
       - name: test
         run: echo $ENV
