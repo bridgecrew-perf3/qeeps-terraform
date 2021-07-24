@@ -23,6 +23,8 @@ jobs:
   plan_ci:
     runs-on: ubuntu-latest
     environment: stg
+    env:
+      adminPassword: '${{ secrets.adminPassword }}'
     if: ${{ success() && (github.event_name == 'pull_request' || (github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop')) }}
     steps:
       - name: git checkout
@@ -39,12 +41,11 @@ jobs:
         run: terraform validate
         working-directory: stg
 
-      - name: replace secrets in file
-        uses: falnyr/replace-env-vars-action@master
-        env:
-          adminPassword: '${{ secrets.adminPassword }}'
+      - name: replace secrets
+        uses: cschleiden/replace-tokens@v1
         with:
-          filename: secrets.tfvars.json
+          files: '["./secrets.tfvars.json"]'
+
 
       - name: terraform plan
         run: terraform plan -var-file ../secrets.tfvars.json -out ../tfplan
@@ -53,6 +54,8 @@ jobs:
   plan_stg:
     runs-on: ubuntu-latest
     environment: stg
+    env:
+      adminPassword: '${{ secrets.adminPassword }}'
     if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/develop' }}
     steps:
       - name: git checkout
@@ -69,12 +72,10 @@ jobs:
         run: terraform validate
         working-directory: stg
 
-      - name: replace secrets in file
-        uses: falnyr/replace-env-vars-action@master
-        env:
-          adminPassword: '${{ secrets.adminPassword }}'
+      - name: replace secrets
+        uses: cschleiden/replace-tokens@v1
         with:
-          filename: secrets.tfvars.json
+          files: '["./secrets.tfvars.json"]'
 
       - name: test
         run: cat ./secrets.tfvars.json
@@ -93,7 +94,9 @@ jobs:
   plan_prod:
     runs-on: ubuntu-latest
     if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/master' }}
-    environment: stg
+    environment: prod
+    env:
+      adminPassword: '${{ secrets.adminPassword }}'
     steps:
       - name: git checkout
         uses: actions/checkout@v2
@@ -103,22 +106,20 @@ jobs:
 
       - name: terraform init
         run: terraform init
-        working-directory: stg
+        working-directory: prod
 
       - name: terraform validate
         run: terraform validate
-        working-directory: stg
+        working-directory: prod
 
-      - name: replace secrets in file
-        uses: falnyr/replace-env-vars-action@master
-        env:
-          adminPassword: '${{ secrets.adminPassword }}'
+      - name: replace secrets
+        uses: cschleiden/replace-tokens@v1
         with:
-          filename: secrets.tfvars.json
+          files: '["./secrets.tfvars.json"]'
 
       - name: terraform plan
         run: terraform plan -var-file ../secrets.tfvars.json -out ../tfplan
-        working-directory: stg
+        working-directory: prod
         
       - name: upload tfplan
         uses: actions/upload-artifact@v2.2.4
