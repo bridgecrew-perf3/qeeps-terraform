@@ -20,7 +20,6 @@ concurrency: terraform-${{ github.ref }}
 
 jobs:
   plan:
-    needs: [setenv]
     runs-on: ubuntu-latest
     steps:
       - name: set TFENV=stg
