@@ -81,3 +81,29 @@ jobs:
         run: terraform apply -auto-approve ./tfplan
         working-directory: stg
 
+  apply_prod:
+    runs-on: ubuntu-latest
+    needs: [plan]
+    if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/master' }}
+    environment: prod
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v2
+        
+      - name: download tfplan
+        uses: actions/download-artifact@v2.0.10
+        with:
+          name: tfplan
+          path: ./prod
+
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v1.2.1
+
+      - name: terraform init
+        run: terraform init
+        working-directory: prod
+
+      - name: terraform apply
+        run: terraform apply -auto-approve ./tfplan
+        working-directory: prod
+
