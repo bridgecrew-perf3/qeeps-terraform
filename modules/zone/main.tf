@@ -19,3 +19,10 @@ module "kv" {
   name = "kv-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = var.secrets
 }
+
+module "swa" {
+  source = "../swa"
+  location = var.location
+  resourceGroup = module.rg.name
+  name = "swa-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+}
