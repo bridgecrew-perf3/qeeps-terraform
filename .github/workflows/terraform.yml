@@ -39,10 +39,10 @@ jobs:
         run: terraform validate
         working-directory: stg
 
-      - name: replace secrets
-        uses: falnyr/replace-env-vars-action@master
+      - name: replace secrets in file
+        uses: cschleiden/replace-tokens@v1
         with:
-          filename: ./secrets.tfvars.json
+          files: '["./secrets.tfvars.json"]'
 
       - name: terraform plan
         run: terraform plan -var-file ../secrets.tfvars.json -out ../tfplan
@@ -67,10 +67,10 @@ jobs:
         run: terraform validate
         working-directory: stg
 
-      - name: replace secrets
-        uses: falnyr/replace-env-vars-action@master
+      - name: replace secrets in file
+        uses: cschleiden/replace-tokens@v1
         with:
-          filename: ./secrets.tfvars.json
+          files: '["./secrets.tfvars.json"]'
 
       - name: terraform plan
         run: terraform plan -var-file ../secrets.tfvars.json -out ../tfplan
@@ -102,10 +102,10 @@ jobs:
         run: terraform validate
         working-directory: stg
 
-      - name: replace secrets
-        uses: falnyr/replace-env-vars-action@master
+      - name: replace secrets in file
+        uses: cschleiden/replace-tokens@v1
         with:
-          filename: ./secrets.tfvars.json
+          files: '["./secrets.tfvars.json"]'
 
       - name: terraform plan
         run: terraform plan -var-file ../secrets.tfvars.json -out ../tfplan
