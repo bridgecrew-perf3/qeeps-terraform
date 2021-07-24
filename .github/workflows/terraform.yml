@@ -46,3 +46,10 @@ jobs:
       - name: terraform plan
         run: terraform plan -out ../tfplan
         working-directory: ${{ env.TFENV }}
+        
+      - name: upload tfplan
+        uses: actions/upload-artifact@v2.2.4
+        if: ${{ succeeded() && github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') }}
+        with:
+          name: tfplan
+          path: ./tfplan
