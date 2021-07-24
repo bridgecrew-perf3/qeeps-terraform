@@ -1,0 +1,19 @@
+name: terraform
+
+on:
+  push:
+    branches: [ develop, master ]
+  pull_request:
+    branches: [ develop ]
+
+  workflow_dispatch:
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v2
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v1.2.1
+      
