@@ -37,12 +37,12 @@ jobs:
 
       - name: terraform init
         run: terraform init
-        working-directory: $ENV
+        working-directory: $TFENV
 
       - name: terraform validate
         run: terraform validate
-        working-directory: $ENV
+        working-directory: $TFENV
 
       - name: terraform plan
         run: terraform plan -out ../tfplan
-        working-directory: $ENV
+        working-directory: $TFENV
