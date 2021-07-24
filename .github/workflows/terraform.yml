@@ -20,6 +20,36 @@ defaults:
 concurrency: terraform-${{ github.ref }}
 
 jobs:
+  plan_ci:
+    runs-on: ubuntu-latest
+    environment: stg
+    env:
+      adminPassword: '${{ secrets.adminPassword }}'
+    if: ${{ success() && (github.event_name == 'pull_request' || (github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop')) }}
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v2
+
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v1.2.1
+
+      - name: terraform init
+        run: terraform init
+        working-directory: stg
+
+      - name: terraform validate
+        run: terraform validate
+        working-directory: stg
+
+      - name: replace secrets
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["./secrets.tfvars.json"]'
+
+      - name: terraform plan
+        run: terraform plan -var-file ../secrets.tfvars.json -out ../tfplan
+        working-directory: stg
+
   plan_stg:
     runs-on: ubuntu-latest
     environment: stg
