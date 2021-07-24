@@ -7,13 +7,13 @@ terraform {
 }
 
 module "rg" {
-  source = "../../modules/rg"
+  source = "../rg"
   location = var.location
   name = "rg-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
 module "kv" {
-  source = "../../modules/kv"
+  source = "../kv"
   location = var.location
   resourceGroup = module.rg.name
   name = "kv-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
