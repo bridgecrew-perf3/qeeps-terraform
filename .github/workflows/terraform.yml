@@ -19,7 +19,8 @@ defaults:
 concurrency: terraform-${{ github.ref }}
 
 jobs:
-  setenv:
+  plan:
+    needs: [setenv]
     runs-on: ubuntu-latest
     steps:
       - name: set TFENV=stg
@@ -29,13 +30,20 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: echo "TFENV=stg" >> $GITHUB_ENV
 
-  plan:
-    needs: [setenv]
-    runs-on: ubuntu-latest
-    steps:
       - name: git checkout
         uses: actions/checkout@v2
+
       - name: setup terraform
         uses: hashicorp/setup-terraform@v1.2.1
-      - name: test
-        run: echo $TFENV
+
+      - name: terraform init
+        run: terraform init
+        working-directory: $ENV
+
+      - name: terraform validate
+        run: terraform validate
+        working-directory: $ENV
+
+      - name: terraform plan
+        run: terraform plan -out ../tfplan
+        working-directory: $ENV
