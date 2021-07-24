@@ -72,6 +72,9 @@ jobs:
         with:
           files: '["./secrets.tfvars.json"]'
 
+      - name: test
+        run: cat ./secrets.tfvars.json
+
       - name: terraform plan
         run: terraform plan -var-file ../secrets.tfvars.json -out ../tfplan
         working-directory: stg
