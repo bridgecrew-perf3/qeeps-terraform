@@ -22,12 +22,12 @@ jobs:
   setenv:
     runs-on: ubuntu-latest
     steps:
-      - name: set ENV=stg
+      - name: set TFENV=stg
         if: github.ref == 'refs/heads/develop'
-        run: echo "ENV=stg" >> $GITHUB_ENV
-      - name: set ENV=prod
+        run: echo "TFENV=stg" >> $GITHUB_ENV
+      - name: set TFENV=prod
         if: github.ref == 'refs/heads/master'
-        run: echo "ENV=stg" >> $GITHUB_ENV
+        run: echo "TFENV=stg" >> $GITHUB_ENV
 
   plan:
     needs: [setenv]
@@ -38,4 +38,4 @@ jobs:
       - name: setup terraform
         uses: hashicorp/setup-terraform@v1.2.1
       - name: test
-        run: echo $ENV
+        run: echo $TFENV
