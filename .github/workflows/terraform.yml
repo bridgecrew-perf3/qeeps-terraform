@@ -42,8 +42,7 @@ jobs:
       - name: replace secrets in file
         uses: falnyr/replace-env-vars-action@master
         env:
-          FOO: foo
-          BAR: bar
+          adminPassword: '${{ secrets.adminPassword }}'
         with:
           filename: secrets.tfvars.json
 
@@ -73,8 +72,7 @@ jobs:
       - name: replace secrets in file
         uses: falnyr/replace-env-vars-action@master
         env:
-          FOO: foo
-          BAR: bar
+          adminPassword: '${{ secrets.adminPassword }}'
         with:
           filename: secrets.tfvars.json
 
@@ -114,8 +112,7 @@ jobs:
       - name: replace secrets in file
         uses: falnyr/replace-env-vars-action@master
         env:
-          FOO: foo
-          BAR: bar
+          adminPassword: '${{ secrets.adminPassword }}'
         with:
           filename: secrets.tfvars.json
 
