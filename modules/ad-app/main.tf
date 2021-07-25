@@ -13,16 +13,28 @@ resource "azuread_application" "application" {
 
   web {
     homepage_url  = "https://${var.name}"
-    logout_url    = "https://${var.name}/logout"
-    redirect_uris = ["https://${var.name}/oauth/callback/microsoft"]
-
+    redirect_uris = ["https://${var.name}/.auth/login/aad/callback"]
     implicit_grant {
-      access_token_issuance_enabled = true
+      access_token_issuance_enabled = false
     }
   }
+
+  api {
+    oauth2_permission_scope {
+      admin_consent_description  = "Allow the application to access resources on behalf of the signed-in user."
+      admin_consent_display_name = "Impersonation"
+      enabled                    = true
+      id                         = random_uuid()
+      type                       = "User"
+      user_consent_description   = "Allow the application to access resources on your behalf."
+      user_consent_display_name  = "Impersonation"
+      value                      = "user_impersonation"
+    }
+  }
+
 }
 
 resource "azuread_application_password" "application_password" {
   application_object_id = azuread_application.application.object_id
-  end_date = "2038-01-01T00:00:00Z"
+  end_date              = "2038-01-01T00:00:00Z"
 }

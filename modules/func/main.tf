@@ -21,6 +21,15 @@ resource "azurerm_function_app" "function_app" {
     type = "SystemAssigned"
   }
 
+  auth_settings {
+    enabled = true
+    active_directory {
+      allowed_audiences = [var.ad_audience]
+      client_id = var.ad_application_id
+      client_secret = var.ad_application_secret
+    }
+  }
+
   app_settings = merge(var.app_configs, tomap({
     AzureWebJobsDisableHomepage = "true"
   }))

@@ -40,6 +40,9 @@ module "func" {
   kv_id = var.kv_id
   for_each = toset(["access", "forms"])
   app_configs = zipmap(keys(var.secrets), [for x in keys(var.secrets): format("@Microsoft.KeyVault(SecretUri=${var.kv_url}secrets/${x}/)")])
+  ad_audience = var.ad_audience
+  ad_application_id = var.ad_application_id
+  ad_application_secret = var.ad_application_secret
 }
 
 module "swa" {

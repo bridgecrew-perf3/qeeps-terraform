@@ -10,3 +10,7 @@ output "application_secret" {
     value = azuread_application_password.application_password.value
     sensitive = true
 }
+
+output "audience" {
+    value = azuread_application.application.identifier_uris[0]
+}

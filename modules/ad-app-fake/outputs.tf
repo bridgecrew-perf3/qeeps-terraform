@@ -10,3 +10,7 @@ output "application_secret" {
     value = var.application_secret
     sensitive = true
 }
+
+output "audience" {
+    value = "api://${var.name}"
+}

@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: stg
     env:
-      adminPassword: '${{ secrets.adminPassword }}'
+      admin_password: '${{ secrets.admin_password }}'
     if: ${{ success() && (github.event_name == 'pull_request' || (github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop')) }}
     steps:
       - name: git checkout
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: stg
     env:
-      adminPassword: '${{ secrets.adminPassword }}'
+      admin_password: '${{ secrets.admin_password }}'
     if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/develop' }}
     steps:
       - name: git checkout
@@ -92,7 +92,7 @@ jobs:
     if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/master' }}
     environment: prod
     env:
-      adminPassword: '${{ secrets.adminPassword }}'
+      admin_password: '${{ secrets.admin_password }}'
     steps:
       - name: git checkout
         uses: actions/checkout@v2

@@ -25,7 +25,7 @@ provider "azuread" {
 
 locals {
   secrets = tomap({
-    adminPassword = var.adminPassword
+    admin_password = var.admin_password
   })
 }
 
@@ -70,4 +70,7 @@ module "zone" {
   kv_id = module.kv.id
   kv_url = module.kv.url
   secrets = local.secrets
+  ad_application_id = module.ad_app.application_id
+  ad_application_secret = module.ad_app.application_secret
+  ad_audience = module.ad_app.audience
 }
