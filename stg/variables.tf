@@ -8,6 +8,11 @@ variable "app_name" {
     default = "qeeps"
 }
 
+variable "domain_name" {
+  type = string
+  default = "stg.qeeps.io"
+}
+
 variable "adminPassword" {
     type = string
     sensitive = true

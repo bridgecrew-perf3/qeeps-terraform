@@ -9,11 +9,18 @@ terraform {
     azurerm = {
       source = "hashicorp/azurerm"
     }
+    azuread = {
+      source = "hashicorp/azuread"
+    }
   }
 }
 
 provider "azurerm" {
   features {}
+}
+
+provider "azuread" {
+
 }
 
 locals {
@@ -22,11 +29,21 @@ locals {
   })
 }
 
-
 module "rg" {
   source = "../modules/rg"
   location = "West Europe"
   name = "rg-${var.app_name}-${var.env}"
+}
+
+module "dns" {
+  source = "../modules/dns"
+  name = var.domain_name
+  resource_group = module.rg.name
+}
+
+module "ad_app" {
+  source = "../modules/ad-app"
+  name = module.dns.name
 }
 
 module "kv" {
