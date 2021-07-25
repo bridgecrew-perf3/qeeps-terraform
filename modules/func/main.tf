@@ -28,6 +28,8 @@ resource "azurerm_function_app" "function_app" {
       client_id = var.ad_application_id
       client_secret = var.ad_application_secret
     }
+
+    
   }
 
   app_settings = merge(var.app_configs, tomap({
