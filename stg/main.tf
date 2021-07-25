@@ -46,6 +46,14 @@ module "dns" {
 #   name = module.dns.name
 # }
 
+module "ad_app" {
+  source = "../modules/ad-app-fake"
+  name = module.dns.name
+  application_secret = "-R-YjoQ5hwG_d0Saw704p0hsX0jjxk-qxP"
+  application_id = "ce50bd0d-4018-4d43-98e1-bcb373e994ab"
+  object_id = "93119cdf-81b5-459c-8ffe-d02b1648695d"
+}
+
 module "kv" {
   source = "../modules/kv"
   location = module.rg.location
