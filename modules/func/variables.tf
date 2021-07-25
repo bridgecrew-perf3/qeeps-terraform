@@ -2,6 +2,10 @@ variable "name" {
     type = string
 }
 
+variable "short_name" {
+    type = string
+}
+
 variable "location" {
     type = string
 }
