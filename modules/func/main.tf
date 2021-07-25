@@ -14,26 +14,36 @@ resource "azurerm_function_app" "function_app" {
   app_service_plan_id        = var.app_service_plan_id
   storage_account_name       = var.storage_account_name
   storage_account_access_key = var.storage_account_access_key
-  os_type = "linux"
-  version = "~3"
+  os_type                    = "linux"
+  version                    = "~3"
 
   identity {
     type = "SystemAssigned"
   }
 
   auth_settings {
-    enabled = true
+    enabled                       = true
+    default_provider              = "AzureActiveDirectory"
+    runtime_version               = "V2"
+    token_refresh_extension_hours = 24 * 30
+    token_store_enabled           = true
+    unauthenticated_client_action = "RedirectToLoginPage"
+
+
     active_directory {
       allowed_audiences = [var.ad_audience]
-      client_id = var.ad_application_id
-      client_secret = var.ad_application_secret
+      client_id         = var.ad_application_id
+      client_secret     = var.ad_application_secret
     }
 
-    
+
   }
 
   app_settings = merge(var.app_configs, tomap({
-    AzureWebJobsDisableHomepage = "true"
+    AzureWebJobsDisableHomepage      = "true",
+    WEBSITE_RUN_FROM_PACKAGE       = "",
+    FUNCTIONS_WORKER_RUNTIME       = "dotnet",
+    APPINSIGHTS_INSTRUMENTATIONKEY = ""
   }))
 }
 
