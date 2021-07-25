@@ -25,7 +25,7 @@ provider "azuread" {
 
 locals {
   secrets = tomap({
-    admin_password = var.admin_password
+    adminpassword = var.adminpassword
   })
 }
 
