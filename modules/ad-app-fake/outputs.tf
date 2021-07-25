@@ -12,5 +12,5 @@ output "application_secret" {
 }
 
 output "audience" {
-    value = "api://${var.name}"
+    value = "https://${var.name}"
 }
