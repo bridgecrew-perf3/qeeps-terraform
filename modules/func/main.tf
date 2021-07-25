@@ -21,7 +21,9 @@ resource "azurerm_function_app" "function_app" {
     type = "SystemAssigned"
   }
 
-  app_settings = var.app_configs
+  app_settings = merge(var.app_configs, tomap({
+    AzureWebJobsDisableHomepage = "true"
+  }))
 }
 
 data "azurerm_client_config" "current" {}
