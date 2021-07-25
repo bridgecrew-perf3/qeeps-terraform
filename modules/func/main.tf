@@ -16,4 +16,9 @@ resource "azurerm_function_app" "function_app" {
   storage_account_access_key = var.storage_account_access_key
   os_type = "linux"
   version = "~3"
+
+  connection_string {
+    name = "AppConfiguration"
+    value = var.appcf_connection_string
+  }
 }

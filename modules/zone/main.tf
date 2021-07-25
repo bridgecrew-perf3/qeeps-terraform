@@ -53,7 +53,7 @@ module "func" {
   storage_account_name = module.sa.name
   storage_account_access_key = module.sa.access_key
   app_service_plan_id = module.appsp.id
-
+  appcf_connection_string = module.appcf.connection_string
   for_each = toset(["access", "forms"])
 }
 
