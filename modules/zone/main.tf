@@ -38,24 +38,24 @@ module "sa" {
   access_tier = "Hot"
 }
 
-# module "appsp" {
-#   source = "../appsp"
-#   location = var.location
-#   resource_group = module.rg.name
-#   name = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-# }
+module "appsp" {
+  source = "../appsp"
+  location = var.location
+  resource_group = module.rg.name
+  name = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+}
 
-# module "func" {
-#   source = "../func"
-#   location = var.location
-#   resource_group = module.rg.name
-#   name = "func-${var.app_name}-${each.key}-${replace(lower(var.location), " ", "")}-${var.env}"
-#   storage_account_name = module.sa.name
-#   storage_account_access_key = module.sa.access_key
-#   app_service_plan_id = module.appsp.id
+module "func" {
+  source = "../func"
+  location = var.location
+  resource_group = module.rg.name
+  name = "func-${var.app_name}-${each.key}-${replace(lower(var.location), " ", "")}-${var.env}"
+  storage_account_name = module.sa.name
+  storage_account_access_key = module.sa.access_key
+  app_service_plan_id = module.appsp.id
 
-#   for_each = toset(["access", "forms"])
-# }
+  for_each = toset(["access", "forms"])
+}
 
 
 module "swa" {
