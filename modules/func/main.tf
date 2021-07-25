@@ -20,5 +20,6 @@ resource "azurerm_function_app" "function_app" {
   connection_string {
     name = "AppConfiguration"
     value = var.appcf_connection_string
+    type = "Custom"
   }
 }
