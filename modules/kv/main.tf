@@ -32,6 +32,12 @@ resource "azurerm_key_vault" "key_vault" {
       "recover"
     ]
   }
+
+  lifecycle {
+    ignore_changes = [
+      access_policy
+    ]
+  }
 }
 
 resource "azurerm_key_vault_secret" "secret" {
