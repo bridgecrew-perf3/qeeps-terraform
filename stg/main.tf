@@ -23,11 +23,6 @@ provider "azuread" {
 
 }
 
-locals {
-  secrets = tomap({
-    adminpassword = var.adminpassword
-  })
-}
 
 module "rg" {
   source = "../modules/rg"
@@ -52,6 +47,13 @@ module "ad_app" {
   application_secret = "-R-YjoQ5hwG_d0Saw704p0hsX0jjxk-qxP"
   application_id = "ce50bd0d-4018-4d43-98e1-bcb373e994ab"
   object_id = "93119cdf-81b5-459c-8ffe-d02b1648695d"
+}
+
+locals {
+  secrets = tomap({
+    adminpassword = var.adminpassword,
+    adapplicationsecret = module.ad_app.application_secret
+  })
 }
 
 module "kv" {

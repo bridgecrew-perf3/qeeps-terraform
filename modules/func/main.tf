@@ -42,7 +42,9 @@ resource "azurerm_function_app" "function_app" {
     AzureWebJobsDisableHomepage      = "true",
     WEBSITE_RUN_FROM_PACKAGE       = "",
     FUNCTIONS_WORKER_RUNTIME       = "dotnet",
-    APPINSIGHTS_INSTRUMENTATIONKEY = ""
+    APPINSIGHTS_INSTRUMENTATIONKEY = "",
+    "adapplicationid" = var.ad_application_id,
+    "adaudience" = var.ad_audience
   }))
 }
 
