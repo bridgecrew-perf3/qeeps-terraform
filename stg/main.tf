@@ -41,10 +41,10 @@ module "dns" {
   resource_group = module.rg.name
 }
 
-module "ad_app" {
-  source = "../modules/ad-app"
-  name = module.dns.name
-}
+# module "ad_app" {
+#   source = "../modules/ad-app"
+#   name = module.dns.name
+# }
 
 module "kv" {
   source = "../modules/kv"

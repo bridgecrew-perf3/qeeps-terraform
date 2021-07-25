@@ -6,8 +6,6 @@ terraform {
   }
 }
 
-data "azuread_client_config" "current" {}
-
 resource "azuread_application" "application" {
   display_name     = var.name
   identifier_uris  = ["api://${var.name}"]
