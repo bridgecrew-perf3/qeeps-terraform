@@ -12,14 +12,6 @@ module "rg" {
   name = "rg-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
-module "kv" {
-  source = "../kv"
-  location = var.location
-  resource_group = module.rg.name
-  name = "kv-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  secrets = var.secrets
-}
-
 module "sa" {
   source = "../sa"
   location = var.location
@@ -45,9 +37,10 @@ module "func" {
   storage_account_name = module.sa.name
   storage_account_access_key = module.sa.access_key
   app_service_plan_id = module.appsp.id
+  kv_id = var.kv_id
   for_each = toset(["access", "forms"])
+  app_configs = zipmap(keys(var.secrets), [for x in keys(var.secrets): format("@Microsoft.KeyVault(SecretUri=${var.kv_url}secrets/${x}/)")])
 }
-
 
 module "swa" {
   source = "../swa"

@@ -20,4 +20,22 @@ resource "azurerm_function_app" "function_app" {
   identity {
     type = "SystemAssigned"
   }
+
+  app_settings = var.app_configs
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_key_vault_access_policy" "key_vault_access_policy" {
+  key_vault_id = var.kv_id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = azurerm_function_app.function_app.identity[0].principal_id
+
+  key_permissions = [
+    "Get",
+  ]
+
+  secret_permissions = [
+    "Get",
+  ]
 }

@@ -17,9 +17,9 @@ provider "azurerm" {
 }
 
 locals {
-  secrets = {
+  secrets = tomap({
     adminPassword = var.adminPassword
-  }
+  })
 }
 
 
@@ -29,10 +29,20 @@ module "rg" {
   name = "rg-${var.app_name}-${var.env}"
 }
 
+module "kv" {
+  source = "../modules/kv"
+  location = module.rg.location
+  resource_group = module.rg.name
+  name = "kv-${var.app_name}-${var.env}"
+  secrets = local.secrets
+}
+
 module "zone" {
   source = "../modules/zone"
   location = "West Europe"
   app_name = var.app_name
   env = var.env
+  kv_id = module.kv.id
+  kv_url = module.kv.url
   secrets = local.secrets
 }

@@ -11,5 +11,13 @@ variable "app_name" {
 }
 
 variable "secrets" {
-    type = map(any)
+    type = map(string)
+}
+
+variable "kv_id" {
+    type = string
+}
+
+variable "kv_url" {
+    type = string
 }
