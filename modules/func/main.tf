@@ -17,9 +17,7 @@ resource "azurerm_function_app" "function_app" {
   os_type = "linux"
   version = "~3"
 
-  connection_string {
-    name = "AppConfiguration"
-    value = var.appcf_connection_string
-    type = "Custom"
+  identity {
+    type = "SystemAssigned"
   }
 }

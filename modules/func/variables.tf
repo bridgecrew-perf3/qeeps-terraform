@@ -22,7 +22,3 @@ variable "storage_account_access_key" {
 variable "app_service_plan_id" {
     type = string
 }
-
-variable "appcf_connection_string" {
-    type = string
-}

@@ -20,14 +20,6 @@ module "kv" {
   secrets = var.secrets
 }
 
-module "appcf" {
-  source = "../appcf"
-  location = var.location
-  resource_group = module.rg.name
-  name = "appcf-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku = "free"
-}
-
 module "sa" {
   source = "../sa"
   location = var.location
@@ -53,7 +45,6 @@ module "func" {
   storage_account_name = module.sa.name
   storage_account_access_key = module.sa.access_key
   app_service_plan_id = module.appsp.id
-  appcf_connection_string = module.appcf.connection_string
   for_each = toset(["access", "forms"])
 }
 
