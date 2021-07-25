@@ -43,10 +43,7 @@ resource "azurerm_function_app" "function_app" {
     WEBSITE_RUN_FROM_PACKAGE       = "",
     FUNCTIONS_WORKER_RUNTIME       = "dotnet",
     APPINSIGHTS_INSTRUMENTATIONKEY = ""
-    }), tomap(var.short_name == "access" ? {
-    "adapplicationid" = var.ad_application_id,
-    "adaudience"      = var.ad_audience
-  } : {}))
+    }))
 }
 
 data "azurerm_client_config" "current" {}

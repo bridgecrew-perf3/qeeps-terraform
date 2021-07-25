@@ -7,49 +7,51 @@ terraform {
 }
 
 module "rg" {
-  source = "../rg"
+  source   = "../rg"
   location = var.location
-  name = "rg-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  name     = "rg-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
 module "sa" {
-  source = "../sa"
-  location = var.location
-  resource_group = module.rg.name
-  name = "sa${var.app_name}${replace(lower(var.location), " ", "")}${var.env}"
-  tier = "Standard"
+  source           = "../sa"
+  location         = var.location
+  resource_group   = module.rg.name
+  name             = "sa${var.app_name}${replace(lower(var.location), " ", "")}${var.env}"
+  tier             = "Standard"
   replication_type = "LRS"
-  access_tier = "Hot"
+  access_tier      = "Hot"
 }
 
 module "appsp" {
-  source = "../appsp"
-  location = var.location
+  source         = "../appsp"
+  location       = var.location
   resource_group = module.rg.name
-  name = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  name           = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
 module "func" {
-  source = "../func"
-  location = var.location
-  resource_group = module.rg.name
-  name = "func-${var.app_name}-${each.key}-${replace(lower(var.location), " ", "")}-${var.env}"
-  short_name = each.key
-  storage_account_name = module.sa.name
+  source                     = "../func"
+  location                   = var.location
+  resource_group             = module.rg.name
+  name                       = "func-${var.app_name}-${each.key}-${replace(lower(var.location), " ", "")}-${var.env}"
+  storage_account_name       = module.sa.name
   storage_account_access_key = module.sa.access_key
-  app_service_plan_id = module.appsp.id
-  kv_id = var.kv_id
-  app_configs = zipmap(keys(var.secrets), [for x in keys(var.secrets): format("@Microsoft.KeyVault(SecretUri=${var.kv_url}secrets/${x}/)")])
-  ad_audience = var.ad_audience
-  ad_application_id = var.ad_application_id
+  app_service_plan_id        = module.appsp.id
+  kv_id                      = var.kv_id
+  app_configs = merge(
+    zipmap(keys(var.secrets), [for x in keys(var.secrets) : format("@Microsoft.KeyVault(SecretUri=${var.kv_url}secrets/${x}/)")]),
+    tomap(each.key == "access" ? { adapplicationid = var.ad_application_id, adapplicationaudience = var.ad_audience } : {})
+  )
+  ad_audience           = var.ad_audience
+  ad_application_id     = var.ad_application_id
   ad_application_secret = var.ad_application_secret
 
   for_each = toset(["access", "forms"])
 }
 
 module "swa" {
-  source = "../swa"
-  location = var.location
+  source         = "../swa"
+  location       = var.location
   resource_group = module.rg.name
-  name = "swa-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  name           = "swa-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
