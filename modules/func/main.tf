@@ -14,4 +14,5 @@ resource "azurerm_function_app" "function_app" {
   app_service_plan_id        = var.app_service_plan_id
   storage_account_name       = var.storage_account_name
   storage_account_access_key = var.storage_account_access_key
+  os_type = "linux"
 }
