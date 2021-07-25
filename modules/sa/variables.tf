@@ -10,6 +10,14 @@ variable "resource_group" {
     type = string
 }
 
-variable "sku" {
+variable "tier" {
+    type = string
+}
+
+variable "replication_type" {
+    type = string
+}
+
+variable "access_tier" {
     type = string
 }
