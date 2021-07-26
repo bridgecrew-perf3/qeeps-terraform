@@ -11,27 +11,18 @@ resource "azuread_application" "application" {
   identifier_uris  = ["https://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
 
-  web {
-    homepage_url  = "https://${var.name}"
-    redirect_uris = ["https://${var.name}/.auth/login/aad/callback"]
-    implicit_grant {
-      access_token_issuance_enabled = false
-    }
-  }
 
-  api {
-    oauth2_permission_scope {
-      admin_consent_description  = "Allow the application to access resources on behalf of the signed-in user."
-      admin_consent_display_name = "Impersonation"
-      enabled                    = true
-      id                         = random_uuid()
-      type                       = "User"
-      user_consent_description   = "Allow the application to access resources on your behalf."
-      user_consent_display_name  = "Impersonation"
-      value                      = "user_impersonation"
-    }
+  lifecycle {
+    ignore_changes = [
+      web      
+    ]
   }
+}
 
+resource "null_resource" "patch_ad_application" {
+  provisioner "local-exec" {
+    command = "az rest --method PATCH --uri 'https://graph.microsoft.com/v1.0/applications/${azuread_application.application.object_id}' --headers 'Content-Type=application/json' --body '{\"spa\":{\"redirectUris\":[\"https://${var.name}\"]}}'"
+  }
 }
 
 resource "azuread_application_password" "application_password" {
