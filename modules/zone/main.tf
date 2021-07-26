@@ -54,4 +54,6 @@ module "swa" {
   location       = var.location
   resource_group = module.rg.name
   name           = "swa-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  sku_size = null
+  sku_tier = "Free"
 }
