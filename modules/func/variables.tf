@@ -43,3 +43,7 @@ variable "ad_application_secret" {
 variable "ad_audience" {
     type = string
 }
+
+variable "ad_issuer" {
+    type = string
+}

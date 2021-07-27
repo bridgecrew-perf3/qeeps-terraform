@@ -19,6 +19,8 @@ resource "azuread_application" "application" {
   }
 }
 
+data "azuread_client_config" "current" {}
+
 resource "null_resource" "patch_ad_application" {
   provisioner "local-exec" {
     command = "az rest --method PATCH --uri 'https://graph.microsoft.com/v1.0/applications/${azuread_application.application.object_id}' --headers 'Content-Type=application/json' --body '{\"spa\":{\"redirectUris\":[\"https://${var.name}\"]}}'"

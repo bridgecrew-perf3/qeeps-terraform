@@ -75,4 +75,5 @@ module "zone" {
   ad_application_id = module.ad_app.application_id
   ad_application_secret = module.ad_app.application_secret
   ad_audience = module.ad_app.audience
+  ad_issuer = module.ad_app.issuer
 }

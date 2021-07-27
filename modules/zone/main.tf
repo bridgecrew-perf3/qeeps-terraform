@@ -45,6 +45,7 @@ module "func" {
   ad_audience           = var.ad_audience
   ad_application_id     = var.ad_application_id
   ad_application_secret = var.ad_application_secret
+  ad_issuer = var.ad_issuer
 
   for_each = toset(["access", "forms"])
 }

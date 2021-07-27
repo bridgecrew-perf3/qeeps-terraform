@@ -24,7 +24,7 @@ resource "azurerm_function_app" "function_app" {
   auth_settings {
     enabled                       = true
     default_provider              = "AzureActiveDirectory"
-    issuer = "" TODO
+    issuer = var.ad_issuer
     token_refresh_extension_hours = 24 * 30
     token_store_enabled           = true
     unauthenticated_client_action = "RedirectToLoginPage"

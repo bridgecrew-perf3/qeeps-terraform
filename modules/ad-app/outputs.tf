@@ -14,3 +14,7 @@ output "application_secret" {
 output "audience" {
     value = azuread_application.application.identifier_uris[0]
 }
+
+output "issuer" {
+    value = "https://login.microsoftonline.com/${data.azuread_client_config.current.tenant_id}/v2.0"
+}

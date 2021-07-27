@@ -14,3 +14,7 @@ output "application_secret" {
 output "audience" {
     value = "https://${var.name}"
 }
+
+output "issuer" {
+    value = "https://login.microsoftonline.com/${data.azuread_client_config.current.tenant_id}/v2.0"
+}
