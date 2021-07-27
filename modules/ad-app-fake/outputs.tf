@@ -16,5 +16,5 @@ output "audience" {
 }
 
 output "issuer" {
-    value = "https://login.microsoftonline.com/${data.azuread_client_config.current.tenant_id}/v2.0"
+    value = "https://login.microsoftonline.com/${data.azuread_client_config.current.tenant_id}/"
 }
