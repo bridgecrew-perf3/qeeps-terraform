@@ -12,7 +12,7 @@ output "application_secret" {
 }
 
 output "audience" {
-    value = "https://${var.name}"
+    value = "api://${var.name}"
 }
 
 output "issuer" {
