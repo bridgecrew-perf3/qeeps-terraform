@@ -21,6 +21,10 @@ resource "azurerm_function_app" "function_app" {
     type = "SystemAssigned"
   }
 
+  site_config {
+    linux_fx_version = "dotnet-isolated|5.0"
+  }
+
   auth_settings {
     enabled                       = true
     default_provider              = "AzureActiveDirectory"
@@ -41,7 +45,8 @@ resource "azurerm_function_app" "function_app" {
 
   app_settings = merge(var.app_configs, tomap({
     AzureWebJobsDisableHomepage    = "true",
-    APPINSIGHTS_INSTRUMENTATIONKEY = ""
+    APPINSIGHTS_INSTRUMENTATIONKEY = "",
+    "FUNCTIONS_WORKER_RUNTIME" = "dotnet-isolated"
     }))
 
   lifecycle {
