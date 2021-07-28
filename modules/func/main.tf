@@ -17,7 +17,7 @@ resource "azurerm_function_app" "function_app" {
   os_type                    = "linux"
   version                    = "~3"
   https_only = true
-  
+
   site_config {
     linux_fx_version = "dotnet-isolated|5.0"
   }
@@ -47,7 +47,7 @@ resource "azurerm_function_app" "function_app" {
   app_settings = merge(var.app_configs, tomap({
     AzureWebJobsDisableHomepage    = "true",
     WEBSITE_RUN_FROM_PACKAGE       = "",
-    FUNCTIONS_WORKER_RUNTIME       = "dotnet",
+    FUNCTIONS_WORKER_RUNTIME       = "dotnet-isolated",
     APPINSIGHTS_INSTRUMENTATIONKEY = ""
     }))
 }
