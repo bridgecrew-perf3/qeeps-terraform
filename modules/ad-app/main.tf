@@ -32,3 +32,7 @@ resource "azuread_application_password" "application_password" {
   application_object_id = azuread_application.application.object_id
   end_date              = "2038-01-01T00:00:00Z"
 }
+
+resource "azuread_group" "qeeps_group" {
+  display_name = var.name
+}
