@@ -16,7 +16,6 @@ resource "azurerm_function_app" "function_app" {
   storage_account_access_key = var.storage_account_access_key
   os_type                    = "linux"
   version                    = "~3"
-  https_only = true
 
   identity {
     type = "SystemAssigned"
