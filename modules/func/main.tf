@@ -21,9 +21,9 @@ resource "azurerm_function_app" "function_app" {
     type = "SystemAssigned"
   }
 
-  site_config {
-    linux_fx_version = "dotnet-isolated|5.0"
-  }
+  #site_config {
+  #  linux_fx_version = "dotnet-isolated|5.0"
+  #}
 
   auth_settings {
     enabled                       = true
@@ -46,7 +46,8 @@ resource "azurerm_function_app" "function_app" {
   app_settings = merge(var.app_configs, tomap({
     AzureWebJobsDisableHomepage    = "true",
     APPINSIGHTS_INSTRUMENTATIONKEY = "",
-    "FUNCTIONS_WORKER_RUNTIME" = "dotnet-isolated"
+    "FUNCTIONS_WORKER_RUNTIME" = "dotnet"
+    #"FUNCTIONS_WORKER_RUNTIME" = "dotnet-isolated"
     }))
 
   lifecycle {
