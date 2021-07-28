@@ -41,7 +41,7 @@ resource "azurerm_function_app" "function_app" {
 
   app_settings = merge(var.app_configs, tomap({
     AzureWebJobsDisableHomepage    = "true",
-    WEBSITE_RUN_FROM_PACKAGE       = "false",
+    WEBSITE_RUN_FROM_PACKAGE       = "true",
     APPINSIGHTS_INSTRUMENTATIONKEY = ""
     }))
 }
