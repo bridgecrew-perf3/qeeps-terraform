@@ -20,6 +20,24 @@ resource "azuread_application" "application" {
   }
 }
 
+resource "azuread_application_app_role" "admin_role" {
+  application_object_id = azuread_application.application.id
+  allowed_member_types  = ["User"]
+  description           = "Admins can manage roles and perform all task actions"
+  display_name          = "Admin"
+  enabled               = true
+  value                 = "Admin"
+}
+
+resource "azuread_application_app_role" "regular_role" {
+  application_object_id = azuread_application.application.id
+  allowed_member_types  = ["User"]
+  description           = "Regulars are normal users"
+  display_name          = "Regular"
+  enabled               = true
+  value                 = "Regular"
+}
+
 data "azuread_client_config" "current" {}
 
 resource "null_resource" "patch_ad_application" {
