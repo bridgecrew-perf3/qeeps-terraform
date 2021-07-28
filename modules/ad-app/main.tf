@@ -11,6 +11,7 @@ resource "azuread_application" "application" {
   identifier_uris  = ["api://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
   app_role_assignment_required = true
+  group_membership_claims = "SecurityGroup"
 
 
   lifecycle {
