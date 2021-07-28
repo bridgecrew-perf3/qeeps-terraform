@@ -43,6 +43,12 @@ resource "azurerm_function_app" "function_app" {
     AzureWebJobsDisableHomepage    = "true",
     APPINSIGHTS_INSTRUMENTATIONKEY = ""
     }))
+
+  lifecycle {
+    ignore_changes = [
+      app_settings
+    ]
+  }
 }
 
 data "azurerm_client_config" "current" {}
