@@ -10,6 +10,7 @@ resource "azuread_application" "application" {
   display_name     = var.name
   identifier_uris  = ["api://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
+  app_role_assignment_required = true
 
 
   lifecycle {
