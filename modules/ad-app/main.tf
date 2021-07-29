@@ -21,23 +21,16 @@ resource "azuread_application" "application" {
   }
 }
 
-resource "azuread_application_app_role" "admin_role" {
+resource "azuread_application_app_role" "admin_roles" {
   application_object_id = azuread_application.application.id
   allowed_member_types  = ["User"]
-  description           = "Admins can manage roles and perform all task actions"
-  display_name          = "Admin"
+  description           = "qeeps role ${each.key}"
+  display_name          = each.key
   enabled               = true
-  value                 = "Admin"
+  value                 = each.key
+  for_each = toset(["Owner", "Admin", "Regular"])
 }
 
-resource "azuread_application_app_role" "regular_role" {
-  application_object_id = azuread_application.application.id
-  allowed_member_types  = ["User"]
-  description           = "Regulars are normal users"
-  display_name          = "Regular"
-  enabled               = true
-  value                 = "Regular"
-}
 
 data "azuread_client_config" "current" {}
 
