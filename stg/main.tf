@@ -39,6 +39,7 @@ module "dns" {
 # module "ad_app" {
 #   source = "../modules/ad-app"
 #   name = module.dns.name
+#   includeLocalhostRedirect = true
 # }
 
 module "ad_app" {

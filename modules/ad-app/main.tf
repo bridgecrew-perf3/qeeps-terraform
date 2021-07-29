@@ -10,7 +10,6 @@ resource "azuread_application" "application" {
   display_name     = var.name
   identifier_uris  = ["api://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
-  app_role_assignment_required = true
   group_membership_claims = "SecurityGroup"
 
 
@@ -19,24 +18,41 @@ resource "azuread_application" "application" {
       web      
     ]
   }
-}
 
-resource "azuread_application_app_role" "admin_roles" {
-  application_object_id = azuread_application.application.id
-  allowed_member_types  = ["User"]
-  description           = "qeeps role ${each.key}"
-  display_name          = each.key
-  enabled               = true
-  value                 = each.key
-  for_each = toset(["Owner", "Admin", "Regular"])
+  app_role {
+    allowed_member_types = ["User"]
+    description          = "Owner qeeps role"
+    display_name         = "Owner"
+    enabled           = true
+    value                = "Owner"
+  }
+  app_role {
+    allowed_member_types = ["User"]
+    description          = "Admin qeeps role"
+    display_name         = "Admin"
+    enabled           = true
+    value                = "Admin"
+  }
+  app_role {
+    allowed_member_types = ["User"]
+    description          = "Regular qeeps role"
+    display_name         = "Regular"
+    enabled           = true
+    value                = "Regular"
+  }
+
 }
 
 
 data "azuread_client_config" "current" {}
 
+locals {
+  localhostAddress = var.includeLocalhostRedirect == true ? ",\"http://localhost:4200\"" : ""
+}
+
 resource "null_resource" "patch_ad_application" {
   provisioner "local-exec" {
-    command = "az rest --method PATCH --uri 'https://graph.microsoft.com/v1.0/applications/${azuread_application.application.object_id}' --headers 'Content-Type=application/json' --body '{\"spa\":{\"redirectUris\":[\"https://${var.name}\"]}}'"
+    command = "az rest --method PATCH --uri 'https://graph.microsoft.com/v1.0/applications/${azuread_application.application.object_id}' --headers 'Content-Type=application/json' --body '{\"spa\":{\"redirectUris\":[\"https://${var.name}\"${local.localhostAddress}]}}'"
   }
 }
 
