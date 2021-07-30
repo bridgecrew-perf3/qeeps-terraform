@@ -8,7 +8,6 @@ terraform {
 
 resource "azurerm_frontdoor" "example" {
   name                                         = var.name
-  location                                     = "Global"
   resource_group_name                          = var.resource_group
   enforce_backend_pools_certificate_name_check = false
 
@@ -19,16 +18,16 @@ resource "azurerm_frontdoor" "example" {
     frontend_endpoints = ["fdFrontend"]
     forwarding_configuration {
       forwarding_protocol = "MatchRequest"
-      backend_pool_name   = "uiBackendPool"
+      backend_pool_name   = "swaBackendPool"
     }
   }
 
   backend_pool_load_balancing {
-    name = "uiBackendPoolLoadBalancingSetting"
+    name = "swaBackendPoolLoadBalancingSetting"
   }
 
   backend_pool_health_probe {
-    name = "uiBackendPoolHealthProbeSetting"
+    name = "swaBackendPoolHealthProbeSetting"
   }
 
 
@@ -46,8 +45,8 @@ resource "azurerm_frontdoor" "example" {
     }
 
 
-    load_balancing_name = "uiBackendPoolLoadBalancingSetting"
-    health_probe_name   = "uiBackendPoolHealthProbeSetting"
+    load_balancing_name = "swaBackendPoolLoadBalancingSetting"
+    health_probe_name   = "swaBackendPoolHealthProbeSetting"
   }
 
   frontend_endpoint {
