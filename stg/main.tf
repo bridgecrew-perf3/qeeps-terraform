@@ -34,7 +34,8 @@ module "dns" {
   source = "../modules/dns"
   name = var.domain_name
   resource_group = module.rg.name
-  cname = "fd-${var.app_name}-${var.env}.azurefd.net"
+  cname_value = "fd-${var.app_name}-${var.env}.azurefd.net"
+  cname = "app"
 }
 
 module "ad_app" {

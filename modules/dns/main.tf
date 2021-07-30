@@ -12,9 +12,9 @@ resource "azurerm_dns_zone" "dns_zone" {
 }
 
 resource "azurerm_dns_cname_record" "app_cname" {
-  name                = "app"
+  name                = var.cname
   zone_name           = azurerm_dns_zone.dns_zone.name
   resource_group_name = var.resource_group
   ttl                 = 300
-  record              = var.cname
+  record              = var.cname_value
 }
