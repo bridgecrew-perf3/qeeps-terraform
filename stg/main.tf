@@ -36,18 +36,10 @@ module "dns" {
   resource_group = module.rg.name
 }
 
-# module "ad_app" {
-#   source = "../modules/ad-app"
-#   name = module.dns.name
-#   includeLocalhostRedirect = true
-# }
-
 module "ad_app" {
-  source = "../modules/ad-app-fake"
+  source = "../modules/ad-app"
   name = module.dns.name
-  application_secret = "-R-YjoQ5hwG_d0Saw704p0hsX0jjxk-qxP"
-  application_id = "ce50bd0d-4018-4d43-98e1-bcb373e994ab"
-  object_id = "93119cdf-81b5-459c-8ffe-d02b1648695d"
+  includeLocalhostRedirect = true
 }
 
 locals {
