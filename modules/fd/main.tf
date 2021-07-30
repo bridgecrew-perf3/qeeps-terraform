@@ -15,7 +15,7 @@ resource "azurerm_frontdoor" "front_door" {
     name               = "swaRoute"
     accepted_protocols = ["Http", "Https"]
     patterns_to_match  = ["/*"]
-    frontend_endpoints = ["fdFrontend"]
+    frontend_endpoints = ["appFrontend"]
     forwarding_configuration {
       forwarding_protocol = "HttpsOnly"
       backend_pool_name   = "swaBackendPool"
@@ -24,20 +24,52 @@ resource "azurerm_frontdoor" "front_door" {
     }
   }
 
+  routing_rule {
+    name               = "accessRoute"
+    accepted_protocols = ["Http", "Https"]
+    patterns_to_match  = ["/api/access/*"]
+    frontend_endpoints = ["appFrontend"]
+    forwarding_configuration {
+      forwarding_protocol = "HttpsOnly"
+      backend_pool_name   = "accessBackendPool"
+      cache_enabled = false
+    }
+  }
+
+  backend_pool_load_balancing {
+    name = "accessBackendPoolLoadBalancingSetting"
+  }
+  backend_pool_health_probe {
+    name = "accessBackendPoolHealthProbeSetting"
+    protocol = "Https"
+  }
+  backend_pool {
+    name = "accessBackendPool"
+    dynamic "backend" {
+      for_each = toset(var.access_hostnames)
+      content {
+        host_header = backend.value
+        address     = backend.value
+        http_port   = 80
+        https_port  = 443
+      }
+    }
+    load_balancing_name = "accessBackendPoolLoadBalancingSetting"
+    health_probe_name   = "accessBackendPoolHealthProbeSetting"
+  }
+
+
+
   backend_pool_load_balancing {
     name = "swaBackendPoolLoadBalancingSetting"
   }
-
   backend_pool_health_probe {
     name = "swaBackendPoolHealthProbeSetting"
     path = "/healthcheck"
     protocol = "Https"
   }
-
-
   backend_pool {
     name = "swaBackendPool"
-
     dynamic "backend" {
       for_each = toset(var.swa_hostnames)
       content {
@@ -47,14 +79,19 @@ resource "azurerm_frontdoor" "front_door" {
         https_port  = 443
       }
     }
-
-
     load_balancing_name = "swaBackendPoolLoadBalancingSetting"
     health_probe_name   = "swaBackendPoolHealthProbeSetting"
   }
 
+
+
   frontend_endpoint {
     name      = "fdFrontend"
     host_name = "${var.name}.azurefd.net"
+  }
+
+  frontend_endpoint {
+    name      = "appFrontend"
+    host_name = var.cname
   }
 }

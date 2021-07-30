@@ -5,3 +5,7 @@ variable "name" {
 variable "resource_group" {
     type = string
 }
+
+variable "cname" {
+    type = string
+}

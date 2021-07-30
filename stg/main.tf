@@ -34,11 +34,12 @@ module "dns" {
   source = "../modules/dns"
   name = var.domain_name
   resource_group = module.rg.name
+  cname = "fd-${var.app_name}-${var.env}.azurefd.net"
 }
 
 module "ad_app" {
   source = "../modules/ad-app"
-  name = module.dns.name
+  name = module.dns.cname
   includeLocalhostRedirect = true
 }
 
@@ -75,7 +76,15 @@ module "fd" {
   source = "../modules/fd"
   resource_group = module.rg.name
   name = "fd-${var.app_name}-${var.env}"
+  cname = module.dns.cname
   swa_hostnames = [
     module.zone.swa_hostname
+  ]
+  access_hostnames = [
+    module.zone.access_hostname
+  ]
+
+  depends_on = [
+    module.dns
   ]
 }
