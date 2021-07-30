@@ -95,3 +95,11 @@ resource "azurerm_frontdoor" "front_door" {
     host_name = var.cname
   }
 }
+
+resource "azurerm_frontdoor_custom_https_configuration" "fd_ssl" {
+  frontend_endpoint_id = azurerm_frontdoor.front_door.frontend_endpoints["appFrontend"]
+  custom_https_provisioning_enabled = true
+  custom_https_configuration {
+    certificate_source = "FrontDoor"
+  }
+}
