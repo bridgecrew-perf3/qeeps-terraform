@@ -41,6 +41,10 @@ resource "azuread_application" "application" {
   }
 }
 
+resource "azuread_service_principal" "enterprise_app" {
+  application_id                = azuread_application.application.application_id
+  app_role_assignment_required = true
+}
 
 data "azuread_client_config" "current" {}
 
