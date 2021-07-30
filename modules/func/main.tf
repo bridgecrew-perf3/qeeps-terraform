@@ -60,7 +60,7 @@ resource "azurerm_function_app" "function_app" {
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault_access_policy" "key_vault_access_policy" {
-  key_vault_id = var.kv_id
+  key_vault_id = var.kvl_id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = azurerm_function_app.function_app.identity[0].principal_id
 

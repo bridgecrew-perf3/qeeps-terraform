@@ -14,11 +14,11 @@ variable "secrets" {
     type = map(string)
 }
 
-variable "kv_id" {
+variable "kvl_id" {
     type = string
 }
 
-variable "kv_url" {
+variable "kvl_url" {
     type = string
 }
 

@@ -37,9 +37,9 @@ module "func" {
   storage_account_name       = module.sa.name
   storage_account_access_key = module.sa.access_key
   app_service_plan_id        = module.appsp.id
-  kv_id                      = var.kv_id
+  kvl_id                      = var.kvl_id
   app_configs = merge(
-    zipmap(keys(var.secrets), [for x in keys(var.secrets) : format("@Microsoft.KeyVault(SecretUri=${var.kv_url}secrets/${x}/)")]),
+    zipmap(keys(var.secrets), [for x in keys(var.secrets) : format("@Microsoft.KeyVault(SecretUri=${var.kvl_url}secrets/${x}/)")]),
     tomap(each.key == "access" ? { adapplicationid = var.ad_application_id, adapplicationaudience = var.ad_audience } : {})
   )
   ad_audience           = var.ad_audience

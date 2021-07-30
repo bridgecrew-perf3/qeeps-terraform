@@ -23,7 +23,7 @@ variable "app_service_plan_id" {
     type = string
 }
 
-variable "kv_id" {
+variable "kvl_id" {
     type = string
 }
 
