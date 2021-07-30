@@ -47,3 +47,7 @@ variable "ad_audience" {
 variable "ad_issuer" {
     type = string
 }
+
+variable "appi_instrumentation_key" {
+    type = string
+}

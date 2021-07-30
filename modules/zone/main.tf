@@ -47,6 +47,8 @@ module "func" {
   ad_application_secret = var.ad_application_secret
   ad_issuer = var.ad_issuer
 
+  appi_instrumentation_key = var.appi_instrumentation_key
+
   for_each = toset(["access", "forms"])
 }
 
