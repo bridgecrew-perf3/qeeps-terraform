@@ -30,6 +30,8 @@ resource "azurerm_frontdoor" "front_door" {
 
   backend_pool_health_probe {
     name = "swaBackendPoolHealthProbeSetting"
+    path = "/healthcheck"
+    protocol = "Https"
   }
 
 
