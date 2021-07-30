@@ -9,3 +9,7 @@ variable "resource_group" {
 variable "cname" {
     type = string
 }
+
+variable "cname_value" {
+    type = string
+}
