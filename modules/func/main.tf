@@ -45,16 +45,10 @@ resource "azurerm_function_app" "function_app" {
 
   app_settings = merge(var.app_configs, tomap({
     AzureWebJobsDisableHomepage    = "true",
-    APPINSIGHTS_INSTRUMENTATIONKEY = var.appi_instrumentation_key,
+    APPINSIGHTS_INSTRUMENTATIONKEY = "${var.appi_instrumentation_key}",
     "FUNCTIONS_WORKER_RUNTIME" = "dotnet"
     #"FUNCTIONS_WORKER_RUNTIME" = "dotnet-isolated"
     }))
-
-  lifecycle {
-    ignore_changes = [
-      app_settings
-    ]
-  }
 }
 
 data "azurerm_client_config" "current" {}

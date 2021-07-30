@@ -12,5 +12,4 @@ resource "azurerm_application_insights" "appi" {
   resource_group_name = var.resource_group
   application_type    = "web"
   retention_in_days = var.retention
-
 }
