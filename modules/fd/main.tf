@@ -6,7 +6,7 @@ terraform {
   }
 }
 
-resource "azurerm_frontdoor" "example" {
+resource "azurerm_frontdoor" "front_door" {
   name                                         = var.name
   resource_group_name                          = var.resource_group
   enforce_backend_pools_certificate_name_check = false
@@ -17,8 +17,10 @@ resource "azurerm_frontdoor" "example" {
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["fdFrontend"]
     forwarding_configuration {
-      forwarding_protocol = "MatchRequest"
+      forwarding_protocol = "HttpsOnly"
       backend_pool_name   = "swaBackendPool"
+      cache_enabled = true
+      cache_use_dynamic_compression = true
     }
   }
 
