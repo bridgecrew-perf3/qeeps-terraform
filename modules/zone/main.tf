@@ -12,6 +12,14 @@ module "rg" {
   name     = "rg-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
+module "appi" {
+  source = "../appi"
+  location = var.location
+  name = "appi-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  resource_group = module.rg.name
+  retention = 30
+}
+
 module "sa" {
   source           = "../sa"
   location         = var.location
@@ -47,7 +55,7 @@ module "func" {
   ad_application_secret = var.ad_application_secret
   ad_issuer = var.ad_issuer
 
-  appi_instrumentation_key = var.appi_instrumentation_key
+  appi_instrumentation_key = module.appi.instrumentation_key
 
   for_each = toset(["access", "forms"])
 }

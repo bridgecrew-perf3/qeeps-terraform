@@ -30,14 +30,6 @@ module "rg" {
   name = "rg-${var.app_name}-${var.env}"
 }
 
-module "appi" {
-  source = "../modules/appi"
-  location = "West Europe"
-  name = "appi-${var.app_name}-${var.env}"
-  resource_group = module.rg.name
-  retention = 30
-}
-
 module "dns" {
   source = "../modules/dns"
   name = var.domain_name
@@ -80,7 +72,6 @@ module "zone" {
   ad_application_secret = module.ad_app.application_secret
   ad_audience = module.ad_app.audience
   ad_issuer = module.ad_app.issuer
-  appi_instrumentation_key = module.appi.instrumentation_key
 }
 
 module "fd" {
