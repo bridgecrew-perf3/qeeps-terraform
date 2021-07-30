@@ -53,7 +53,7 @@ module "kvl" {
   source = "../modules/kvl"
   location = module.rg.location
   resource_group = module.rg.name
-  name = "kvl-${var.app_name}-${var.env}"
+  name = "kv-${var.app_name}-${var.env}"
   secrets = local.secrets
 }
 

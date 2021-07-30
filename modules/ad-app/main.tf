@@ -12,7 +12,6 @@ resource "azuread_application" "application" {
   sign_in_audience = "AzureADMyOrg"
   group_membership_claims = "SecurityGroup"
 
-
   lifecycle {
     ignore_changes = [
       web      
@@ -40,7 +39,6 @@ resource "azuread_application" "application" {
     enabled           = true
     value                = "Regular"
   }
-
 }
 
 
@@ -50,11 +48,11 @@ locals {
   localhostAddress = var.includeLocalhostRedirect == true ? ",\"http://localhost:4200\"" : ""
 }
 
-# resource "null_resource" "patch_ad_application" {
-#   provisioner "local-exec" {
-#     command = "az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az rest --method PATCH --uri 'https://graph.microsoft.com/v1.0/applications/${azuread_application.application.object_id}' --headers 'Content-Type=application/json' --body '{\"spa\":{\"redirectUris\":[\"https://${var.name}\"${local.localhostAddress}]}}'"
-#   }
-# }
+resource "null_resource" "patch_ad_application" {
+  provisioner "local-exec" {
+    command = "az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az rest --method PATCH --uri 'https://graph.microsoft.com/v1.0/applications/${azuread_application.application.object_id}' --headers 'Content-Type=application/json' --body '{\"spa\":{\"redirectUris\":[\"https://${var.name}\"${local.localhostAddress}]}}'"
+  }
+}
 
 resource "azuread_application_password" "application_password" {
   application_object_id = azuread_application.application.object_id
