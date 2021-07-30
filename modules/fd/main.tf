@@ -12,7 +12,7 @@ resource "azurerm_frontdoor" "front_door" {
   enforce_backend_pools_certificate_name_check = false
 
   routing_rule {
-    name               = "uiRoute"
+    name               = "swaRoute"
     accepted_protocols = ["Http", "Https"]
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["fdFrontend"]

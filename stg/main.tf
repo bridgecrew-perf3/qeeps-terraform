@@ -71,11 +71,11 @@ module "zone" {
   ad_issuer = module.ad_app.issuer
 }
 
-module "fd" {
-  source = "../modules/fd"
-  resource_group = module.rg.name
-  name = "fd-${var.app_name}-${var.env}"
-  swa_hostnames = [
-    module.zone.swa_hostname
-  ]
-}
+# module "fd" {
+#   source = "../modules/fd"
+#   resource_group = module.rg.name
+#   name = "fd-${var.app_name}-${var.env}"
+#   swa_hostnames = [
+#     module.zone.swa_hostname
+#   ]
+# }
