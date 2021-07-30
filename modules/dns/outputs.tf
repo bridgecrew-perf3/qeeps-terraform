@@ -6,6 +6,6 @@ output "name" {
   value = azurerm_dns_zone.dns_zone.name
 }
 
-output "cname" {
+output "cname_hostname" {
   value = "${var.cname}.${azurerm_dns_zone.dns_zone.name}"
 }

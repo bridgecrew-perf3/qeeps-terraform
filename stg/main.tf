@@ -76,7 +76,7 @@ module "fd" {
   source = "../modules/fd"
   resource_group = module.rg.name
   name = "fd-${var.app_name}-${var.env}"
-  cname = module.dns.cname
+  cname = module.dns.cname_hostname
   swa_hostnames = [
     module.zone.swa_hostname
   ]
