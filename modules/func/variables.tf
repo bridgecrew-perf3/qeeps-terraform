@@ -51,3 +51,7 @@ variable "ad_issuer" {
 variable "appi_instrumentation_key" {
     type = string
 }
+
+variable "func_env" {
+    type = string
+}

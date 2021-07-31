@@ -54,9 +54,8 @@ module "func" {
   ad_application_id     = var.ad_application_id
   ad_application_secret = var.ad_application_secret
   ad_issuer = var.ad_issuer
-
   appi_instrumentation_key = module.appi.instrumentation_key
-
+  func_env = var.env == "stg" ? "Staging" : "Production"
   for_each = toset(["access", "forms"])
 }
 
