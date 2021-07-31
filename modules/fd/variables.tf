@@ -17,3 +17,7 @@ variable "swa_hostnames" {
 variable "access_hostnames" {
     type = list(string)
 }
+
+variable "health_probe_interval" {
+    type = number
+}

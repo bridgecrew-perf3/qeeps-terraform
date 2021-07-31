@@ -42,6 +42,7 @@ resource "azurerm_frontdoor" "front_door" {
   backend_pool_health_probe {
     name = "accessBackendPoolHealthProbeSetting"
     protocol = "Https"
+    interval_in_seconds = var.health_probe_interval
   }
   backend_pool {
     name = "accessBackendPool"
@@ -67,6 +68,7 @@ resource "azurerm_frontdoor" "front_door" {
     name = "swaBackendPoolHealthProbeSetting"
     path = "/healthcheck"
     protocol = "Https"
+    interval_in_seconds = var.health_probe_interval
   }
   backend_pool {
     name = "swaBackendPool"

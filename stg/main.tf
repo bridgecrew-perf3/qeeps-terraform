@@ -79,6 +79,7 @@ module "fd" {
   resource_group = module.rg.name
   name = "fd-${var.app_name}-${var.env}"
   cname = module.dns.cname_hostname
+  health_probe_interval = 120
   swa_hostnames = [
     module.zone.swa_hostname
   ]
