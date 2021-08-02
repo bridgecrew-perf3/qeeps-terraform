@@ -45,6 +45,11 @@ module "ad_app" {
   include_localhost_redirect = true
 }
 
+module "graph_ad_sp" {
+  source = "../modules/data-ad-sp"
+  name = "Microsoft Graph"
+}
+
 locals {
   secrets = tomap({
     adminpassword = var.adminpassword,
@@ -72,6 +77,8 @@ module "zone" {
   ad_application_secret = module.ad_app.application_secret
   ad_audience = module.ad_app.audience
   ad_issuer = module.ad_app.issuer
+  graph_api_object_id = module.graph_ad_sp.object_id
+  graph_api_app_roles_ids = module.graph_ad_sp.app_roles_ids
 }
 
 module "fd" {

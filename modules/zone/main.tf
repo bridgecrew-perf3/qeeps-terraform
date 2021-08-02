@@ -37,18 +37,18 @@ module "appsp" {
   name           = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
-module "func" {
+module "func_access" {
   source                     = "../func"
   location                   = var.location
   resource_group             = module.rg.name
-  name                       = "func-${var.app_name}-${each.key}-${replace(lower(var.location), " ", "")}-${var.env}"
+  name                       = "func-${var.app_name}-access-${replace(lower(var.location), " ", "")}-${var.env}"
   storage_account_name       = module.sa.name
   storage_account_access_key = module.sa.access_key
   app_service_plan_id        = module.appsp.id
   kvl_id                      = var.kvl_id
   app_configs = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : format("@Microsoft.KeyVault(SecretUri=${var.kvl_url}secrets/${x}/)")]),
-    tomap(each.key == "access" ? { adapplicationid = var.ad_application_id, adapplicationaudience = var.ad_audience } : {})
+    tomap({ adapplicationid = var.ad_application_id, adapplicationaudience = var.ad_audience })
   )
   ad_audience           = var.ad_audience
   ad_application_id     = var.ad_application_id
@@ -56,7 +56,33 @@ module "func" {
   ad_issuer = var.ad_issuer
   appi_instrumentation_key = module.appi.instrumentation_key
   func_env = var.env == "stg" ? "Staging" : "Production"
-  for_each = toset(["access", "forms"])
+
+  graph_api_object_id = var.graph_api_object_id
+  graph_api_app_roles_ids = var.graph_api_app_roles_ids
+}
+
+module "func_forms" {
+  source                     = "../func"
+  location                   = var.location
+  resource_group             = module.rg.name
+  name                       = "func-${var.app_name}-forms-${replace(lower(var.location), " ", "")}-${var.env}"
+  storage_account_name       = module.sa.name
+  storage_account_access_key = module.sa.access_key
+  app_service_plan_id        = module.appsp.id
+  kvl_id                      = var.kvl_id
+  app_configs = merge(
+    zipmap(keys(var.secrets), [for x in keys(var.secrets) : format("@Microsoft.KeyVault(SecretUri=${var.kvl_url}secrets/${x}/)")]),
+    tomap({})
+  )
+  ad_audience           = var.ad_audience
+  ad_application_id     = var.ad_application_id
+  ad_application_secret = var.ad_application_secret
+  ad_issuer = var.ad_issuer
+  appi_instrumentation_key = module.appi.instrumentation_key
+  func_env = var.env == "stg" ? "Staging" : "Production"
+
+  graph_api_object_id = var.graph_api_object_id
+  graph_api_app_roles_ids = []
 }
 
 module "swa" {

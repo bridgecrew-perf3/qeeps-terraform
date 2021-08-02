@@ -3,5 +3,5 @@ output "swa_hostname" {
 }
 
 output "access_hostname" {
-    value = module.func["access"].hostname
+    value = module.func_access.hostname
 }

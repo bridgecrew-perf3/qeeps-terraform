@@ -3,6 +3,9 @@ terraform {
     azuread = {
       source = "hashicorp/azuread"
     }
+    null = {
+      source = "hashicorp/null"
+    }
   }
 }
 

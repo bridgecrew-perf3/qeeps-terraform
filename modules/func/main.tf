@@ -6,7 +6,6 @@ terraform {
   }
 }
 
-
 resource "azurerm_function_app" "function_app" {
   name                       = var.name
   location                   = var.location
@@ -20,10 +19,6 @@ resource "azurerm_function_app" "function_app" {
   identity {
     type = "SystemAssigned"
   }
-
-  #site_config {
-  #  linux_fx_version = "dotnet-isolated|5.0"
-  #}
 
   auth_settings {
     enabled                       = true
@@ -66,4 +61,13 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy" {
   secret_permissions = [
     "Get",
   ]
+}
+
+module "graph_api_role_assignment" {
+  source = "../ad-sp-app-role-assignment"
+  principal_id = azurerm_function_app.function_app.identity[0].principal_id
+  resource_id = var.graph_api_object_id
+  app_role_id = each.key
+  msi_id = azurerm_function_app.function_app.identity[0].principal_id
+  for_each = toset(var.graph_api_app_roles_ids)
 }
