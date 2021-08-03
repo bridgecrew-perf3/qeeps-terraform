@@ -43,8 +43,7 @@ resource "azurerm_function_app" "function_app" {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${var.appi_instrumentation_key}",
     "FUNCTIONS_WORKER_RUNTIME" = "dotnet",
     "AZURE_FUNCTIONS_ENVIRONMENT" = var.func_env,
-    "ASPNETCORE_ENVIRONMENT" = var.func_env,
-    "Hosting:Environment" = var.func_env
+    "ASPNETCORE_ENVIRONMENT" = var.func_env
     #"FUNCTIONS_WORKER_RUNTIME" = "dotnet-isolated"
     }))
 }
