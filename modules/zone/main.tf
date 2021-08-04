@@ -38,7 +38,7 @@ module "appsp" {
 }
 
 locals {
-  group_roles_ids = [ for k, v in var.graph_api_app_roles_ids : v if v.value == "Group.Read.All" ]
+  group_roles_ids = [ for k, v in var.graph_api_app_roles_ids : v if k == "Group.Read.All" ]
 }
 
 module "func_access" {

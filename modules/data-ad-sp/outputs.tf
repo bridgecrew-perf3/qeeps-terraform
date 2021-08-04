@@ -8,5 +8,5 @@ output "application_id" {
 
 
 output "app_roles_ids" {
-    value = zipmap(local.keys, local.ids)
+    value = tomap({for v in data.azuread_service_principal.sp.app_roles : v.value => v.id})
 }
