@@ -6,10 +6,6 @@ variable "resource_group" {
     type = string
 }
 
-variable "location" {
-    type = string
-}
-
-variable "sku" {
+variable "ehub_namespace" {
     type = string
 }
