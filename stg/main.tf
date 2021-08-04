@@ -57,21 +57,11 @@ locals {
   })
 }
 
-module "kvl" {
-  source = "../modules/kvl"
-  location = module.rg.location
-  resource_group = module.rg.name
-  name = "kvl-${var.app_name}-secrets-${var.env}"
-  secrets = local.secrets
-}
-
 module "zone" {
   source = "../modules/zone"
   location = "West Europe"
   app_name = var.app_name
   env = var.env
-  kvl_id = module.kvl.id
-  kvl_url = module.kvl.url
   secrets = local.secrets
   ad_application_id = module.ad_app.application_id
   ad_application_secret = module.ad_app.application_secret

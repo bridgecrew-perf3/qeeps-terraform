@@ -90,11 +90,13 @@ resource "azurerm_frontdoor" "front_door" {
   frontend_endpoint {
     name      = "fdFrontend"
     host_name = "${var.name}.azurefd.net"
+    session_affinity_enabled = true
   }
 
   frontend_endpoint {
     name      = "appFrontend"
     host_name = var.cname
+    session_affinity_enabled = true
   }
 }
 

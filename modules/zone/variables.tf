@@ -14,14 +14,6 @@ variable "secrets" {
     type = map(string)
 }
 
-variable "kvl_id" {
-    type = string
-}
-
-variable "kvl_url" {
-    type = string
-}
-
 variable "ad_application_id" {
     type = string
 }
