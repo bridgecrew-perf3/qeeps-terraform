@@ -49,7 +49,7 @@ module "ad_diag" {
   source         = "../ad-diag"
   name           = "ad-diag-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   event_hub_name = module.ehub.event_hub_name
-  event_hub_authorization_rule_id = module.ehub.authorization_rule_id
+  event_hub_ns_authorization_rule_id = module.ehub.ns_authorization_rule_id
 }
 
 module "func_access" {
