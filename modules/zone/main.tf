@@ -38,7 +38,7 @@ module "appsp" {
 }
 
 locals {
-  group_roles_ids = [ for k, v in var.graph_api_app_roles_ids : v if k == "Group.Read.All" ]
+  access_roles = [ for k, v in var.graph_api_app_roles_ids : "${var.graph_api_object_id},${v}" if k == "Group.Read.All" ]
 }
 
 module "func_access" {
@@ -61,8 +61,7 @@ module "func_access" {
   appi_instrumentation_key = module.appi.instrumentation_key
   func_env = var.env == "stg" ? "Staging" : "Production"
 
-  graph_api_object_id = var.graph_api_object_id
-  graph_api_app_roles_ids = local.group_roles_ids
+  roles = local.access_roles
 }
 
 module "func_forms" {
@@ -85,8 +84,7 @@ module "func_forms" {
   appi_instrumentation_key = module.appi.instrumentation_key
   func_env = var.env == "stg" ? "Staging" : "Production"
 
-  graph_api_object_id = var.graph_api_object_id
-  graph_api_app_roles_ids = []
+  roles = []
 }
 
 module "swa" {

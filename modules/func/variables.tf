@@ -56,10 +56,6 @@ variable "func_env" {
     type = string
 }
 
-variable "graph_api_object_id" {
-    type = string
-}
-
-variable "graph_api_app_roles_ids" {
+variable "roles" {
     type = list(string)
 }

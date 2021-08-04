@@ -71,8 +71,8 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy" {
 module "graph_api_role_assignment" {
   source = "../ad-sp-app-role-assignment"
   principal_id = azurerm_function_app.function_app.identity[0].principal_id
-  resource_id = var.graph_api_object_id
-  app_role_id = each.key
+  resource_id = split(",", each.value)[0]
+  app_role_id = split(",", each.value)[1]
   msi_id = azurerm_function_app.function_app.identity[0].principal_id
-  for_each = toset(var.graph_api_app_roles_ids)
+  for_each = toset(var.roles)
 }
