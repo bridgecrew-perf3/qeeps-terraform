@@ -26,13 +26,13 @@ optional_claims {
       name                  = "groups"
       source                = null
       essential             = false
-      additional_properties = ["sam_account_name"]
+      additional_properties = []
     }
     id_token {
       name                  = "groups"
       source                = null
       essential             = false
-      additional_properties = ["sam_account_name"]
+      additional_properties = []
     }
   }
   app_role {
