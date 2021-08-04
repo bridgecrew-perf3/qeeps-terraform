@@ -37,28 +37,6 @@ module "appsp" {
   name           = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
-module "ehub_ns_ad" {
-  source = "../ehub-ns"
-  resource_group = module.rg.name
-  name = "ehub-ns-${var.app_name}-ad-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku = "Basic"
-  location = var.location
-}
-
-module "ehub_ad" {
-  source = "../ehub"
-  resource_group = module.rg.name
-  name = "ehub-${var.app_name}-ad-${replace(lower(var.location), " ", "")}-${var.env}"
-  ehub_namespace = module.ehub_ns_ad.name
-}
-
-module "ad_access_log_config_ehub" {
-  source = "../ad-diag"
-  event_hub_ns_authorization_rule_id = module.ehub_ns_ad.ns_authorization_rule_id
-  name = "ad-diag-${var.app_name}-ehub-${replace(lower(var.location), " ", "")}-${var.env}"
-  event_hub_name = module.ehub_ad.name
-}
-
 locals {
   access_roles = [ for k, v in var.graph_api_app_roles_ids : "${var.graph_api_object_id},${v}" if k == "Group.Read.All" ]
 }
