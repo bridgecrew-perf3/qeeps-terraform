@@ -37,6 +37,21 @@ module "appsp" {
   name           = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
+module "ehub" {
+  source         = "../ehub"
+  location       = var.location
+  resource_group = module.rg.name
+  name           = "ehub-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  sku = "Basic"
+}
+
+module "ad_diag" {
+  source         = "../ad-diag"
+  name           = "ad-diag-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  event_hub_name = module.ehub.event_hub_name
+  event_hub_ns_authorization_rule_id = module.ehub.ns_authorization_rule_id
+}
+
 locals {
   access_roles = [ for k, v in var.graph_api_app_roles_ids : "${var.graph_api_object_id},${v}" if k == "Group.Read.All" ]
 }
