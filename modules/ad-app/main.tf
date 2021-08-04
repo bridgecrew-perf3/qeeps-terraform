@@ -25,13 +25,13 @@ optional_claims {
       name                  = "groups"
       source                = null
       essential             = false
-      additional_properties = ["on_premise_security_identifier"]
+      additional_properties = ["sam_account_name"]
     }
     id_token {
       name                  = "groups"
       source                = null
       essential             = false
-      additional_properties = ["on_premise_security_identifier"]
+      additional_properties = ["sam_account_name"]
     }
   }
   app_role {
