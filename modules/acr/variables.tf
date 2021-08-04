@@ -21,3 +21,11 @@ variable "family" {
 variable "capacity" {
     type = number
 }
+
+variable "sa_connection_string" {
+    type = string
+}
+
+variable "aof_backup" {
+    type = bool
+}

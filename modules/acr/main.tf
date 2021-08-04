@@ -16,5 +16,7 @@ resource "azurerm_redis_cache" "redis" {
   enable_non_ssl_port = false
   minimum_tls_version = "1.2"
   redis_configuration {
+    aof_backup_enabled              = var.aof_backup
+    aof_storage_connection_string_0 = var.sa_connection_string
   }
 }

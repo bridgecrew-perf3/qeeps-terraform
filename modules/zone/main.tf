@@ -38,6 +38,8 @@ module "acr" {
   sku            = "Basic"
   capacity       = 0
   family         = "C"
+  aof_backup = true
+  sa_connection_string = module.sa.connection_string
 }
 
 module "kvl" {
