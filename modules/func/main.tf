@@ -43,8 +43,13 @@ resource "azurerm_function_app" "function_app" {
     APPINSIGHTS_INSTRUMENTATIONKEY = "${var.appi_instrumentation_key}",
     FUNCTIONS_WORKER_RUNTIME = "dotnet",
     AZURE_FUNCTIONS_ENVIRONMENT = var.func_env
-    #FUNCTIONS_WORKER_RUNTIME = "dotnet-isolated"
-    }))
+  }))
+
+  lifecycle {
+    ignore_changes = [
+      app_settings
+    ]
+  }
 }
 
 data "azurerm_client_config" "current" {}
