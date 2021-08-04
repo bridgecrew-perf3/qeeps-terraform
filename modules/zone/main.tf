@@ -37,6 +37,10 @@ module "appsp" {
   name           = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
+locals {
+  group_roles_ids = [ for k, v in var.graph_api_app_roles_ids : v if v.value == "Group.Read.All" ]
+}
+
 module "func_access" {
   source                     = "../func"
   location                   = var.location
@@ -58,7 +62,7 @@ module "func_access" {
   func_env = var.env == "stg" ? "Staging" : "Production"
 
   graph_api_object_id = var.graph_api_object_id
-  graph_api_app_roles_ids = var.graph_api_app_roles_ids
+  graph_api_app_roles_ids = local.group_roles_ids
 }
 
 module "func_forms" {

@@ -8,5 +8,5 @@ output "application_id" {
 
 
 output "app_roles_ids" {
-    value = [for v in data.azuread_service_principal.sp.app_roles : v.id]
+    value = zipmap(local.keys, local.ids)
 }
