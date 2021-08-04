@@ -37,21 +37,6 @@ module "appsp" {
   name           = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
-module "ehub" {
-  source         = "../ehub"
-  location       = var.location
-  resource_group = module.rg.name
-  name           = "ehub-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku = "Basic"
-}
-
-module "ad_diag" {
-  source         = "../ad-diag"
-  name           = "ad-diag-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  event_hub_name = module.ehub.event_hub_name
-  event_hub_ns_authorization_rule_id = module.ehub.ns_authorization_rule_id
-}
-
 module "func_access" {
   source                     = "../func"
   location                   = var.location
