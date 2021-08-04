@@ -13,14 +13,27 @@ resource "azuread_application" "application" {
   display_name     = var.name
   identifier_uris  = ["api://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
-  group_membership_claims = "SecurityGroup"
+  
 
   lifecycle {
     ignore_changes = [
       web      
     ]
   }
-
+optional_claims {
+    access_token {
+      name                  = "groups"
+      source                = null
+      essential             = false
+      additional_properties = ["on_premise_security_identifier"]
+    }
+    id_token {
+      name                  = "groups"
+      source                = null
+      essential             = false
+      additional_properties = ["on_premise_security_identifier"]
+    }
+  }
   app_role {
     allowed_member_types = ["User"]
     description          = "Owner qeeps role"
