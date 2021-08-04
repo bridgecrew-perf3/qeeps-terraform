@@ -42,12 +42,15 @@ resource "azurerm_function_app" "function_app" {
     AzureWebJobsDisableHomepage    = "true",
     APPINSIGHTS_INSTRUMENTATIONKEY = "${var.appi_instrumentation_key}",
     FUNCTIONS_WORKER_RUNTIME = "dotnet",
-    AZURE_FUNCTIONS_ENVIRONMENT = var.func_env
+    AZURE_FUNCTIONS_ENVIRONMENT = var.func_env,
+    "WEBSITE_RUN_FROM_PACKAGE"       = "",
+    "WEBSITE_ENABLE_SYNC_UPDATE_SITE" = "true"
   }))
 
   lifecycle {
     ignore_changes = [
-      app_settings
+      app_settings["WEBSITE_RUN_FROM_PACKAGE"],
+      app_settings["WEBSITE_ENABLE_SYNC_UPDATE_SITE"],
     ]
   }
 }
