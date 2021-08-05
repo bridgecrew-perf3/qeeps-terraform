@@ -43,6 +43,7 @@ resource "azurerm_frontdoor" "front_door" {
     name = "accessBackendPoolHealthProbeSetting"
     protocol = "Https"
     interval_in_seconds = var.health_probe_interval
+    path = "/api/access/healthcheck"
   }
   backend_pool {
     name = "accessBackendPool"
