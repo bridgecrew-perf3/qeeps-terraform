@@ -38,3 +38,7 @@ variable "graph_api_object_id" {
 variable "graph_api_app_roles_ids" {
     type = map(string)
 }
+
+variable "ad_group_id" {
+    type = string
+}
