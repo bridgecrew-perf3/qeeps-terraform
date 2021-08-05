@@ -32,7 +32,7 @@ module "rg" {
 
 module "sa" {
   source           = "../modules/sa"
-  location         = var.location
+  location         = module.rg.location
   resource_group   = module.rg.name
   name             = "sa${var.app_name}${var.env}"
   tier             = "Standard"
