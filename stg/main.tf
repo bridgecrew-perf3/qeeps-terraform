@@ -83,20 +83,20 @@ module "zone" {
   sa_connection_string = module.sa.connection_string
 }
 
-module "fd" {
-  source = "../modules/fd"
-  resource_group = module.rg.name
-  name = "fd-${var.app_name}-${var.env}"
-  cname = module.dns.cname_hostname
-  health_probe_interval = 120
-  swa_hostnames = [
-    module.zone.swa_hostname
-  ]
-  access_hostnames = [
-    module.zone.access_hostname
-  ]
+# module "fd" {
+#   source = "../modules/fd"
+#   resource_group = module.rg.name
+#   name = "fd-${var.app_name}-${var.env}"
+#   cname = module.dns.cname_hostname
+#   health_probe_interval = 120
+#   swa_hostnames = [
+#     module.zone.swa_hostname
+#   ]
+#   access_hostnames = [
+#     module.zone.access_hostname
+#   ]
 
-  depends_on = [
-    module.dns
-  ]
-}
+#   depends_on = [
+#     module.dns
+#   ]
+# }
