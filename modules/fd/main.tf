@@ -12,8 +12,32 @@ resource "azurerm_frontdoor" "front_door" {
   enforce_backend_pools_certificate_name_check = false
 
   routing_rule {
+    name               = "redirectHttps"
+    accepted_protocols = ["Http"]
+    patterns_to_match  = ["/*"]
+    frontend_endpoints = ["appFrontend"]
+    redirect_configuration {
+      redirect_protocol = "Https"
+      redirect_type = "Found"
+    }
+  }
+
+  routing_rule {
     name               = "swaRoute"
-    accepted_protocols = ["Http", "Https"]
+    accepted_protocols = ["Https"]
+    patterns_to_match  = ["/*"]
+    frontend_endpoints = ["appFrontend"]
+    forwarding_configuration {
+      forwarding_protocol = "HttpsOnly"
+      backend_pool_name   = "swaBackendPool"
+      cache_enabled = true
+      cache_use_dynamic_compression = true
+    }
+  }
+
+  routing_rule {
+    name               = "swaRoute"
+    accepted_protocols = ["Https"]
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["appFrontend"]
     forwarding_configuration {
@@ -26,7 +50,7 @@ resource "azurerm_frontdoor" "front_door" {
 
   routing_rule {
     name               = "accessRoute"
-    accepted_protocols = ["Http", "Https"]
+    accepted_protocols = ["Https"]
     patterns_to_match  = ["/api/access/*"]
     frontend_endpoints = ["appFrontend"]
     forwarding_configuration {
