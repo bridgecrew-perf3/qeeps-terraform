@@ -14,6 +14,10 @@ resource "azuread_application" "application" {
   identifier_uris  = ["api://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
   group_membership_claims = "SecurityGroup"
+
+  web {
+    redirect_uris = var.include_localhost_redirect == true ? ["http://localhost:4200", var.redirect_url] : [var.redirect_url]
+  }
   
 
   lifecycle {
