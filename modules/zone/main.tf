@@ -6,24 +6,18 @@ terraform {
   }
 }
 
-module "rg" {
-  source   = "../rg"
-  location = var.location
-  name     = "rg-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-}
-
 module "appi" {
   source         = "../appi"
   location       = var.location
   name           = "appi-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  resource_group = module.rg.name
+  resource_group = var.resource_group
   retention      = 30
 }
 
 module "sa" {
   source           = "../sa"
   location         = var.location
-  resource_group   = module.rg.name
+  resource_group   = var.resource_group
   name             = "sa${var.app_name}${replace(lower(var.location), " ", "")}${var.env}"
   tier             = "Standard"
   replication_type = "LRS"
@@ -33,7 +27,7 @@ module "sa" {
 module "acr" {
   source         = "../acr"
   location       = var.location
-  resource_group = module.rg.name
+  resource_group = var.resource_group
   name           = "acr-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   sku            = "Basic"
   capacity       = 0
@@ -45,7 +39,7 @@ module "acr" {
 module "kvl" {
   source         = "../kvl"
   location       = var.location
-  resource_group = module.rg.name
+  resource_group = var.resource_group
   name           = "kv-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
     redisconnectionstring = module.acr.connection_string
@@ -55,7 +49,7 @@ module "kvl" {
 module "appsp" {
   source         = "../appsp"
   location       = var.location
-  resource_group = module.rg.name
+  resource_group = var.resource_group
   name           = "appsp-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
 }
 
@@ -66,7 +60,7 @@ locals {
 module "func_access" {
   source                     = "../func"
   location                   = var.location
-  resource_group             = module.rg.name
+  resource_group             = var.resource_group
   name                       = "func-${var.app_name}-access-${replace(lower(var.location), " ", "")}-${var.env}"
   storage_account_name       = module.sa.name
   storage_account_access_key = module.sa.access_key
@@ -92,7 +86,7 @@ module "func_access" {
 module "func_forms" {
   source                     = "../func"
   location                   = var.location
-  resource_group             = module.rg.name
+  resource_group             = var.resource_group
   name                       = "func-${var.app_name}-forms-${replace(lower(var.location), " ", "")}-${var.env}"
   storage_account_name       = module.sa.name
   storage_account_access_key = module.sa.access_key
@@ -115,7 +109,7 @@ module "func_forms" {
 module "swa" {
   source         = "../swa"
   location       = var.location
-  resource_group = module.rg.name
+  resource_group = var.resource_group
   name           = "swa-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   sku_size       = null
   sku_tier       = "Free"

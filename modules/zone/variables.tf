@@ -6,6 +6,10 @@ variable "env" {
     type = string
 }
 
+variable "resource_group" {
+    type = string
+}
+
 variable "app_name" {
     type = string
 }

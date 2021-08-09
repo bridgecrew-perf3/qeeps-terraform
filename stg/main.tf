@@ -60,6 +60,7 @@ locals {
 module "zone" {
   source = "../modules/zone"
   location = "West Europe"
+  resource_group = module.rg.name
   app_name = var.app_name
   env = var.env
   secrets = local.secrets
