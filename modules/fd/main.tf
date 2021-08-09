@@ -17,7 +17,7 @@ resource "azurerm_frontdoor" "front_door" {
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["appFrontend"]
     redirect_configuration {
-      redirect_protocol = "Https"
+      redirect_protocol = "HttpsOnly"
       redirect_type = "Found"
     }
   }
