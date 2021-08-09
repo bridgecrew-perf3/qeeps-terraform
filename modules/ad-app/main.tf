@@ -51,6 +51,13 @@ optional_claims {
   }
   app_role {
     allowed_member_types = ["User"]
+    description          = "Moderator qeeps role"
+    display_name         = "Moderator"
+    enabled           = true
+    value                = "Moderator"
+  }
+  app_role {
+    allowed_member_types = ["User"]
     description          = "Regular qeeps role"
     display_name         = "Regular"
     enabled           = true
