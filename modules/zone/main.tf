@@ -48,8 +48,7 @@ module "kvl" {
   resource_group = module.rg.name
   name           = "kv-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
-    redisconnectionstring = module.acr.connection_string,
-    saconnectionstring = var.sa_connection_string
+    redisconnectionstring = module.acr.connection_string
   }))
 }
 
@@ -77,7 +76,6 @@ module "func_access" {
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({ adapplicationid = var.ad_application_id, adapplicationaudience = var.ad_audience }),
     tomap({ redisconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/redisconnectionstring/)" }),
-    tomap({ saconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/saconnectionstring/)" }),
     tomap({ adgroupid = var.ad_group_id}),
     tomap({ location = var.location }),
   )
@@ -102,7 +100,6 @@ module "func_forms" {
   kvl_id                     = module.kvl.id
   app_configs = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
-    tomap({ saconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/saconnectionstring/)" }),
     tomap({ location = var.location }),
   )
   ad_audience              = var.ad_audience

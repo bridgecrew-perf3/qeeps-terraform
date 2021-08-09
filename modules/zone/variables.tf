@@ -42,8 +42,3 @@ variable "graph_api_app_roles_ids" {
 variable "ad_group_id" {
     type = string
 }
-
-variable "sa_connection_string" {
-    type = string
-    sensitive = true
-}

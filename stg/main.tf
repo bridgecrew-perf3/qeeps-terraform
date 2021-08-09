@@ -30,16 +30,6 @@ module "rg" {
   name = "rg-${var.app_name}-${var.env}"
 }
 
-module "sa" {
-  source           = "../modules/sa"
-  location         = module.rg.location
-  resource_group   = module.rg.name
-  name             = "sa${var.app_name}${var.env}"
-  tier             = "Standard"
-  replication_type = "LRS"
-  access_tier      = "Hot"
-}
-
 module "dns" {
   source = "../modules/dns"
   name = var.domain_name
@@ -80,7 +70,6 @@ module "zone" {
   graph_api_object_id = module.graph_ad_sp.object_id
   graph_api_app_roles_ids = module.graph_ad_sp.app_roles_ids
   ad_group_id = module.ad_app.group_object_id
-  sa_connection_string = module.sa.connection_string
 }
 
 module "fd" {
