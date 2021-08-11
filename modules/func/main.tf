@@ -81,10 +81,10 @@ module "graph_api_role_assignment" {
   for_each = toset(var.roles)
 }
 
-module "internal_app_role_assignment" {
+module "intrn_app_role_assignment" {
   source = "../ad-sp-app-role-assignment"
   principal_id = azurerm_function_app.function_app.identity[0].principal_id
-  resource_id = azurerm_function_app.function_app.identity[0].principal_id
+  resource_id = var.ad_application_object_id
   app_role_id = var.internal_role_id
   msi_id = azurerm_function_app.function_app.identity[0].principal_id
 }

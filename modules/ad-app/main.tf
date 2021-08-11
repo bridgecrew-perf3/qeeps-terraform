@@ -65,8 +65,8 @@ optional_claims {
 }
 
 resource "azuread_application_app_role" "internal_role" {
-  application_object_id = azuread_application.application.object_id
-  allowed_member_types  = ["Application"]
+  application_object_id = azuread_application.application.id
+  allowed_member_types  = ["User", "Application"]
   description           = "Internal"
   display_name          = "Internal"
   enabled               = true
