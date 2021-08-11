@@ -46,3 +46,7 @@ variable "graph_api_app_roles_ids" {
 variable "ad_group_id" {
     type = string
 }
+
+variable "internal_role_id" {
+    type = string
+}

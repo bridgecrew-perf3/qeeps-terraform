@@ -56,6 +56,10 @@ variable "func_env" {
     type = string
 }
 
+variable "internal_role_id" {
+    type = string
+}
+
 variable "roles" {
     type = list(string)
 }

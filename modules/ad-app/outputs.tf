@@ -22,3 +22,7 @@ output "issuer" {
 output "group_object_id" {
     value = azuread_group.qeeps_group.object_id
 }
+
+output "internal_role_id" {
+    value = azuread_application_app_role.internal_role.role_id
+}

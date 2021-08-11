@@ -81,6 +81,8 @@ module "func_access" {
   func_env                 = var.env == "stg" ? "Staging" : "Production"
 
   roles = local.access_roles
+
+  internal_role_id = var.internal_role_id
 }
 
 module "func_forms" {
@@ -106,6 +108,8 @@ module "func_forms" {
   func_env                 = var.env == "stg" ? "Staging" : "Production"
 
   roles = []
+
+  internal_role_id = var.internal_role_id
 }
 
 module "swa" {

@@ -64,6 +64,15 @@ optional_claims {
   }
 }
 
+resource "azuread_application_app_role" "internal_role" {
+  application_object_id = azuread_application.application
+  allowed_member_types  = ["Application"]
+  description           = "Internal"
+  display_name          = "Internal"
+  enabled               = true
+  value                 = "Internal"
+}
+
 resource "azuread_service_principal" "enterprise_app" {
   application_id                = azuread_application.application.application_id
   app_role_assignment_required = true
