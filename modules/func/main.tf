@@ -26,7 +26,7 @@ resource "azurerm_function_app" "function_app" {
     issuer = var.ad_issuer
     token_refresh_extension_hours = 24 * 30
     token_store_enabled           = true
-    unauthenticated_client_action = "AllowAnonymous"
+    unauthenticated_client_action = "RedirectToLoginPage"
     runtime_version = "~1"
 
 
