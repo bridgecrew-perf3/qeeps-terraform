@@ -7,7 +7,7 @@ output "object_id" {
 }
 
 output "sp_object_id" {
-    value = data.azuread_service_principal.enterprise_app.object_id
+    value = azuread_service_principal.enterprise_app.object_id
 }
 
 output "application_secret" {
