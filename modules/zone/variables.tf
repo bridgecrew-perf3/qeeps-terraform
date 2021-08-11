@@ -50,3 +50,7 @@ variable "ad_group_id" {
 variable "internal_role_id" {
     type = string
 }
+
+variable "ad_application_object_id" {
+    type = string
+}

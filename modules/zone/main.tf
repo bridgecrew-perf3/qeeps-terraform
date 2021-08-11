@@ -83,6 +83,7 @@ module "func_access" {
   roles = local.access_roles
 
   internal_role_id = var.internal_role_id
+  ad_application_object_id = var.ad_application_object_id
 }
 
 module "func_forms" {
@@ -110,6 +111,7 @@ module "func_forms" {
   roles = []
 
   internal_role_id = var.internal_role_id
+  ad_application_object_id = var.ad_application_object_id
 }
 
 module "swa" {

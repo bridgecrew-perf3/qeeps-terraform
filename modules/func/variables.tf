@@ -35,6 +35,10 @@ variable "ad_application_id" {
     type = string
 }
 
+variable "ad_application_object_id" {
+    type = string
+}
+
 variable "ad_application_secret" {
     type = string
     sensitive = true
