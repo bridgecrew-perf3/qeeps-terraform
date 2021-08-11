@@ -95,6 +95,7 @@ module "func_forms" {
   app_configs = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({ location = var.location }),
+    tomap({ access_url = "https://${module.func_access.hostname}"})
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
