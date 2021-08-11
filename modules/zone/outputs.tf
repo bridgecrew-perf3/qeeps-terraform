@@ -5,3 +5,7 @@ output "swa_hostname" {
 output "access_hostname" {
     value = module.func_access.hostname
 }
+
+output "forms_hostname" {
+    value = module.func_forms.hostname
+}

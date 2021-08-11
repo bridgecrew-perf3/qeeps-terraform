@@ -86,6 +86,10 @@ module "fd" {
     module.zone.access_hostname
   ]
 
+  forms_hostnames = [
+    module.zone.forms_hostname
+  ]
+
   depends_on = [
     module.dns
   ]

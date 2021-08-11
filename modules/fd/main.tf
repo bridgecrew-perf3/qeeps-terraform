@@ -48,6 +48,45 @@ resource "azurerm_frontdoor" "front_door" {
     }
   }
 
+  routing_rule {
+    name               = "formsRoute"
+    accepted_protocols = ["Https"]
+    patterns_to_match  = ["/api/forms/*"]
+    frontend_endpoints = ["appFrontend"]
+    forwarding_configuration {
+      forwarding_protocol = "HttpsOnly"
+      backend_pool_name   = "formsBackendPool"
+      cache_enabled = false
+    }
+  }
+
+
+
+  backend_pool_load_balancing {
+    name = "formsBackendPoolLoadBalancingSetting"
+  }
+  backend_pool_health_probe {
+    name = "formsBackendPoolHealthProbeSetting"
+    protocol = "Https"
+    interval_in_seconds = var.health_probe_interval
+    path = "/healthcheck"
+  }
+  backend_pool {
+    name = "formsBackendPool"
+    dynamic "backend" {
+      for_each = toset(var.forms_hostnames)
+      content {
+        host_header = backend.value
+        address     = backend.value
+        http_port   = 80
+        https_port  = 443
+      }
+    }
+    load_balancing_name = "formsBackendPoolLoadBalancingSetting"
+    health_probe_name   = "formssBackendPoolHealthProbeSetting"
+  }
+
+
   backend_pool_load_balancing {
     name = "accessBackendPoolLoadBalancingSetting"
   }

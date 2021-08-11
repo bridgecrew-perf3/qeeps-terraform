@@ -18,6 +18,11 @@ variable "access_hostnames" {
     type = list(string)
 }
 
+variable "forms_hostnames" {
+    type = list(string)
+}
+
+
 variable "health_probe_interval" {
     type = number
 }
