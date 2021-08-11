@@ -11,7 +11,7 @@ terraform {
 
 resource "azuread_application" "application" {
   display_name     = var.name
-  identifier_uris  = ["api://${var.name}"]
+  identifier_uris  = ["https://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
   group_membership_claims = "SecurityGroup"
 
