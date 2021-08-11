@@ -83,7 +83,7 @@ resource "azurerm_frontdoor" "front_door" {
       }
     }
     load_balancing_name = "formsBackendPoolLoadBalancingSetting"
-    health_probe_name   = "formssBackendPoolHealthProbeSetting"
+    health_probe_name   = "formsBackendPoolHealthProbeSetting"
   }
 
 
