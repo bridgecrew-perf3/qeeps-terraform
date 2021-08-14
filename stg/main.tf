@@ -50,10 +50,22 @@ module "graph_ad_sp" {
   name = "Microsoft Graph"
 }
 
+
+module "cdb" {
+  source = "../modules/cdb"
+  resource_group = module.rg.name
+  name = "cdb-${var.app_name}-${var.env}"
+  free = true
+  locations = [module.rg.location]
+  multi_master = false
+  serverless = true
+}
+
 locals {
   secrets = tomap({
     adminpassword = var.adminpassword,
-    adapplicationsecret = module.ad_app.application_secret
+    adapplicationsecret = module.ad_app.application_secret,
+    cdbconnectionstrings = join(",", module.cdb.connection_strings)
   })
 }
 
