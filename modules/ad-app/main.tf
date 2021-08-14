@@ -97,4 +97,9 @@ resource "azuread_application_password" "application_password" {
 
 resource "azuread_group" "qeeps_group" {
   display_name = var.name
+  lifecycle {
+    ignore_changes = [
+      members
+    ]
+  }
 }
