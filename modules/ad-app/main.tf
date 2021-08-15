@@ -64,13 +64,13 @@ optional_claims {
   }
 }
 
-resource "azuread_application_app_role" "internal_role_add" {
-  application_object_id = azuread_application.application.id
+resource "azuread_application_app_role" "application_role" {
+  application_object_id = azuread_application.application.object_id
   allowed_member_types  = ["User", "Application"]
-  description           = "Internal"
-  display_name          = "Internal"
+  description           = "Application"
+  display_name          = "Application"
   enabled               = true
-  value                 = "Internal"
+  value                 = "Application"
 }
 
 resource "azuread_service_principal" "enterprise_app" {
