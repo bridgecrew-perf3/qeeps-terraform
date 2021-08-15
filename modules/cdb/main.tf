@@ -53,8 +53,9 @@ resource "azurerm_cosmosdb_sql_container" "userpreferences_access_cont" {
   database_name         = azurerm_cosmosdb_sql_database.access_db.name
   partition_key_path    = "/UserId"
   partition_key_version = 1
-  
+
+
   unique_key {
-    paths = ["/userId"]
+    paths = ["/Id", "/UserId"]
   }
 }
