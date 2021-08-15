@@ -28,5 +28,5 @@ output "group_object_id" {
 }
 
 output "internal_role_id" {
-    value = azuread_application_app_role.internal_role_add.role_id
+    value = azuread_application_app_role.application_role.role_id
 }
