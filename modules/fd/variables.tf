@@ -22,6 +22,9 @@ variable "forms_hostnames" {
     type = list(string)
 }
 
+variable "notifications_hostnames" {
+    type = list(string)
+}
 
 variable "health_probe_interval" {
     type = number

@@ -104,6 +104,10 @@ module "fd" {
     module.zone.forms_hostname
   ]
 
+  notifications_hostnames = [
+    module.zone.notifications_hostname
+  ]
+
   depends_on = [
     module.dns
   ]

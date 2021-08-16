@@ -61,6 +61,17 @@ resource "azurerm_frontdoor" "front_door" {
   }
 
 
+  routing_rule {
+    name               = "notificationsRoute"
+    accepted_protocols = ["Https"]
+    patterns_to_match  = ["/api/notifications/*"]
+    frontend_endpoints = ["appFrontend"]
+    forwarding_configuration {
+      forwarding_protocol = "HttpsOnly"
+      backend_pool_name   = "notificationsBackendPool"
+      cache_enabled = false
+    }
+  }
 
   backend_pool_load_balancing {
     name = "formsBackendPoolLoadBalancingSetting"
@@ -84,6 +95,33 @@ resource "azurerm_frontdoor" "front_door" {
     }
     load_balancing_name = "formsBackendPoolLoadBalancingSetting"
     health_probe_name   = "formsBackendPoolHealthProbeSetting"
+  }
+
+
+
+
+  backend_pool_load_balancing {
+    name = "notificationsBackendPoolLoadBalancingSetting"
+  }
+  backend_pool_health_probe {
+    name = "notificationsBackendPoolHealthProbeSetting"
+    protocol = "Https"
+    interval_in_seconds = var.health_probe_interval
+    path = "/"
+  }
+  backend_pool {
+    name = "notificationsBackendPool"
+    dynamic "backend" {
+      for_each = toset(var.notifications_hostnames)
+      content {
+        host_header = backend.value
+        address     = backend.value
+        http_port   = 80
+        https_port  = 443
+      }
+    }
+    load_balancing_name = "notificationsBackendPoolLoadBalancingSetting"
+    health_probe_name   = "notificationsBackendPoolHealthProbeSetting"
   }
 
 

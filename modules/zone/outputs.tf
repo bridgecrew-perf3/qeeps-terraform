@@ -9,3 +9,7 @@ output "access_hostname" {
 output "forms_hostname" {
     value = module.func_forms.hostname
 }
+
+output "notifications_hostname" {
+    value = module.func_notifications.hostname
+}
