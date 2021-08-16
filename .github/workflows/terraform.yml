@@ -11,7 +11,11 @@ env:
   ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  sendgridapikey: ${{ secrets.SENDGRID_API_KEY }}
   TF_REGISTRY_CLIENT_TIMEOUT: '20'
+  adminpassword: ${{ secrets.adminpassword }}
+  publicvapidkey: ${{ secrets.publicvapidkey }}
+  privatevapidkey: ${{ secrets.privatevapidkey }}
 
 defaults:
   run:
@@ -23,10 +27,6 @@ jobs:
   plan_ci:
     runs-on: ubuntu-latest
     environment: stg
-    env:
-      adminpassword: '${{ secrets.adminpassword }}'
-      publicvapidkey: '${{ secrets.publicvapidkey }}'
-      privatevapidkey: '${{ secrets.privatevapidkey }}'
     if: ${{ success() && (github.event_name == 'pull_request' || (github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop')) }}
     steps:
       - name: git checkout
@@ -57,10 +57,6 @@ jobs:
   plan_stg:
     runs-on: ubuntu-latest
     environment: stg
-    env:
-      adminpassword: '${{ secrets.adminpassword }}'
-      publicvapidkey: '${{ secrets.publicvapidkey }}'
-      privatevapidkey: '${{ secrets.privatevapidkey }}'
     if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/develop' }}
     steps:
       - name: git checkout
@@ -99,10 +95,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/master' }}
     environment: prod
-    env:
-      adminpassword: '${{ secrets.adminpassword }}'
-      publicvapidkey: '${{ secrets.publicvapidkey }}'
-      privatevapidkey: '${{ secrets.privatevapidkey }}'
     steps:
       - name: git checkout
         uses: actions/checkout@v2

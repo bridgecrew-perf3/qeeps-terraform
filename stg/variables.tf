@@ -27,3 +27,8 @@ variable "privatevapidkey" {
     type = string
     sensitive = true
 }
+
+variable "sendgridapikey" {
+    type = string
+    sensitive = true
+}

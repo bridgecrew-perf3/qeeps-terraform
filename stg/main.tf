@@ -67,7 +67,8 @@ locals {
     adapplicationsecret = module.ad_app.application_secret,
     cdbconnectionstring = module.cdb.connection_string,
     publicvapidkey = var.publicvapidkey
-    privatevapidkey = var.privatevapidkey
+    privatevapidkey = var.privatevapidkey,
+    sendgridapikey = var.sendgridapikey
   })
 }
 
