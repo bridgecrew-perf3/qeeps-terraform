@@ -65,7 +65,9 @@ locals {
   secrets = tomap({
     adminpassword = var.adminpassword,
     adapplicationsecret = module.ad_app.application_secret,
-    cdbconnectionstring = module.cdb.connection_string
+    cdbconnectionstring = module.cdb.connection_string,
+    publicvapidkey = var.publicvapidkey
+    privatevapidkey = var.privatevapidkey
   })
 }
 

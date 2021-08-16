@@ -17,3 +17,13 @@ variable "adminpassword" {
     type = string
     sensitive = true
 }
+
+variable "publicvapidkey" {
+    type = string
+    sensitive = true
+}
+
+variable "privatevapidkey" {
+    type = string
+    sensitive = true
+}

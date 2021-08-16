@@ -25,6 +25,8 @@ jobs:
     environment: stg
     env:
       adminpassword: '${{ secrets.adminpassword }}'
+      publicvapidkey: '${{ secrets.publicvapidkey }}'
+      privatevapidkey: '${{ secrets.privatevapidkey }}'
     if: ${{ success() && (github.event_name == 'pull_request' || (github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop')) }}
     steps:
       - name: git checkout
@@ -57,6 +59,8 @@ jobs:
     environment: stg
     env:
       adminpassword: '${{ secrets.adminpassword }}'
+      publicvapidkey: '${{ secrets.publicvapidkey }}'
+      privatevapidkey: '${{ secrets.privatevapidkey }}'
     if: ${{ success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/develop' }}
     steps:
       - name: git checkout
@@ -97,6 +101,8 @@ jobs:
     environment: prod
     env:
       adminpassword: '${{ secrets.adminpassword }}'
+      publicvapidkey: '${{ secrets.publicvapidkey }}'
+      privatevapidkey: '${{ secrets.privatevapidkey }}'
     steps:
       - name: git checkout
         uses: actions/checkout@v2
