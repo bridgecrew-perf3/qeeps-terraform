@@ -45,6 +45,17 @@ module "sb" {
   capacity       = 0
 }
 
+module "signalr" {
+  source         = "../signalr"
+  location       = var.location
+  resource_group = var.resource_group
+  name           = "signalr-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  sku            = "Free_F1"
+  capacity       = 1
+  allow_localhost = true
+  allowed_host = "https://${var.domain_name}"
+}
+
 module "kvl" {
   source         = "../kvl"
   location       = var.location
@@ -52,7 +63,8 @@ module "kvl" {
   name           = "kvl-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
     redisconnectionstring = module.acr.connection_string,
-    sbconnectionstring = module.sb.connection_string
+    sbconnectionstring = module.sb.connection_string,
+    signalrconnectionstring = module.signalr.connection_string
   }))
 }
 
@@ -79,6 +91,7 @@ module "func_access" {
   app_configs = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({ redisconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/redisconnectionstring/)" }),
+    tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
     tomap({ adgroupid = var.ad_group_id}),
     tomap({ location = var.location }),
     tomap({ scope = "${var.ad_audience}/.default"})
@@ -109,6 +122,7 @@ module "func_forms" {
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({ location = var.location }),
     tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
+    tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
     tomap({ access_url = "https://${module.func_access.hostname}"}),
     tomap({ notifications_url = "https://${module.func_notifications.hostname}"}),
     tomap({ scope = "${var.ad_audience}/.default"})
@@ -139,6 +153,7 @@ module "func_notifications" {
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({ location = var.location }),
     tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
+    tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
     tomap({ access_url = "https://${module.func_access.hostname}"}),
     tomap({ scope = "${var.ad_audience}/.default"})
   )

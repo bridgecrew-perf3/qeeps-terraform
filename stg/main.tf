@@ -88,6 +88,7 @@ module "zone" {
   ad_group_id = module.ad_app.group_object_id
   internal_role_id = module.ad_app.internal_role_id
   ad_application_object_id = module.ad_app.sp_object_id
+  domain_name = module.dns.cname_hostname
 }
 
 module "fd" {

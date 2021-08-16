@@ -54,3 +54,7 @@ variable "internal_role_id" {
 variable "ad_application_object_id" {
     type = string
 }
+
+variable "domain_name" {
+    type = string
+}
