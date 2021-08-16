@@ -36,13 +36,23 @@ module "acr" {
   sa_connection_string = null
 }
 
+module "sb" {
+  source         = "../sb"
+  location       = var.location
+  resource_group = var.resource_group
+  name           = "sb-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  sku            = "Basic"
+  capacity       = 0
+}
+
 module "kvl" {
   source         = "../kvl"
   location       = var.location
   resource_group = var.resource_group
   name           = "kvl-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
-    redisconnectionstring = module.acr.connection_string
+    redisconnectionstring = module.acr.connection_string,
+    sbconnectionstring = module.sb.connection_string
   }))
 }
 
@@ -98,7 +108,9 @@ module "func_forms" {
   app_configs = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({ location = var.location }),
+    tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
     tomap({ access_url = "https://${module.func_access.hostname}"}),
+    tomap({ notifications_url = "https://${module.func_notifications.hostname}"}),
     tomap({ scope = "${var.ad_audience}/.default"})
   )
   ad_audience              = var.ad_audience
@@ -126,6 +138,7 @@ module "func_notifications" {
   app_configs = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({ location = var.location }),
+    tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
     tomap({ access_url = "https://${module.func_access.hostname}"}),
     tomap({ scope = "${var.ad_audience}/.default"})
   )
