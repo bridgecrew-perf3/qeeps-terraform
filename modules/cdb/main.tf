@@ -54,8 +54,35 @@ resource "azurerm_cosmosdb_sql_container" "userpreferences_access_cont" {
   partition_key_path    = "/UserId"
   partition_key_version = 1
 
+  unique_key {
+    paths = ["/UserId"]
+  }
+}
+
+resource "azurerm_cosmosdb_sql_database" "notifications_db" {
+  name                = "notifications"
+  resource_group_name = azurerm_cosmosdb_account.cdb.resource_group_name
+  account_name        = azurerm_cosmosdb_account.cdb.name
+}
+
+resource "azurerm_cosmosdb_sql_container" "push_subscriptions_notifications_cont" {
+  name                  = "PushSubscriptions"
+  resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
+  account_name          = azurerm_cosmosdb_account.cdb.name
+  database_name         = azurerm_cosmosdb_sql_database.access_db.name
+  partition_key_path    = "/UserId"
+  partition_key_version = 1
 
   unique_key {
-    paths = ["/Id", "/UserId"]
+    paths = ["/SubscriptionJson"]
   }
+}
+
+resource "azurerm_cosmosdb_sql_container" "notifications_notifications_cont" {
+  name                  = "Notifications"
+  resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
+  account_name          = azurerm_cosmosdb_account.cdb.name
+  database_name         = azurerm_cosmosdb_sql_database.access_db.name
+  partition_key_path    = "/UserId"
+  partition_key_version = 1
 }
