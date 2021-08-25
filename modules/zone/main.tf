@@ -22,6 +22,7 @@ module "sa" {
   tier             = "Standard"
   replication_type = "LRS"
   access_tier      = "Hot"
+  create_containers = false
 }
 
 module "sb" {
@@ -80,7 +81,8 @@ module "func_access" {
     tomap({ redisconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/redisconnectionstring/)" }),
     tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
     tomap({ adgroupid = var.ad_group_id}),
-    tomap({ location = var.location })
+    tomap({ location = var.location }),
+    tomap({ localsaconnectionstring = module.sa.connection_string }),
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
@@ -106,7 +108,8 @@ module "func_files" {
   kvl_id                     = module.kvl.id
   app_configs = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
-    tomap({ location = var.location })
+    tomap({ location = var.location }),
+    tomap({ localsaconnectionstring = module.sa.connection_string }),
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
@@ -138,7 +141,8 @@ module "func_forms" {
     tomap({ files_url = "https://${module.func_files.hostname}"}),
     tomap({ access_url = "https://${module.func_access.hostname}"}),
     tomap({ notifications_url = "https://${module.func_notifications.hostname}"}),
-    tomap({ scope = "${var.ad_audience}/.default"})
+    tomap({ scope = "${var.ad_audience}/.default"}),
+    tomap({ localsaconnectionstring = module.sa.connection_string }),
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
@@ -169,7 +173,8 @@ module "func_notifications" {
     tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
     tomap({ files_url = "https://${module.func_files.hostname}"}),
     tomap({ access_url = "https://${module.func_access.hostname}"}),
-    tomap({ scope = "${var.ad_audience}/.default"})
+    tomap({ scope = "${var.ad_audience}/.default"}),
+    tomap({ localsaconnectionstring = module.sa.connection_string }),
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id

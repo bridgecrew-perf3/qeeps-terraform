@@ -21,3 +21,7 @@ variable "replication_type" {
 variable "access_tier" {
     type = string
 }
+
+variable "create_containers" {
+    type = bool
+}

@@ -61,6 +61,18 @@ module "cdb" {
   serverless = true
 }
 
+
+module "sa" {
+  source           = "../modules/sa"
+  location         = var.location
+  resource_group   = var.resource_group
+  name             = "sa${var.app_name}${var.env}"
+  tier             = "Standard"
+  replication_type = "LRS"
+  access_tier      = "Hot"
+  create_containers = true
+}
+
 locals {
   secrets = tomap({
     adminpassword = var.adminpassword,
@@ -68,7 +80,8 @@ locals {
     cdbconnectionstring = module.cdb.connection_string,
     publicvapidkey = var.publicvapidkey
     privatevapidkey = var.privatevapidkey,
-    sendgridapikey = var.sendgridapikey
+    sendgridapikey = var.sendgridapikey,
+    saconnectionstring = module.sa.connection_string
   })
 }
 
