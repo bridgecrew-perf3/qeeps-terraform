@@ -24,18 +24,6 @@ module "sa" {
   access_tier      = "Hot"
 }
 
-module "acr" {
-  source         = "../acr"
-  location       = var.location
-  resource_group = var.resource_group
-  name           = "acr-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku            = "Basic"
-  capacity       = 0
-  family         = "C"
-  aof_backup = false
-  sa_connection_string = null
-}
-
 module "sb" {
   source         = "../sb"
   location       = var.location
@@ -62,7 +50,6 @@ module "kvl" {
   resource_group = var.resource_group
   name           = "kvl-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
-    redisconnectionstring = module.acr.connection_string,
     sbconnectionstring = module.sb.connection_string,
     signalrconnectionstring = module.signalr.connection_string
   }))
@@ -93,8 +80,7 @@ module "func_access" {
     tomap({ redisconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/redisconnectionstring/)" }),
     tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
     tomap({ adgroupid = var.ad_group_id}),
-    tomap({ location = var.location }),
-    tomap({ scope = "${var.ad_audience}/.default"})
+    tomap({ location = var.location })
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
@@ -104,6 +90,32 @@ module "func_access" {
   func_env                 = var.env == "stg" ? "Staging" : "Production"
 
   roles = local.access_roles
+
+  internal_role_id = var.internal_role_id
+  ad_application_object_id = var.ad_application_object_id
+}
+
+module "func_files" {
+  source                     = "../func"
+  location                   = var.location
+  resource_group             = var.resource_group
+  name                       = "func-${var.app_name}-files-${replace(lower(var.location), " ", "")}-${var.env}"
+  storage_account_name       = module.sa.name
+  storage_account_access_key = module.sa.access_key
+  app_service_plan_id        = module.appsp.id
+  kvl_id                     = module.kvl.id
+  app_configs = merge(
+    zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
+    tomap({ location = var.location })
+  )
+  ad_audience              = var.ad_audience
+  ad_application_id        = var.ad_application_id
+  ad_application_secret    = var.ad_application_secret
+  ad_issuer                = var.ad_issuer
+  appi_instrumentation_key = module.appi.instrumentation_key
+  func_env                 = var.env == "stg" ? "Staging" : "Production"
+
+  roles = []
 
   internal_role_id = var.internal_role_id
   ad_application_object_id = var.ad_application_object_id
@@ -123,6 +135,7 @@ module "func_forms" {
     tomap({ location = var.location }),
     tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
     tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
+    tomap({ files_url = "https://${module.func_files.hostname}"}),
     tomap({ access_url = "https://${module.func_access.hostname}"}),
     tomap({ notifications_url = "https://${module.func_notifications.hostname}"}),
     tomap({ scope = "${var.ad_audience}/.default"})
@@ -154,6 +167,7 @@ module "func_notifications" {
     tomap({ location = var.location }),
     tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
     tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
+    tomap({ files_url = "https://${module.func_files.hostname}"}),
     tomap({ access_url = "https://${module.func_access.hostname}"}),
     tomap({ scope = "${var.ad_audience}/.default"})
   )
