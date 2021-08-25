@@ -22,6 +22,11 @@ variable "forms_hostnames" {
     type = list(string)
 }
 
+variable "files_hostnames" {
+    type = list(string)
+}
+
+
 variable "notifications_hostnames" {
     type = list(string)
 }

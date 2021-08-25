@@ -73,6 +73,22 @@ resource "azurerm_frontdoor" "front_door" {
     }
   }
 
+  routing_rule {
+    name               = "filesRoute"
+    accepted_protocols = ["Https"]
+    patterns_to_match  = ["/api/files/*"]
+    frontend_endpoints = ["appFrontend"]
+    forwarding_configuration {
+      forwarding_protocol = "HttpsOnly"
+      backend_pool_name   = "filesBackendPool"
+      cache_enabled = false
+    }
+  }
+
+
+
+
+
   backend_pool_load_balancing {
     name = "formsBackendPoolLoadBalancingSetting"
   }
@@ -147,6 +163,31 @@ resource "azurerm_frontdoor" "front_door" {
     }
     load_balancing_name = "accessBackendPoolLoadBalancingSetting"
     health_probe_name   = "accessBackendPoolHealthProbeSetting"
+  }
+
+
+  backend_pool_load_balancing {
+    name = "filesBackendPoolLoadBalancingSetting"
+  }
+  backend_pool_health_probe {
+    name = "filesBackendPoolHealthProbeSetting"
+    protocol = "Https"
+    interval_in_seconds = var.health_probe_interval
+    path = "/"
+  }
+  backend_pool {
+    name = "filesBackendPool"
+    dynamic "backend" {
+      for_each = toset(var.files_hostnames)
+      content {
+        host_header = backend.value
+        address     = backend.value
+        http_port   = 80
+        https_port  = 443
+      }
+    }
+    load_balancing_name = "filesBackendPoolLoadBalancingSetting"
+    health_probe_name   = "filesBackendPoolHealthProbeSetting"
   }
 
 

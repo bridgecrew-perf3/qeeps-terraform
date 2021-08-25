@@ -112,6 +112,10 @@ module "fd" {
     module.zone.notifications_hostname
   ]
 
+  files_hostnames = [ 
+    module.zone.files_hostname
+   ]
+
   depends_on = [
     module.dns
   ]

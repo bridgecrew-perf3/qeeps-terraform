@@ -13,3 +13,7 @@ output "forms_hostname" {
 output "notifications_hostname" {
     value = module.func_notifications.hostname
 }
+
+output "files_hostname" {
+    value = module.func_files.hostname
+}
