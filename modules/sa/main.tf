@@ -17,7 +17,7 @@ resource "azurerm_storage_account" "storage_account" {
 }
 
 resource "azurerm_storage_container" "user_files_container" {
-  name                  = "userFiles"
+  name                  = "userfiles"
   storage_account_name  = azurerm_storage_account.storage_account.name
   container_access_type = "blob"
 }
