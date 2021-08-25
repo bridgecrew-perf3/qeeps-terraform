@@ -75,6 +75,9 @@ resource "azurerm_cosmosdb_sql_container" "organisation_accesses_access_cont" {
 }
 
 
+
+
+
 resource "azurerm_cosmosdb_sql_database" "notifications_db" {
   name                = "notifications"
   resource_group_name = azurerm_cosmosdb_account.cdb.resource_group_name
@@ -85,7 +88,7 @@ resource "azurerm_cosmosdb_sql_container" "push_subscriptions_notifications_cont
   name                  = "PushSubscriptions"
   resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
   account_name          = azurerm_cosmosdb_account.cdb.name
-  database_name         = azurerm_cosmosdb_sql_database.access_db.name
+  database_name         = azurerm_cosmosdb_sql_database.notifications_db.name
   partition_key_path    = "/UserId"
   partition_key_version = 1
 }
@@ -94,7 +97,43 @@ resource "azurerm_cosmosdb_sql_container" "notifications_notifications_cont" {
   name                  = "Notifications"
   resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
   account_name          = azurerm_cosmosdb_account.cdb.name
-  database_name         = azurerm_cosmosdb_sql_database.access_db.name
+  database_name         = azurerm_cosmosdb_sql_database.notifications_db.name
   partition_key_path    = "/UserId"
+  partition_key_version = 1
+}
+
+
+
+
+resource "azurerm_cosmosdb_sql_database" "forms_db" {
+  name                = "forms"
+  resource_group_name = azurerm_cosmosdb_account.cdb.resource_group_name
+  account_name        = azurerm_cosmosdb_account.cdb.name
+}
+
+resource "azurerm_cosmosdb_sql_container" "forms_forms_cont" {
+  name                  = "Forms"
+  resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
+  account_name          = azurerm_cosmosdb_account.cdb.name
+  database_name         = azurerm_cosmosdb_sql_database.forms_db.name
+  partition_key_path    = "/UserId"
+  partition_key_version = 1
+}
+
+resource "azurerm_cosmosdb_sql_container" "forms_accesses_forms_cont" {
+  name                  = "FormAccesses"
+  resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
+  account_name          = azurerm_cosmosdb_account.cdb.name
+  database_name         = azurerm_cosmosdb_sql_database.forms_db.name
+  partition_key_path    = "/FormId"
+  partition_key_version = 1
+}
+
+resource "azurerm_cosmosdb_sql_container" "forms_datas_forms_cont" {
+  name                  = "FormDatas"
+  resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
+  account_name          = azurerm_cosmosdb_account.cdb.name
+  database_name         = azurerm_cosmosdb_sql_database.forms_db.name
+  partition_key_path    = "/FormId"
   partition_key_version = 1
 }
