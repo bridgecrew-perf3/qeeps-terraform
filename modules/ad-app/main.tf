@@ -81,7 +81,7 @@ resource "azuread_service_principal" "enterprise_app" {
 data "azuread_client_config" "current" {}
 
 locals {
-  localhostAddress = var.include_localhost_redirect == true ? ",\"http://localhost:4200\"" : ""
+  localhostAddress = var.include_localhost_redirect == true ? ",\"https://localhost:4200\"" : ""
 }
 
 resource "null_resource" "patch_ad_application_spa" {

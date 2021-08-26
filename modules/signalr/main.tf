@@ -17,7 +17,7 @@ resource "azurerm_signalr_service" "signalr" {
   }
 
   cors {
-    allowed_origins = var.allow_localhost ? ["http://localhost:4200", var.allowed_host] : [var.allowed_host]
+    allowed_origins = var.allow_localhost ? ["https://localhost:4200", var.allowed_host] : [var.allowed_host]
   }
 
   features {
