@@ -64,8 +64,8 @@ module "cdb" {
 
 module "sa" {
   source           = "../modules/sa"
-  location         = var.location
-  resource_group   = var.resource_group
+  location         = module.rg.location
+  resource_group   = module.rg.name
   name             = "sa${var.app_name}${var.env}"
   tier             = "Standard"
   replication_type = "LRS"
