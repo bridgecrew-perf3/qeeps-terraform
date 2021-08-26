@@ -31,13 +31,6 @@ module "rg" {
 }
 
 
-module "dns" {
-  source = "../modules/dns"
-  name = var.domain_name
-  resource_group = module.rg.name
-  cname_value = "fd-${var.app_name}-${var.env}.azurefd.net"
-  cname = "app"
-}
 
 module "ad_app" {
   source = "../modules/ad-app"
@@ -104,35 +97,53 @@ module "zone" {
   ad_application_object_id = module.ad_app.sp_object_id
   domain_name = var.app_hostname
   is_main = true
+  use_function_proxy = true
 }
 
 
-module "fd" {
-  source = "../modules/fd"
+module "dns" {
+  source = "../modules/dns"
+  name = var.domain_name
   resource_group = module.rg.name
-  name = "fd-${var.app_name}-${var.env}"
-  cname = var.app_hostname
-  health_probe_interval = 120
-  swa_hostnames = [
-    module.zone.swa_hostname
-  ]
-  access_hostnames = [
-    module.zone.access_hostname
-  ]
-
-  forms_hostnames = [
-    module.zone.forms_hostname
-  ]
-
-  notifications_hostnames = [
-    module.zone.notifications_hostname
-  ]
-
-  files_hostnames = [ 
-    module.zone.files_hostname
-   ]
-
-  depends_on = [
-    module.dns
-  ]
+  cname_value = module.zone.swa_hostname
+  cname = "app"
 }
+
+module "swa_custom_domain" {
+  source = "../modules/swa-custom-domain"
+  resource_group = module.rg.name
+  swa_name = module.zone.swa_name
+  domain = var.app_hostname
+}
+
+
+# module "fd" {
+#   source = "../modules/fd"
+#   resource_group = module.rg.name
+#   name = "fd-${var.app_name}-${var.env}"
+#   cname = var.app_hostname
+#   health_probe_interval = 120
+#   swa_hostnames = [
+#     module.zone.swa_hostname
+#   ]
+#   access_hostnames = [
+#     module.zone.access_hostname
+#   ]
+
+#   forms_hostnames = [
+#     module.zone.forms_hostname
+#   ]
+
+#   notifications_hostnames = [
+#     module.zone.notifications_hostname
+#   ]
+
+#   files_hostnames = [ 
+#     module.zone.files_hostname
+#    ]
+
+#   depends_on = [
+#     module.dns
+#   ]
+
+# }

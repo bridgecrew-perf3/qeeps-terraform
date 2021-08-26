@@ -17,3 +17,8 @@ variable "sku_tier" {
 variable "sku_size" {
     type = string
 }
+
+
+variable "properties" {
+    type = map(string)
+}

@@ -62,3 +62,7 @@ variable "domain_name" {
 variable "is_main" {
     type = bool
 }
+
+variable "use_function_proxy" {
+    type = bool
+}
