@@ -29,7 +29,7 @@ module "sb" {
   source         = "../sb"
   location       = var.location
   resource_group = var.resource_group
-  name           = "sb-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  name           = "sbs-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   sku            = "Basic"
   capacity       = 0
 }
