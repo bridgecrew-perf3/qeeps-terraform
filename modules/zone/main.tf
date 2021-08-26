@@ -49,7 +49,7 @@ module "kvl" {
   source         = "../kvl"
   location       = var.location
   resource_group = var.resource_group
-  name           = "kvl-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  name           = "kv-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
     sbconnectionstring = module.sb.connection_string,
     signalrconnectionstring = module.signalr.connection_string
