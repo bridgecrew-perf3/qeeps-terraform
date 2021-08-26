@@ -96,6 +96,8 @@ module "zone" {
   domain_name = var.app_hostname
   is_main = true
   use_function_proxy = true
+  swa_sku_size = null
+  swa_sku_tier = "Standard"
 }
 
 module "dns" {
