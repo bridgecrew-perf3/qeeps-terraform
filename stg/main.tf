@@ -97,25 +97,16 @@ module "zone" {
   is_main = true
   use_function_proxy = true
   swa_sku_size = null
-  swa_sku_tier = "Standard"
+  swa_sku_tier = "Free"
 }
 
 module "dns" {
   source = "../modules/dns"
   name = var.domain_name
   resource_group = module.rg.name
-  cname_value = module.zone.swa_hostname #"fd-${var.app_name}-${var.env}.azurefd.net"
+  cname_value = "fd-${var.app_name}-${var.env}.azurefd.net"
   cname = "app"
 }
-
-module "swa_custom_domain" {
-  source = "../modules/swa-custom-domain"
-  swa_name = module.zone.swa_name
-  resource_group = module.rg.name
-  domain = var.app_hostname
-}
-
-
 
 module "fd" {
   source = "../modules/fd"
@@ -145,6 +136,4 @@ module "fd" {
   depends_on = [
     module.dns
   ]
-
-  count = 0
 }
