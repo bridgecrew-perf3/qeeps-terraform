@@ -30,14 +30,6 @@ module "rg" {
   name = "rg-${var.app_name}-${var.env}"
 }
 
-module "dns" {
-  source = "../modules/dns"
-  name = var.domain_name
-  resource_group = module.rg.name
-  cname_value = "fd-${var.app_name}-${var.env}.azurefd.net"
-  cname = "app"
-}
-
 module "ad_app" {
   source = "../modules/ad-app"
   name = module.dns.name
@@ -101,15 +93,33 @@ module "zone" {
   ad_group_id = module.ad_app.group_object_id
   internal_role_id = module.ad_app.internal_role_id
   ad_application_object_id = module.ad_app.sp_object_id
-  domain_name = module.dns.cname_hostname
+  domain_name = var.app_hostname
   is_main = true
+  use_function_proxy = true
 }
+
+module "dns" {
+  source = "../modules/dns"
+  name = var.domain_name
+  resource_group = module.rg.name
+  cname_value = module.zone.swa_hostname #"fd-${var.app_name}-${var.env}.azurefd.net"
+  cname = "app"
+}
+
+module "swa_custom_domain" {
+  source = "../modules/swa-custom-domain"
+  swa_name = module.zone.swa_name
+  resource_group = module.rg.name
+  domain = var.app_hostname
+}
+
+
 
 module "fd" {
   source = "../modules/fd"
   resource_group = module.rg.name
   name = "fd-${var.app_name}-${var.env}"
-  cname = module.dns.cname_hostname
+  cname = var.app_hostname
   health_probe_interval = 120
   swa_hostnames = [
     module.zone.swa_hostname
@@ -133,4 +143,6 @@ module "fd" {
   depends_on = [
     module.dns
   ]
+
+  count = 0
 }

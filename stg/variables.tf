@@ -13,6 +13,12 @@ variable "domain_name" {
   default = "stg.qeeps.io"
 }
 
+
+variable "app_hostname" {
+  type = string
+  default = "app.stg.qeeps.io"
+}
+
 variable "adminpassword" {
     type = string
     sensitive = true
