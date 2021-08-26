@@ -83,6 +83,7 @@ module "func_access" {
     tomap({ adgroupid = var.ad_group_id}),
     tomap({ location = var.location }),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
+    tomap({ ismain = var.is_main }),
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
@@ -110,6 +111,7 @@ module "func_files" {
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({ location = var.location }),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
+    tomap({ ismain = var.is_main }),
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
@@ -143,6 +145,7 @@ module "func_forms" {
     tomap({ notifications_url = "https://${module.func_notifications.hostname}"}),
     tomap({ scope = "${var.ad_audience}/.default"}),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
+    tomap({ ismain = var.is_main }),
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
@@ -175,6 +178,7 @@ module "func_notifications" {
     tomap({ access_url = "https://${module.func_access.hostname}"}),
     tomap({ scope = "${var.ad_audience}/.default"}),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
+    tomap({ ismain = var.is_main }),
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id

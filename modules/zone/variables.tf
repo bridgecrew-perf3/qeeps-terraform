@@ -58,3 +58,7 @@ variable "ad_application_object_id" {
 variable "domain_name" {
     type = string
 }
+
+variable "is_main" {
+    type = bool
+}
