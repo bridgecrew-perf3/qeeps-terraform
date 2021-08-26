@@ -34,8 +34,8 @@ module "rg" {
 
 module "ad_app" {
   source = "../modules/ad-app"
-  name = module.dns.name
-  redirect_url = module.dns.cname_hostname
+  name = var.domain_name
+  redirect_url = "app.${var.domain_name}"
   include_localhost_redirect = true
 }
 
