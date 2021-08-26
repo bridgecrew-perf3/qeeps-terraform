@@ -84,6 +84,7 @@ module "func_access" {
     tomap({ location = var.location }),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
     tomap({ ismain = var.is_main }),
+    tomap({ cron = var.is_main == true ? "0 */15 * * * *" : "" })
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
