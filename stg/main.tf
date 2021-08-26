@@ -30,6 +30,15 @@ module "rg" {
   name = "rg-${var.app_name}-${var.env}"
 }
 
+
+module "dns" {
+  source = "../modules/dns"
+  name = var.domain_name
+  resource_group = module.rg.name
+  cname_value = "fd-${var.app_name}-${var.env}.azurefd.net"
+  cname = "app"
+}
+
 module "ad_app" {
   source = "../modules/ad-app"
   name = module.dns.name
@@ -97,13 +106,6 @@ module "zone" {
   is_main = true
 }
 
-module "dns" {
-  source = "../modules/dns"
-  name = var.domain_name
-  resource_group = module.rg.name
-  cname_value = "fd-${var.app_name}-${var.env}.azurefd.net"
-  cname = "app"
-}
 
 module "fd" {
   source = "../modules/fd"
