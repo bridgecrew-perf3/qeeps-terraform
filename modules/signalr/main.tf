@@ -24,4 +24,10 @@ resource "azurerm_signalr_service" "signalr" {
     flag  = "ServiceMode"
     value = "Serverless"
   }
+
+  lifecycle {
+    ignore_changes = [
+      features
+    ]
+  }
 }
