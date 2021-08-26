@@ -62,15 +62,3 @@ variable "domain_name" {
 variable "is_main" {
     type = bool
 }
-
-variable "use_function_proxy" {
-    type = bool
-}
-
-variable "swa_sku_size" {
-    type = string
-}
-
-variable "swa_sku_tier" {
-    type = string
-}

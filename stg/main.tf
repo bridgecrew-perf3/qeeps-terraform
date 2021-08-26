@@ -95,9 +95,6 @@ module "zone" {
   ad_application_object_id = module.ad_app.sp_object_id
   domain_name = var.app_hostname
   is_main = true
-  use_function_proxy = true
-  swa_sku_size = null
-  swa_sku_tier = "Free"
 }
 
 module "dns" {

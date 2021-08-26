@@ -199,13 +199,6 @@ module "swa" {
   location       = var.location
   resource_group = var.resource_group
   name           = "swa-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku_size       = var.swa_sku_size
-  sku_tier       = var.swa_sku_tier
-
-  properties = var.use_function_proxy == true ? tomap({
-    access_url = "https://${module.func_access.hostname}",
-    files_url = "https://${module.func_files.hostname}",
-    forms_url = "https://${module.func_forms.hostname}",
-    notifications_url = "https://${module.func_notifications.hostname}"
-  }) : null
+  sku_size       = null
+  sku_tier       = "Free"
 }
