@@ -34,6 +34,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: SonarCloud scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: setup terraform
         uses: hashicorp/setup-terraform@v1.2.1
 
