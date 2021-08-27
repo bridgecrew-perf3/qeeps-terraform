@@ -1,3 +1,2 @@
-# qeeps-terraform
-
-Asd
+# qeeps-terraform  
+[![terraform](https://github.com/marsoffice/qeeps-terraform/actions/workflows/terraform.yml/badge.svg)](https://github.com/marsoffice/qeeps-terraform/actions/workflows/terraform.yml)
