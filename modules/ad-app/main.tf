@@ -17,7 +17,8 @@ resource "azuread_application" "application" {
 
   lifecycle {
     ignore_changes = [
-      web      
+      web,
+      app_role 
     ]
   }
 optional_claims {
@@ -76,6 +77,12 @@ resource "azuread_application_app_role" "application_role" {
 resource "azuread_service_principal" "enterprise_app" {
   application_id                = azuread_application.application.application_id
   app_role_assignment_required = true
+
+  lifecycle {
+    ignore_changes = [
+      app_roles
+    ]
+  }
 }
 
 data "azuread_client_config" "current" {}

@@ -15,6 +15,12 @@ resource "azurerm_static_site" "static_web_app" {
   location            = var.location
   sku_size = var.sku_size
   sku_tier = var.sku_tier
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 locals {
