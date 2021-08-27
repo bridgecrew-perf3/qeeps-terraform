@@ -14,6 +14,10 @@ resource "azuread_application" "application" {
   identifier_uris  = ["https://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
   group_membership_claims = "SecurityGroup"
+  
+  web {
+    homepage_url = "https://${var.redirect_url}"
+  }
 
   lifecycle {
     ignore_changes = [
