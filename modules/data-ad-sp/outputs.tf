@@ -8,5 +8,5 @@ output "application_id" {
 
 
 output "app_roles_ids" {
-    value = tomap({for v in data.azuread_service_principal.sp.app_roles : v.value => v.id})
+    value = tomap({for v in data.azuread_service_principal.sp.app_roles : v.value => v.id if contains(var.allowed_role_names, v.value) == true})
 }
