@@ -118,33 +118,34 @@ module "swa_custom_domain" {
 }
 
 
-# module "fd" {
-#   source = "../modules/fd"
-#   resource_group = module.rg.name
-#   name = "fd-${var.app_name}-${var.env}"
-#   cname = var.app_hostname
-#   health_probe_interval = 120
-#   swa_hostnames = [
-#     module.zone.swa_hostname
-#   ]
-#   access_hostnames = [
-#     module.zone.access_hostname
-#   ]
+module "fd" {
+  source = "../modules/fd"
+  resource_group = module.rg.name
+  name = "fd-${var.app_name}-${var.env}"
+  cname = var.app_hostname
+  health_probe_interval = 120
+  swa_hostnames = [
+    module.zone.swa_hostname
+  ]
+  access_hostnames = [
+    module.zone.access_hostname
+  ]
 
-#   forms_hostnames = [
-#     module.zone.forms_hostname
-#   ]
+  forms_hostnames = [
+    module.zone.forms_hostname
+  ]
 
-#   notifications_hostnames = [
-#     module.zone.notifications_hostname
-#   ]
+  notifications_hostnames = [
+    module.zone.notifications_hostname
+  ]
 
-#   files_hostnames = [ 
-#     module.zone.files_hostname
-#    ]
+  files_hostnames = [ 
+    module.zone.files_hostname
+   ]
 
-#   depends_on = [
-#     module.dns
-#   ]
+  depends_on = [
+    module.dns
+  ]
 
-# }
+  count = 0
+}
