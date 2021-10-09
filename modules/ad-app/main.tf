@@ -10,22 +10,23 @@ terraform {
 }
 
 resource "azuread_application" "application" {
-  display_name     = var.name
-  identifier_uris  = ["https://${var.name}"]
-  sign_in_audience = "AzureADMyOrg"
+  display_name            = var.name
+  identifier_uris         = ["https://${var.name}"]
+  sign_in_audience        = "AzureADMyOrg"
   group_membership_claims = "SecurityGroup"
-  
+
   web {
     homepage_url = "https://${var.redirect_url}"
   }
-  
+
   lifecycle {
     ignore_changes = [
       web,
-      app_role 
+      app_role,
+      required_resource_access
     ]
   }
-optional_claims {
+  optional_claims {
     access_token {
       name                  = "groups"
       source                = null
@@ -43,30 +44,32 @@ optional_claims {
     allowed_member_types = ["User"]
     description          = "Owner qeeps role"
     display_name         = "Owner"
-    enabled           = true
+    enabled              = true
     value                = "Owner"
   }
   app_role {
     allowed_member_types = ["User"]
     description          = "Admin qeeps role"
     display_name         = "Admin"
-    enabled           = true
+    enabled              = true
     value                = "Admin"
   }
   app_role {
     allowed_member_types = ["User"]
     description          = "Moderator qeeps role"
     display_name         = "Moderator"
-    enabled           = true
+    enabled              = true
     value                = "Moderator"
   }
   app_role {
     allowed_member_types = ["User"]
     description          = "Regular qeeps role"
     display_name         = "Regular"
-    enabled           = true
+    enabled              = true
     value                = "Regular"
   }
+
+
 }
 
 resource "azuread_application_app_role" "application_role" {
@@ -79,7 +82,7 @@ resource "azuread_application_app_role" "application_role" {
 }
 
 resource "azuread_service_principal" "enterprise_app" {
-  application_id                = azuread_application.application.application_id
+  application_id               = azuread_application.application.application_id
   app_role_assignment_required = true
 
   lifecycle {
