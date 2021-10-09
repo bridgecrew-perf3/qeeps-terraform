@@ -1,19 +1,23 @@
 variable "name" {
-    type = string
+  type = string
 }
 
 variable "resource_group" {
-    type = string
+  type = string
 }
 
 variable "location" {
-    type = string
+  type = string
 }
 
 variable "sku" {
-    type = string
+  type = string
 }
 
 variable "capacity" {
-    type = number
+  type = number
+}
+
+variable "create_dev_queue" {
+  type = bool
 }

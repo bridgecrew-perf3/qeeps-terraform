@@ -15,34 +15,35 @@ module "appi" {
 }
 
 module "sa" {
-  source           = "../sa"
-  location         = var.location
-  resource_group   = var.resource_group
-  name             = "sa${var.app_name}${replace(lower(var.location), " ", "")}${var.env}"
-  tier             = "Standard"
-  replication_type = "LRS"
-  access_tier      = "Hot"
+  source            = "../sa"
+  location          = var.location
+  resource_group    = var.resource_group
+  name              = "sa${var.app_name}${replace(lower(var.location), " ", "")}${var.env}"
+  tier              = "Standard"
+  replication_type  = "LRS"
+  access_tier       = "Hot"
   create_containers = false
 }
 
 module "sb" {
-  source         = "../sb"
-  location       = var.location
-  resource_group = var.resource_group
-  name           = "sbs-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku            = "Basic"
-  capacity       = 0
+  source           = "../sb"
+  location         = var.location
+  resource_group   = var.resource_group
+  name             = "sbs-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  sku              = "Basic"
+  capacity         = 0
+  create_dev_queue = var.create_dev_resources
 }
 
 module "signalr" {
-  source         = "../signalr"
-  location       = var.location
-  resource_group = var.resource_group
-  name           = "signalr-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku            = "Free_F1"
-  capacity       = 1
+  source          = "../signalr"
+  location        = var.location
+  resource_group  = var.resource_group
+  name            = "signalr-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  sku             = "Free_F1"
+  capacity        = 1
   allow_localhost = true
-  allowed_host = "https://${var.domain_name}"
+  allowed_host    = "https://${var.domain_name}"
 }
 
 module "kvl" {
@@ -51,7 +52,7 @@ module "kvl" {
   resource_group = var.resource_group
   name           = "kvt-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
-    sbconnectionstring = module.sb.connection_string,
+    sbconnectionstring      = module.sb.connection_string,
     signalrconnectionstring = module.signalr.connection_string
   }))
 }
@@ -80,7 +81,7 @@ module "func_access" {
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({ redisconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/redisconnectionstring/)" }),
     tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
-    tomap({ adgroupid = var.ad_group_id}),
+    tomap({ adgroupid = var.ad_group_id }),
     tomap({ location = var.location }),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
     tomap({ ismain = var.is_main }),
@@ -95,7 +96,7 @@ module "func_access" {
 
   roles = local.access_roles
 
-  internal_role_id = var.internal_role_id
+  internal_role_id         = var.internal_role_id
   ad_application_object_id = var.ad_application_object_id
 }
 
@@ -123,7 +124,7 @@ module "func_files" {
 
   roles = []
 
-  internal_role_id = var.internal_role_id
+  internal_role_id         = var.internal_role_id
   ad_application_object_id = var.ad_application_object_id
 }
 
@@ -141,10 +142,10 @@ module "func_forms" {
     tomap({ location = var.location }),
     tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
     tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
-    tomap({ files_url = "https://${module.func_files.hostname}"}),
-    tomap({ access_url = "https://${module.func_access.hostname}"}),
-    tomap({ notifications_url = "https://${module.func_notifications.hostname}"}),
-    tomap({ scope = "${var.ad_audience}/.default"}),
+    tomap({ files_url = "https://${module.func_files.hostname}" }),
+    tomap({ access_url = "https://${module.func_access.hostname}" }),
+    tomap({ notifications_url = "https://${module.func_notifications.hostname}" }),
+    tomap({ scope = "${var.ad_audience}/.default" }),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
     tomap({ ismain = var.is_main }),
   )
@@ -157,7 +158,7 @@ module "func_forms" {
 
   roles = []
 
-  internal_role_id = var.internal_role_id
+  internal_role_id         = var.internal_role_id
   ad_application_object_id = var.ad_application_object_id
 }
 
@@ -175,9 +176,9 @@ module "func_notifications" {
     tomap({ location = var.location }),
     tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
     tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
-    tomap({ files_url = "https://${module.func_files.hostname}"}),
-    tomap({ access_url = "https://${module.func_access.hostname}"}),
-    tomap({ scope = "${var.ad_audience}/.default"}),
+    tomap({ files_url = "https://${module.func_files.hostname}" }),
+    tomap({ access_url = "https://${module.func_access.hostname}" }),
+    tomap({ scope = "${var.ad_audience}/.default" }),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
     tomap({ ismain = var.is_main }),
   )
@@ -190,7 +191,7 @@ module "func_notifications" {
 
   roles = []
 
-  internal_role_id = var.internal_role_id
+  internal_role_id         = var.internal_role_id
   ad_application_object_id = var.ad_application_object_id
 }
 
@@ -203,9 +204,9 @@ module "swa" {
   sku_tier       = "Free"
 
   properties = var.use_function_proxy == true ? tomap({
-    access_url = "https://${module.func_access.hostname}",
-    forms_url = "https://${module.func_forms.hostname}",
-    files_url = "https://${module.func_files.hostname}",
+    access_url        = "https://${module.func_access.hostname}",
+    forms_url         = "https://${module.func_forms.hostname}",
+    files_url         = "https://${module.func_files.hostname}",
     notifications_url = "https://${module.func_notifications.hostname}"
   }) : null
 }
