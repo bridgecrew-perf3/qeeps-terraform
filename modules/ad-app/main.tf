@@ -9,15 +9,11 @@ terraform {
   }
 }
 
+data "azuread_client_config" "current" {}
 resource "random_uuid" "r_owner_id" {}
-
 resource "random_uuid" "r_admin_id" {}
-
-
 resource "random_uuid" "r_moderator_id" {}
-
 resource "random_uuid" "r_regular_id" {}
-
 resource "random_uuid" "r_application_id" {}
 
 resource "azuread_application" "application" {
@@ -27,6 +23,10 @@ resource "azuread_application" "application" {
 
   web {
     homepage_url = "https://${var.redirect_url}"
+  }
+
+  single_page_application {
+    redirect_uris = var.include_localhost_redirect == true ? ["https://localhost:4200", "https://${var.redirect_url}"] : ["https://${var.redirect_url}"]
   }
 
   lifecycle {
@@ -102,18 +102,6 @@ resource "azuread_service_principal" "enterprise_app" {
     ignore_changes = [
       app_roles
     ]
-  }
-}
-
-data "azuread_client_config" "current" {}
-
-locals {
-  localhostAddress = var.include_localhost_redirect == true ? ",\"https://localhost:4200\"" : ""
-}
-
-resource "null_resource" "patch_ad_application_spa" {
-  provisioner "local-exec" {
-    command = "az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID && az rest --method PATCH --uri 'https://graph.microsoft.com/v1.0/applications/${azuread_application.application.object_id}' --headers 'Content-Type=application/json' --body '{\"spa\":{\"redirectUris\":[\"https://${var.redirect_url}\"${local.localhostAddress}]}}'"
   }
 }
 
