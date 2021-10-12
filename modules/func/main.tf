@@ -23,11 +23,11 @@ resource "azurerm_function_app" "function_app" {
   auth_settings {
     enabled                       = true
     default_provider              = "AzureActiveDirectory"
-    issuer = var.ad_issuer
+    issuer                        = var.ad_issuer
     token_refresh_extension_hours = 24 * 30
     token_store_enabled           = true
     unauthenticated_client_action = "RedirectToLoginPage"
-    runtime_version = "~1"
+    runtime_version               = "~1"
 
 
     active_directory {
@@ -40,11 +40,11 @@ resource "azurerm_function_app" "function_app" {
   }
 
   app_settings = merge(var.app_configs, tomap({
-    AzureWebJobsDisableHomepage    = "true",
-    APPINSIGHTS_INSTRUMENTATIONKEY = "${var.appi_instrumentation_key}",
-    FUNCTIONS_WORKER_RUNTIME = "dotnet",
-    AZURE_FUNCTIONS_ENVIRONMENT = var.func_env,
-    "WEBSITE_RUN_FROM_PACKAGE"       = "",
+    AzureWebJobsDisableHomepage       = "true",
+    APPINSIGHTS_INSTRUMENTATIONKEY    = "${var.appi_instrumentation_key}",
+    FUNCTIONS_WORKER_RUNTIME          = "dotnet",
+    AZURE_FUNCTIONS_ENVIRONMENT       = var.func_env,
+    "WEBSITE_RUN_FROM_PACKAGE"        = "",
     "WEBSITE_ENABLE_SYNC_UPDATE_SITE" = "true"
   }))
 
@@ -73,18 +73,18 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy" {
 }
 
 module "graph_api_role_assignment" {
-  source = "../ad-sp-app-role-assignment"
+  source       = "../ad-sp-app-role-assignment"
   principal_id = azurerm_function_app.function_app.identity[0].principal_id
-  resource_id = split(",", each.value)[0]
-  app_role_id = split(",", each.value)[1]
-  msi_id = azurerm_function_app.function_app.identity[0].principal_id
-  for_each = toset(var.roles)
+  resource_id  = split(",", each.value)[0]
+  app_role_id  = split(",", each.value)[1]
+  msi_id       = azurerm_function_app.function_app.identity[0].principal_id
+  for_each     = toset(var.roles)
 }
 
 module "internal_app_role_assignment" {
-  source = "../ad-sp-app-role-assignment"
+  source       = "../ad-sp-app-role-assignment"
   principal_id = azurerm_function_app.function_app.identity[0].principal_id
-  resource_id = var.ad_application_object_id
-  app_role_id = var.internal_role_id
-  msi_id = azurerm_function_app.function_app.identity[0].principal_id
+  resource_id  = var.ad_application_object_id
+  app_role_id  = var.internal_role_id
+  msi_id       = azurerm_function_app.function_app.identity[0].principal_id
 }
