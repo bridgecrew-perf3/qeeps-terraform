@@ -9,11 +9,21 @@ terraform {
   }
 }
 
+resource "random_uuid" "r_owner_id" {}
+
+resource "random_uuid" "r_admin_id" {}
+
+
+resource "random_uuid" "r_moderator_id" {}
+
+resource "random_uuid" "r_regular_id" {}
+
+resource "random_uuid" "r_application_id" {}
+
 resource "azuread_application" "application" {
-  display_name            = var.name
-  identifier_uris         = ["https://${var.name}"]
-  sign_in_audience        = "AzureADMyOrg"
-  group_membership_claims = "SecurityGroup"
+  display_name     = var.name
+  identifier_uris  = ["https://${var.name}"]
+  sign_in_audience = "AzureADMyOrg"
 
   web {
     homepage_url = "https://${var.redirect_url}"
@@ -46,6 +56,7 @@ resource "azuread_application" "application" {
     display_name         = "Owner"
     enabled              = true
     value                = "Owner"
+    id                   = random_uuid.r_owner_id.result
   }
   app_role {
     allowed_member_types = ["User"]
@@ -53,6 +64,7 @@ resource "azuread_application" "application" {
     display_name         = "Admin"
     enabled              = true
     value                = "Admin"
+    id                   = random_uuid.r_admin_id.result
   }
   app_role {
     allowed_member_types = ["User"]
@@ -60,6 +72,7 @@ resource "azuread_application" "application" {
     display_name         = "Moderator"
     enabled              = true
     value                = "Moderator"
+    id                   = random_uuid.r_moderator_id.result
   }
   app_role {
     allowed_member_types = ["User"]
@@ -67,19 +80,19 @@ resource "azuread_application" "application" {
     display_name         = "Regular"
     enabled              = true
     value                = "Regular"
+    id                   = random_uuid.r_regular_id.result
   }
 
-
+  app_role {
+    allowed_member_types = ["User", "Application"]
+    description          = "Application qeeps role"
+    display_name         = "Application"
+    enabled              = true
+    value                = "Application"
+    id                   = random_uuid.r_application_id.result
+  }
 }
 
-resource "azuread_application_app_role" "application_role" {
-  application_object_id = azuread_application.application.object_id
-  allowed_member_types  = ["User", "Application"]
-  description           = "Application"
-  display_name          = "Application"
-  enabled               = true
-  value                 = "Application"
-}
 
 resource "azuread_service_principal" "enterprise_app" {
   application_id               = azuread_application.application.application_id
@@ -110,7 +123,8 @@ resource "azuread_application_password" "application_password" {
 }
 
 resource "azuread_group" "qeeps_group" {
-  display_name = var.name
+  display_name     = var.name
+  security_enabled = true
   lifecycle {
     ignore_changes = [
       members
