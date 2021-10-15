@@ -103,6 +103,10 @@ resource "azuread_service_principal" "enterprise_app" {
     enterprise_application = true
   }
 
+  timeouts {
+    create = "1m"
+  }
+
   lifecycle {
     ignore_changes = [
       app_roles
