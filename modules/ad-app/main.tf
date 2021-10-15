@@ -94,6 +94,12 @@ resource "azuread_application" "application" {
 }
 
 
+resource "time_sleep" "wait" {
+  depends_on = [azuread_application.application]
+
+  create_duration = "60s"
+}
+
 resource "azuread_service_principal" "enterprise_app" {
   application_id               = azuread_application.application.application_id
   app_role_assignment_required = true
@@ -103,15 +109,13 @@ resource "azuread_service_principal" "enterprise_app" {
     enterprise_application = true
   }
 
-  timeouts {
-    create = "1m"
-  }
-
   lifecycle {
     ignore_changes = [
       app_roles
     ]
   }
+
+  depends_on = [time_sleep.wait]
 }
 
 resource "azuread_application_password" "application_password" {
