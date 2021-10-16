@@ -10,6 +10,7 @@ terraform {
 }
 
 data "azuread_client_config" "current" {}
+
 resource "random_uuid" "r_owner_id" {}
 resource "random_uuid" "r_admin_id" {}
 resource "random_uuid" "r_moderator_id" {}
@@ -20,6 +21,7 @@ resource "azuread_application" "application" {
   display_name     = var.name
   identifier_uris  = ["https://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
+  owners       = [data.azuread_client_config.current.object_id]
 
   web {
     homepage_url = "https://${var.redirect_url}"
@@ -103,8 +105,10 @@ resource "time_sleep" "wait" {
 resource "azuread_service_principal" "enterprise_app" {
   application_id               = azuread_application.application.application_id
   app_role_assignment_required = true
+  owners       = [data.azuread_client_config.current.object_id]
 
-  features {
+
+  feature_tags {
     gallery_application    = true
     enterprise_application = true
   }
