@@ -31,6 +31,8 @@ resource "azuread_application" "application" {
     redirect_uris = var.include_localhost_redirect == true ? ["https://localhost:4200/", "https://${var.redirect_url}/"] : ["https://${var.redirect_url}/"]
   }
 
+  group_membership_claims = "SecurityGroup"
+
   lifecycle {
     ignore_changes = [
       web,
