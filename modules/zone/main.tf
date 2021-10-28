@@ -79,7 +79,6 @@ module "func_access" {
   kvl_id                     = module.kvl.id
   app_configs = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
-    tomap({ redisconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/redisconnectionstring/)" }),
     tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
     tomap({ adgroupid = var.ad_group_id }),
     tomap({ location = var.location }),
