@@ -21,7 +21,7 @@ resource "azuread_application" "application" {
   display_name     = var.name
   identifier_uris  = ["https://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
-  owners       = [data.azuread_client_config.current.object_id]
+  owners           = [data.azuread_client_config.current.object_id]
 
   web {
     homepage_url = "https://${var.redirect_url}"
@@ -31,7 +31,7 @@ resource "azuread_application" "application" {
     redirect_uris = var.include_localhost_redirect == true ? ["https://localhost:4200/", "https://${var.redirect_url}/"] : ["https://${var.redirect_url}/"]
   }
 
-  group_membership_claims = "SecurityGroup"
+  group_membership_claims = ["SecurityGroup"]
 
   lifecycle {
     ignore_changes = [
@@ -107,7 +107,7 @@ resource "time_sleep" "wait" {
 resource "azuread_service_principal" "enterprise_app" {
   application_id               = azuread_application.application.application_id
   app_role_assignment_required = true
-  owners       = [data.azuread_client_config.current.object_id]
+  owners                       = [data.azuread_client_config.current.object_id]
 
 
   features {
