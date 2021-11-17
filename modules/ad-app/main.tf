@@ -110,9 +110,9 @@ resource "azuread_service_principal" "enterprise_app" {
   owners                       = [data.azuread_client_config.current.object_id]
 
 
-  features {
-    gallery_application    = true
-    enterprise_application = true
+  feature_tags {
+    gallery    = true
+    enterprise = true
   }
 
   lifecycle {
