@@ -14,13 +14,14 @@ resource "azurerm_function_app" "function_app" {
   storage_account_name       = var.storage_account_name
   storage_account_access_key = var.storage_account_access_key
   os_type                    = "linux"
-  version                    = "~3"
+  version                    = "~4"
 
   identity {
     type = "SystemAssigned"
   }
 
   auth_settings {
+    
     enabled                       = true
     default_provider              = "AzureActiveDirectory"
     issuer                        = var.ad_issuer
@@ -45,7 +46,8 @@ resource "azurerm_function_app" "function_app" {
     FUNCTIONS_WORKER_RUNTIME          = "dotnet",
     AZURE_FUNCTIONS_ENVIRONMENT       = var.func_env,
     "WEBSITE_RUN_FROM_PACKAGE"        = "",
-    "WEBSITE_ENABLE_SYNC_UPDATE_SITE" = "true"
+    "WEBSITE_ENABLE_SYNC_UPDATE_SITE" = "true",
+    "SCM_DO_BUILD_DURING_DEPLOYMENT" = "0"
   }))
 
   lifecycle {
