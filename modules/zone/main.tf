@@ -22,7 +22,7 @@ module "sa" {
   tier              = "Standard"
   replication_type  = "LRS"
   access_tier       = "Hot"
-  create_containers = false
+  create_containers = true
 }
 
 module "sb" {
