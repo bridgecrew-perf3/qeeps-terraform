@@ -63,10 +63,6 @@ variable "is_main" {
   type = bool
 }
 
-variable "use_function_proxy" {
-  type = bool
-}
-
 variable "create_dev_resources" {
   type = bool
 }

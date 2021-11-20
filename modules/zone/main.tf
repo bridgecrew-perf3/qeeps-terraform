@@ -202,10 +202,10 @@ module "swa" {
   sku_size       = null
   sku_tier       = "Free"
 
-  properties = var.use_function_proxy == true ? tomap({
+  properties = tomap({
     access_url        = "https://${module.func_access.hostname}",
     forms_url         = "https://${module.func_forms.hostname}",
     files_url         = "https://${module.func_files.hostname}",
     notifications_url = "https://${module.func_notifications.hostname}"
-  }) : null
+  })
 }

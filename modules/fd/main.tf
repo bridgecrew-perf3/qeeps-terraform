@@ -18,7 +18,7 @@ resource "azurerm_frontdoor" "front_door" {
     frontend_endpoints = ["appFrontend"]
     redirect_configuration {
       redirect_protocol = "HttpsOnly"
-      redirect_type = "Found"
+      redirect_type     = "Found"
     }
   }
 
@@ -29,165 +29,11 @@ resource "azurerm_frontdoor" "front_door" {
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["appFrontend"]
     forwarding_configuration {
-      forwarding_protocol = "HttpsOnly"
-      backend_pool_name   = "swaBackendPool"
-      cache_enabled = true
+      forwarding_protocol           = "HttpsOnly"
+      backend_pool_name             = "swaBackendPool"
+      cache_enabled                 = true
       cache_use_dynamic_compression = true
     }
-  }
-
-  routing_rule {
-    name               = "accessRoute"
-    accepted_protocols = ["Https"]
-    patterns_to_match  = ["/api/access/*"]
-    frontend_endpoints = ["appFrontend"]
-    forwarding_configuration {
-      forwarding_protocol = "HttpsOnly"
-      backend_pool_name   = "accessBackendPool"
-      cache_enabled = false
-    }
-  }
-
-  routing_rule {
-    name               = "formsRoute"
-    accepted_protocols = ["Https"]
-    patterns_to_match  = ["/api/forms/*"]
-    frontend_endpoints = ["appFrontend"]
-    forwarding_configuration {
-      forwarding_protocol = "HttpsOnly"
-      backend_pool_name   = "formsBackendPool"
-      cache_enabled = false
-    }
-  }
-
-
-  routing_rule {
-    name               = "notificationsRoute"
-    accepted_protocols = ["Https"]
-    patterns_to_match  = ["/api/notifications/*"]
-    frontend_endpoints = ["appFrontend"]
-    forwarding_configuration {
-      forwarding_protocol = "HttpsOnly"
-      backend_pool_name   = "notificationsBackendPool"
-      cache_enabled = false
-    }
-  }
-
-  routing_rule {
-    name               = "filesRoute"
-    accepted_protocols = ["Https"]
-    patterns_to_match  = ["/api/files/*"]
-    frontend_endpoints = ["appFrontend"]
-    forwarding_configuration {
-      forwarding_protocol = "HttpsOnly"
-      backend_pool_name   = "filesBackendPool"
-      cache_enabled = false
-    }
-  }
-
-
-
-
-
-  backend_pool_load_balancing {
-    name = "formsBackendPoolLoadBalancingSetting"
-  }
-  backend_pool_health_probe {
-    name = "formsBackendPoolHealthProbeSetting"
-    protocol = "Https"
-    interval_in_seconds = var.health_probe_interval
-    path = "/"
-  }
-  backend_pool {
-    name = "formsBackendPool"
-    dynamic "backend" {
-      for_each = toset(var.forms_hostnames)
-      content {
-        host_header = backend.value
-        address     = backend.value
-        http_port   = 80
-        https_port  = 443
-      }
-    }
-    load_balancing_name = "formsBackendPoolLoadBalancingSetting"
-    health_probe_name   = "formsBackendPoolHealthProbeSetting"
-  }
-
-
-
-
-  backend_pool_load_balancing {
-    name = "notificationsBackendPoolLoadBalancingSetting"
-  }
-  backend_pool_health_probe {
-    name = "notificationsBackendPoolHealthProbeSetting"
-    protocol = "Https"
-    interval_in_seconds = var.health_probe_interval
-    path = "/"
-  }
-  backend_pool {
-    name = "notificationsBackendPool"
-    dynamic "backend" {
-      for_each = toset(var.notifications_hostnames)
-      content {
-        host_header = backend.value
-        address     = backend.value
-        http_port   = 80
-        https_port  = 443
-      }
-    }
-    load_balancing_name = "notificationsBackendPoolLoadBalancingSetting"
-    health_probe_name   = "notificationsBackendPoolHealthProbeSetting"
-  }
-
-
-  backend_pool_load_balancing {
-    name = "accessBackendPoolLoadBalancingSetting"
-  }
-  backend_pool_health_probe {
-    name = "accessBackendPoolHealthProbeSetting"
-    protocol = "Https"
-    interval_in_seconds = var.health_probe_interval
-    path = "/"
-  }
-  backend_pool {
-    name = "accessBackendPool"
-    dynamic "backend" {
-      for_each = toset(var.access_hostnames)
-      content {
-        host_header = backend.value
-        address     = backend.value
-        http_port   = 80
-        https_port  = 443
-      }
-    }
-    load_balancing_name = "accessBackendPoolLoadBalancingSetting"
-    health_probe_name   = "accessBackendPoolHealthProbeSetting"
-  }
-
-
-  backend_pool_load_balancing {
-    name = "filesBackendPoolLoadBalancingSetting"
-  }
-  backend_pool_health_probe {
-    name = "filesBackendPoolHealthProbeSetting"
-    protocol = "Https"
-    interval_in_seconds = var.health_probe_interval
-    path = "/"
-  }
-  backend_pool {
-    name = "filesBackendPool"
-    dynamic "backend" {
-      for_each = toset(var.files_hostnames)
-      content {
-        host_header = backend.value
-        address     = backend.value
-        http_port   = 80
-        https_port  = 443
-      }
-    }
-    load_balancing_name = "filesBackendPoolLoadBalancingSetting"
-    health_probe_name   = "filesBackendPoolHealthProbeSetting"
   }
 
 
@@ -196,9 +42,9 @@ resource "azurerm_frontdoor" "front_door" {
     name = "swaBackendPoolLoadBalancingSetting"
   }
   backend_pool_health_probe {
-    name = "swaBackendPoolHealthProbeSetting"
-    path = "/healthcheck"
-    protocol = "Https"
+    name                = "swaBackendPoolHealthProbeSetting"
+    path                = "/healthcheck"
+    protocol            = "Https"
     interval_in_seconds = var.health_probe_interval
   }
   backend_pool {
@@ -219,20 +65,20 @@ resource "azurerm_frontdoor" "front_door" {
 
 
   frontend_endpoint {
-    name      = "fdFrontend"
-    host_name = "${var.name}.azurefd.net"
+    name                     = "fdFrontend"
+    host_name                = "${var.name}.azurefd.net"
     session_affinity_enabled = true
   }
 
   frontend_endpoint {
-    name      = "appFrontend"
-    host_name = var.cname
+    name                     = "appFrontend"
+    host_name                = var.cname
     session_affinity_enabled = true
   }
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "fd_ssl" {
-  frontend_endpoint_id = azurerm_frontdoor.front_door.frontend_endpoints["appFrontend"]
+  frontend_endpoint_id              = azurerm_frontdoor.front_door.frontend_endpoints["appFrontend"]
   custom_https_provisioning_enabled = true
   custom_https_configuration {
     certificate_source = "FrontDoor"

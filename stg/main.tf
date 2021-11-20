@@ -58,18 +58,6 @@ module "cdb" {
   serverless     = true
 }
 
-
-module "sa" {
-  source            = "../modules/sa"
-  location          = module.rg.location
-  resource_group    = module.rg.name
-  name              = "sa${var.app_name}${var.env}"
-  tier              = "Standard"
-  replication_type  = "LRS"
-  access_tier       = "Hot"
-  create_containers = true
-}
-
 locals {
   secrets = tomap({
     adminpassword       = var.adminpassword,
@@ -77,8 +65,7 @@ locals {
     cdbconnectionstring = module.cdb.connection_string,
     publicvapidkey      = var.publicvapidkey
     privatevapidkey     = var.privatevapidkey,
-    sendgridapikey      = var.sendgridapikey,
-    saconnectionstring  = module.sa.connection_string
+    sendgridapikey      = var.sendgridapikey
   })
 }
 
@@ -100,7 +87,6 @@ module "zone" {
   ad_application_object_id = module.ad_app.sp_object_id
   domain_name              = var.app_hostname
   is_main                  = true
-  use_function_proxy       = true
   create_dev_resources     = true
 }
 
@@ -129,21 +115,6 @@ module "fd" {
   health_probe_interval = 120
   swa_hostnames = [
     module.zone.swa_hostname
-  ]
-  access_hostnames = [
-    module.zone.access_hostname
-  ]
-
-  forms_hostnames = [
-    module.zone.forms_hostname
-  ]
-
-  notifications_hostnames = [
-    module.zone.notifications_hostname
-  ]
-
-  files_hostnames = [
-    module.zone.files_hostname
   ]
 
   depends_on = [
