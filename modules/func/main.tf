@@ -21,7 +21,7 @@ resource "azurerm_function_app" "function_app" {
   }
 
   auth_settings {
-    
+
     enabled                       = true
     default_provider              = "AzureActiveDirectory"
     issuer                        = var.ad_issuer
@@ -46,8 +46,7 @@ resource "azurerm_function_app" "function_app" {
     FUNCTIONS_WORKER_RUNTIME          = "dotnet",
     AZURE_FUNCTIONS_ENVIRONMENT       = var.func_env,
     "WEBSITE_RUN_FROM_PACKAGE"        = "",
-    "WEBSITE_ENABLE_SYNC_UPDATE_SITE" = "true",
-    "SCM_DO_BUILD_DURING_DEPLOYMENT" = "0"
+    "WEBSITE_ENABLE_SYNC_UPDATE_SITE" = "true"
   }))
 
   lifecycle {
