@@ -70,34 +70,73 @@ locals {
 }
 
 module "zone_westeurope" {
-  source                           = "../modules/zone"
-  location                         = "West Europe"
-  resource_group                   = module.rg.name
-  app_name                         = var.app_name
-  env                              = var.env
-  secrets                          = local.secrets
-  ad_application_id                = module.ad_app.application_id
-  ad_application_secret            = module.ad_app.application_secret
-  ad_audience                      = module.ad_app.audience
-  ad_issuer                        = module.ad_app.issuer
-  graph_api_object_id              = module.graph_api_sp.object_id
-  graph_api_app_roles_ids          = module.graph_api_sp.app_roles_ids
-  ad_group_id                      = module.ad_app.group_object_id
-  internal_role_id                 = module.ad_app.internal_role_id
-  ad_application_object_id         = module.ad_app.sp_object_id
-  domain_name                      = var.app_hostname
-  is_main                          = true
-  create_dev_resources             = true
-  other_sas                        = []
-  other_signalr_connection_strings = []
-  sbs_capacity                     = 0
-  sbs_sku                          = "Basic"
-  signalr_capacity                 = 1
-  signalr_sku                      = "Free_F1"
-  swa_sku_size                     = null
-  swa_sku_tier                     = "Free"
-  appi_retention                   = 30
-  appi_sku                         = "PerGB2018"
+  source                   = "../modules/zone"
+  location                 = "West Europe"
+  resource_group           = module.rg.name
+  app_name                 = var.app_name
+  env                      = var.env
+  secrets                  = local.secrets
+  ad_application_id        = module.ad_app.application_id
+  ad_application_secret    = module.ad_app.application_secret
+  ad_audience              = module.ad_app.audience
+  ad_issuer                = module.ad_app.issuer
+  graph_api_object_id      = module.graph_api_sp.object_id
+  graph_api_app_roles_ids  = module.graph_api_sp.app_roles_ids
+  ad_group_id              = module.ad_app.group_object_id
+  internal_role_id         = module.ad_app.internal_role_id
+  ad_application_object_id = module.ad_app.sp_object_id
+  domain_name              = var.app_hostname
+  is_main                  = true
+  create_dev_resources     = true
+  other_sas = [
+    module.zone_westus.sa
+  ]
+  other_signalr_connection_strings = [
+    module.zone_westus.signalr.connection_string
+  ]
+  sbs_capacity     = 0
+  sbs_sku          = "Basic"
+  signalr_capacity = 1
+  signalr_sku      = "Free_F1"
+  swa_sku_size     = null
+  swa_sku_tier     = "Free"
+  appi_retention   = 30
+  appi_sku         = "PerGB2018"
+}
+
+module "zone_westus" {
+  source                   = "../modules/zone"
+  location                 = "West US"
+  resource_group           = module.rg.name
+  app_name                 = var.app_name
+  env                      = var.env
+  secrets                  = local.secrets
+  ad_application_id        = module.ad_app.application_id
+  ad_application_secret    = module.ad_app.application_secret
+  ad_audience              = module.ad_app.audience
+  ad_issuer                = module.ad_app.issuer
+  graph_api_object_id      = module.graph_api_sp.object_id
+  graph_api_app_roles_ids  = module.graph_api_sp.app_roles_ids
+  ad_group_id              = module.ad_app.group_object_id
+  internal_role_id         = module.ad_app.internal_role_id
+  ad_application_object_id = module.ad_app.sp_object_id
+  domain_name              = var.app_hostname
+  is_main                  = false
+  create_dev_resources     = false
+  other_sas = [
+    module.zone_westeurope.sa
+  ]
+  other_signalr_connection_strings = [
+    module.zone_westeurope.signalr.connection_string
+  ]
+  sbs_capacity     = 0
+  sbs_sku          = "Basic"
+  signalr_capacity = 1
+  signalr_sku      = "Free_F1"
+  swa_sku_size     = null
+  swa_sku_tier     = "Free"
+  appi_retention   = 30
+  appi_sku         = "PerGB2018"
 }
 
 
@@ -105,30 +144,31 @@ module "dns" {
   source         = "../modules/dns"
   name           = var.domain_name
   resource_group = module.rg.name
-  cname_value    = module.zone_westeurope.swa_hostname
+  cname_value    = "fd-${var.app_name}-${var.env}.azurefd.net"
   cname          = "app"
 }
 
 
-module "swa_custom_domain" {
-  source         = "../modules/swa-custom-domain"
-  resource_group = module.rg.name
-  swa_name       = module.zone_westeurope.swa_name
-  domain         = var.app_hostname
-}
-
-
-# module "fd" {
-#   source                = "../modules/fd"
-#   resource_group        = module.rg.name
-#   name                  = "fd-${var.app_name}-${var.env}"
-#   cname                 = var.app_hostname
-#   health_probe_interval = 120
-#   swa_hostnames = [
-#     module.zone_westeurope.swa_hostname
-#   ]
-
-#   depends_on = [
-#     module.dns
-#   ]
+# module "swa_custom_domain" {
+#   source         = "../modules/swa-custom-domain"
+#   resource_group = module.rg.name
+#   swa_name       = module.zone_westeurope.swa_name
+#   domain         = var.app_hostname
 # }
+
+
+module "fd" {
+  source                = "../modules/fd"
+  resource_group        = module.rg.name
+  name                  = "fd-${var.app_name}-${var.env}"
+  cname                 = var.app_hostname
+  health_probe_interval = 120
+  swa_hostnames = [
+    module.zone_westeurope.swa_hostname,
+    module.zone_westus.swa_hostname
+  ]
+
+  depends_on = [
+    module.dns
+  ]
+}

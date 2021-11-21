@@ -1,27 +1,27 @@
 variable "name" {
-    type = string
+  type = string
 }
 
 variable "location" {
-    type = string
+  type = string
 }
 
 variable "resource_group" {
-    type = string
+  type = string
 }
 
 variable "tier" {
-    type = string
+  type = string
 }
 
 variable "replication_type" {
-    type = string
+  type = string
 }
 
 variable "access_tier" {
-    type = string
+  type = string
 }
 
 variable "create_containers" {
-    type = bool
+  type = bool
 }

@@ -36,6 +36,18 @@ resource "azurerm_frontdoor" "front_door" {
     }
   }
 
+  routing_rule {
+    name               = "apiRoute"
+    accepted_protocols = ["Https"]
+    patterns_to_match  = ["/api/*"]
+    frontend_endpoints = ["appFrontend"]
+    forwarding_configuration {
+      forwarding_protocol = "HttpsOnly"
+      backend_pool_name   = "swaBackendPool"
+      cache_enabled       = false
+    }
+  }
+
 
 
   backend_pool_load_balancing {

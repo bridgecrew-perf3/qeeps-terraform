@@ -51,7 +51,7 @@ module "kvl" {
   source         = "../kvl"
   location       = var.location
   resource_group = var.resource_group
-  name           = "kv-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  name           = "kvl-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
     sbconnectionstring      = module.sb.connection_string,
     signalrconnectionstring = module.signalr.connection_string
@@ -212,3 +212,12 @@ module "swa" {
     notifications_url = "https://${module.func_notifications.hostname}"
   })
 }
+
+module "sa_replication" {
+  source    = "../sa-replication"
+  src_id    = module.sa.id
+  dest_ids  = [for saItem in var.other_sas : saItem.id]
+  prefix    = replace(lower(var.location), " ", "")
+  container = "userfiles"
+}
+
