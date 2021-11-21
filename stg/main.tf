@@ -96,7 +96,7 @@ module "zone" {
   swa_sku_size             = null
   swa_sku_tier             = "Free"
   appi_retention           = 30
-  appi_sku                 = "Free"
+  appi_sku                 = "PerGB2018"
 }
 
 
