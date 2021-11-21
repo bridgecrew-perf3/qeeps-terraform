@@ -25,3 +25,7 @@ output "files_hostname" {
 output "sa" {
   value = module.sa
 }
+
+output "signalr" {
+  value = module.signalr
+}

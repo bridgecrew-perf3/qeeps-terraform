@@ -69,7 +69,7 @@ locals {
   })
 }
 
-module "zone" {
+module "zone_westeurope" {
   source                           = "../modules/zone"
   location                         = "West Europe"
   resource_group                   = module.rg.name
@@ -105,7 +105,7 @@ module "dns" {
   source         = "../modules/dns"
   name           = var.domain_name
   resource_group = module.rg.name
-  cname_value    = module.zone.swa_hostname
+  cname_value    = module.zone_westeurope.swa_hostname
   cname          = "app"
 }
 
@@ -113,7 +113,7 @@ module "dns" {
 module "swa_custom_domain" {
   source         = "../modules/swa-custom-domain"
   resource_group = module.rg.name
-  swa_name       = module.zone.swa_name
+  swa_name       = module.zone_westeurope.swa_name
   domain         = var.app_hostname
 }
 
@@ -125,7 +125,7 @@ module "swa_custom_domain" {
 #   cname                 = var.app_hostname
 #   health_probe_interval = 120
 #   swa_hostnames = [
-#     module.zone.swa_hostname
+#     module.zone_westeurope.swa_hostname
 #   ]
 
 #   depends_on = [
