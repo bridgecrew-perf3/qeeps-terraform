@@ -12,6 +12,7 @@ module "appi" {
   name           = "appi-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   resource_group = var.resource_group
   retention      = var.appi_retention
+  sku            = var.appi_sku
 }
 
 module "sa" {

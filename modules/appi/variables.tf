@@ -1,15 +1,19 @@
 variable "name" {
-    type = string
+  type = string
 }
 
 variable "resource_group" {
-    type = string
+  type = string
 }
 
 variable "location" {
-    type = string
+  type = string
+}
+
+variable "sku" {
+  type = string
 }
 
 variable "retention" {
-    type = number
+  type = number
 }

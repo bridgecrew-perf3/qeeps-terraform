@@ -80,6 +80,9 @@ variable "sbs_sku" {
 variable "appi_retention" {
   type = number
 }
+variable "appi_sku" {
+  type = string
+}
 variable "signalr_capacity" {
   type = number
 }
