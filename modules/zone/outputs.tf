@@ -22,6 +22,6 @@ output "files_hostname" {
   value = module.func_files.hostname
 }
 
-output "sa_connection_string" {
-  value = module.sa.connection_string
+output "sa" {
+  value = module.sa
 }

@@ -66,3 +66,7 @@ variable "is_main" {
 variable "create_dev_resources" {
   type = bool
 }
+
+variable "other_sas" {
+  type = list(any)
+}

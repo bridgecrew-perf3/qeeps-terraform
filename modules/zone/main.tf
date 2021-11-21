@@ -113,6 +113,7 @@ module "func_files" {
     tomap({ location = var.location }),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
     tomap({ ismain = var.is_main }),
+    tomap({ othersaconnectionstrings = join(",", [for sa in var.other_sas : sa.connection_string]) })
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id

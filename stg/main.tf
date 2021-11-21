@@ -88,6 +88,7 @@ module "zone" {
   domain_name              = var.app_hostname
   is_main                  = true
   create_dev_resources     = true
+  other_sas                = []
 }
 
 
@@ -99,6 +100,7 @@ module "dns" {
   cname          = "app"
 }
 
+
 module "swa_custom_domain" {
   source         = "../modules/swa-custom-domain"
   resource_group = module.rg.name
@@ -107,19 +109,17 @@ module "swa_custom_domain" {
 }
 
 
-module "fd" {
-  source                = "../modules/fd"
-  resource_group        = module.rg.name
-  name                  = "fd-${var.app_name}-${var.env}"
-  cname                 = var.app_hostname
-  health_probe_interval = 120
-  swa_hostnames = [
-    module.zone.swa_hostname
-  ]
+# module "fd" {
+#   source                = "../modules/fd"
+#   resource_group        = module.rg.name
+#   name                  = "fd-${var.app_name}-${var.env}"
+#   cname                 = var.app_hostname
+#   health_probe_interval = 120
+#   swa_hostnames = [
+#     module.zone.swa_hostname
+#   ]
 
-  depends_on = [
-    module.dns
-  ]
-
-  count = 0
-}
+#   depends_on = [
+#     module.dns
+#   ]
+# }
