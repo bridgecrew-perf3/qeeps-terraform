@@ -7,7 +7,7 @@ terraform {
 }
 
 resource "azurerm_storage_object_replication" "replication" {
-  for_each                       = tomap(var.dest_ids)
+  for_each                       = toset(var.dest_ids)
   source_storage_account_id      = var.src_id
   destination_storage_account_id = each.value
   rules {
