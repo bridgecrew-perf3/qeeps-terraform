@@ -139,7 +139,6 @@ module "zone_westus" {
   appi_sku         = "PerGB2018"
 }
 
-
 module "dns" {
   source         = "../modules/dns"
   name           = var.domain_name
