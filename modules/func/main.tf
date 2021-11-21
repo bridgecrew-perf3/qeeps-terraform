@@ -28,7 +28,7 @@ resource "azurerm_function_app" "function_app" {
     token_refresh_extension_hours = 24 * 30
     token_store_enabled           = true
     unauthenticated_client_action = "RedirectToLoginPage"
-    runtime_version               = "~1"
+    runtime_version               = "~2"
 
 
     active_directory {
