@@ -71,6 +71,10 @@ variable "other_sas" {
   type = list(any)
 }
 
+variable "other_signalr_connection_strings" {
+  type = list(string)
+}
+
 variable "sbs_capacity" {
   type = number
 }

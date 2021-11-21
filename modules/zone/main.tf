@@ -182,6 +182,7 @@ module "func_notifications" {
     tomap({ scope = "${var.ad_audience}/.default" }),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
     tomap({ ismain = var.is_main }),
+    tomap({ othersignalrconnectionstrings = join(",", var.other_signalr_connection_strings) })
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id

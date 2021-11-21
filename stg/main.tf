@@ -70,33 +70,34 @@ locals {
 }
 
 module "zone" {
-  source                   = "../modules/zone"
-  location                 = "West Europe"
-  resource_group           = module.rg.name
-  app_name                 = var.app_name
-  env                      = var.env
-  secrets                  = local.secrets
-  ad_application_id        = module.ad_app.application_id
-  ad_application_secret    = module.ad_app.application_secret
-  ad_audience              = module.ad_app.audience
-  ad_issuer                = module.ad_app.issuer
-  graph_api_object_id      = module.graph_api_sp.object_id
-  graph_api_app_roles_ids  = module.graph_api_sp.app_roles_ids
-  ad_group_id              = module.ad_app.group_object_id
-  internal_role_id         = module.ad_app.internal_role_id
-  ad_application_object_id = module.ad_app.sp_object_id
-  domain_name              = var.app_hostname
-  is_main                  = true
-  create_dev_resources     = true
-  other_sas                = []
-  sbs_capacity             = 0
-  sbs_sku                  = "Basic"
-  signalr_capacity         = 1
-  signalr_sku              = "Free_F1"
-  swa_sku_size             = null
-  swa_sku_tier             = "Free"
-  appi_retention           = 30
-  appi_sku                 = "PerGB2018"
+  source                           = "../modules/zone"
+  location                         = "West Europe"
+  resource_group                   = module.rg.name
+  app_name                         = var.app_name
+  env                              = var.env
+  secrets                          = local.secrets
+  ad_application_id                = module.ad_app.application_id
+  ad_application_secret            = module.ad_app.application_secret
+  ad_audience                      = module.ad_app.audience
+  ad_issuer                        = module.ad_app.issuer
+  graph_api_object_id              = module.graph_api_sp.object_id
+  graph_api_app_roles_ids          = module.graph_api_sp.app_roles_ids
+  ad_group_id                      = module.ad_app.group_object_id
+  internal_role_id                 = module.ad_app.internal_role_id
+  ad_application_object_id         = module.ad_app.sp_object_id
+  domain_name                      = var.app_hostname
+  is_main                          = true
+  create_dev_resources             = true
+  other_sas                        = []
+  other_signalr_connection_strings = []
+  sbs_capacity                     = 0
+  sbs_sku                          = "Basic"
+  signalr_capacity                 = 1
+  signalr_sku                      = "Free_F1"
+  swa_sku_size                     = null
+  swa_sku_tier                     = "Free"
+  appi_retention                   = 30
+  appi_sku                         = "PerGB2018"
 }
 
 
