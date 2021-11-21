@@ -214,7 +214,7 @@ module "swa" {
 }
 
 module "sa_replication" {
-  for_each  = var.other_sas
+  for_each  = toset(var.other_sas)
   source    = "../sa-replication"
   src_id    = module.sa.id
   dest_id   = each.value.id
