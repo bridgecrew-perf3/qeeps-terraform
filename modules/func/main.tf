@@ -20,6 +20,11 @@ resource "azurerm_function_app" "function_app" {
     type = "SystemAssigned"
   }
 
+  site_config {
+    dotnet_framework_version  = "v6.0"
+    use_32_bit_worker_process = false
+  }
+
   auth_settings {
 
     enabled                       = true
@@ -28,7 +33,7 @@ resource "azurerm_function_app" "function_app" {
     token_refresh_extension_hours = 24 * 30
     token_store_enabled           = true
     unauthenticated_client_action = "RedirectToLoginPage"
-    runtime_version               = "~2"
+    runtime_version               = "~1"
 
 
     active_directory {
