@@ -89,6 +89,13 @@ module "zone" {
   is_main                  = true
   create_dev_resources     = true
   other_sas                = []
+  sbs_capacity             = 0
+  sbs_sku                  = "Basic"
+  signalr_capacity         = 1
+  signalr_sku              = "Free_F1"
+  swa_sku_size             = null
+  swa_sku_tier             = "Free"
+  appi_retention           = 30
 }
 
 

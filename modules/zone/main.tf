@@ -11,7 +11,7 @@ module "appi" {
   location       = var.location
   name           = "appi-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   resource_group = var.resource_group
-  retention      = 30
+  retention      = var.appi_retention
 }
 
 module "sa" {
@@ -30,8 +30,8 @@ module "sb" {
   location         = var.location
   resource_group   = var.resource_group
   name             = "sbs-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku              = "Basic"
-  capacity         = 0
+  sku              = var.sbs_sku
+  capacity         = var.sbs_capacity
   create_dev_queue = var.create_dev_resources
 }
 
@@ -40,8 +40,8 @@ module "signalr" {
   location        = var.location
   resource_group  = var.resource_group
   name            = "signalr-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku             = "Free_F1"
-  capacity        = 1
+  sku             = var.signalr_sku
+  capacity        = var.signalr_capacity
   allow_localhost = true
   allowed_host    = "https://${var.domain_name}"
 }
@@ -200,8 +200,8 @@ module "swa" {
   location       = var.location
   resource_group = var.resource_group
   name           = "swa-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku_size       = null
-  sku_tier       = "Free"
+  sku_size       = var.swa_sku_size
+  sku_tier       = var.swa_sku_tier
 
   properties = tomap({
     access_url        = "https://${module.func_access.hostname}",

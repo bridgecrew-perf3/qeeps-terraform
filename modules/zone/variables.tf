@@ -70,3 +70,25 @@ variable "create_dev_resources" {
 variable "other_sas" {
   type = list(any)
 }
+
+variable "sbs_capacity" {
+  type = number
+}
+variable "sbs_sku" {
+  type = string
+}
+variable "appi_retention" {
+  type = number
+}
+variable "signalr_capacity" {
+  type = number
+}
+variable "signalr_sku" {
+  type = string
+}
+variable "swa_sku_tier" {
+  type = string
+}
+variable "swa_sku_size" {
+  type = string
+}
