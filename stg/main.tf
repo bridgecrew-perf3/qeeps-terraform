@@ -89,10 +89,10 @@ module "zone_westeurope" {
   is_main                  = true
   create_dev_resources     = true
   other_sas = tomap({
-    westus = module.zone_westus.sa
+    westus = module.zone_westus2.sa
   })
   other_signalr_connection_strings = [
-    module.zone_westus.signalr.connection_string
+    module.zone_westus2.signalr.connection_string
   ]
   sbs_capacity     = 0
   sbs_sku          = "Basic"
@@ -104,9 +104,9 @@ module "zone_westeurope" {
   appi_sku         = "PerGB2018"
 }
 
-module "zone_westus" {
+module "zone_westus2" {
   source                   = "../modules/zone"
-  location                 = "West US"
+  location                 = "West US 2"
   resource_group           = module.rg.name
   app_name                 = var.app_name
   env                      = var.env
@@ -143,7 +143,7 @@ module "dns" {
   source         = "../modules/dns"
   name           = var.domain_name
   resource_group = module.rg.name
-  cname_value    = "fd-${var.app_name}-${var.env}.azurefd.net"
+  cname_value    = "tm-${var.app_name}-${var.env}.trafficmanager.net"
   cname          = "app"
 }
 
@@ -156,18 +156,18 @@ module "dns" {
 # }
 
 
-module "fd" {
-  source                = "../modules/fd"
-  resource_group        = module.rg.name
-  name                  = "fd-${var.app_name}-${var.env}"
-  cname                 = var.app_hostname
-  health_probe_interval = 120
-  swa_hostnames = [
-    module.zone_westeurope.swa_hostname,
-    module.zone_westus.swa_hostname
-  ]
+# module "fd" {
+#   source                = "../modules/fd"
+#   resource_group        = module.rg.name
+#   name                  = "fd-${var.app_name}-${var.env}"
+#   cname                 = var.app_hostname
+#   health_probe_interval = 120
+#   swa_hostnames = [
+#     module.zone_westeurope.swa_hostname,
+#     module.zone_westus.swa_hostname
+#   ]
 
-  depends_on = [
-    module.dns
-  ]
-}
+#   depends_on = [
+#     module.dns
+#   ]
+# }

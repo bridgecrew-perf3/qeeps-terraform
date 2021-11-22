@@ -213,11 +213,11 @@ module "swa" {
   })
 }
 
-module "sa_replication" {
-  for_each  = var.other_sas
-  source    = "../sa-replication"
-  src_id    = module.sa.id
-  dest_id   = each.value.id
-  prefix    = replace(lower(var.location), " ", "")
-  container = "userfiles"
-}
+# module "sa_replication" {
+#   for_each  = var.other_sas
+#   source    = "../sa-replication"
+#   src_id    = module.sa.id
+#   dest_id   = each.value.id
+#   prefix    = replace(lower(var.location), " ", "")
+#   container = "userfiles"
+# }
