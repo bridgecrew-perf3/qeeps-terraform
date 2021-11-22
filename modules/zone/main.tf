@@ -114,7 +114,7 @@ module "func_files" {
     tomap({ location = var.location }),
     tomap({ localsaconnectionstring = module.sa.connection_string }),
     tomap({ ismain = var.is_main }),
-    tomap({ othersaconnectionstrings = join(",", [for sa in var.other_sas : concat(replace(lower(sa.location), " ", ""), "->", sa.connection_string)]) })
+    tomap({ othersaconnectionstrings = join(",", [for k, sa in var.other_sas : concat(replace(lower(sa.location), " ", ""), "->", sa.connection_string)]) })
   )
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
@@ -214,7 +214,7 @@ module "swa" {
 }
 
 module "sa_replication" {
-  for_each  = toset(var.other_sas)
+  for_each  = var.other_sas
   source    = "../sa-replication"
   src_id    = module.sa.id
   dest_id   = each.value.id

@@ -88,9 +88,9 @@ module "zone_westeurope" {
   domain_name              = var.app_hostname
   is_main                  = true
   create_dev_resources     = true
-  other_sas = [
-    module.zone_westus.sa
-  ]
+  other_sas = tomap({
+    westus = module.zone_westus.sa
+  })
   other_signalr_connection_strings = [
     module.zone_westus.signalr.connection_string
   ]
@@ -123,9 +123,9 @@ module "zone_westus" {
   domain_name              = var.app_hostname
   is_main                  = false
   create_dev_resources     = false
-  other_sas = [
-    module.zone_westeurope.sa
-  ]
+  other_sas = tomap({
+    westeurope = module.zone_westeurope.sa
+  })
   other_signalr_connection_strings = [
     module.zone_westeurope.signalr.connection_string
   ]

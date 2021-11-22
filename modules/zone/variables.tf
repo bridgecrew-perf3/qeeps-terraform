@@ -68,7 +68,7 @@ variable "create_dev_resources" {
 }
 
 variable "other_sas" {
-  type = list(any)
+  type = map(any)
 }
 
 variable "other_signalr_connection_strings" {
