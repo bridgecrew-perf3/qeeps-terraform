@@ -64,6 +64,7 @@ resource "azurerm_frontdoor" "front_door" {
     dynamic "backend" {
       for_each = toset(var.swa_hostnames)
       content {
+        enabled     = true
         host_header = backend.value
         address     = backend.value
         http_port   = 80
