@@ -163,7 +163,7 @@ module "fd" {
   health_probe_interval = 120
   swa_hostnames = [
     module.zone_westeurope.swa_hostname,
-    module.zone_westus.swa_hostname
+    module.zone_westus2.swa_hostname
   ]
 
   depends_on = [
