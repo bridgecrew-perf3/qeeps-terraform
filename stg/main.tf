@@ -143,7 +143,7 @@ module "dns" {
   source         = "../modules/dns"
   name           = var.domain_name
   resource_group = module.rg.name
-  cname_value    = "tm-${var.app_name}-${var.env}.trafficmanager.net"
+  cname_value    = "fd-${var.app_name}-${var.env}.azurefd.net"
   cname          = "app"
 }
 
@@ -155,18 +155,18 @@ module "dns" {
 #   domain         = var.app_hostname
 # }
 
-# module "fd" {
-#   source                = "../modules/fd"
-#   resource_group        = module.rg.name
-#   name                  = "fd-${var.app_name}-${var.env}"
-#   cname                 = var.app_hostname
-#   health_probe_interval = 120
-#   swa_hostnames = [
-#     module.zone_westeurope.swa_hostname,
-#     module.zone_westus.swa_hostname
-#   ]
+module "fd" {
+  source                = "../modules/fd"
+  resource_group        = module.rg.name
+  name                  = "fd-${var.app_name}-${var.env}"
+  cname                 = var.app_hostname
+  health_probe_interval = 120
+  swa_hostnames = [
+    module.zone_westeurope.swa_hostname,
+    module.zone_westus.swa_hostname
+  ]
 
-#   depends_on = [
-#     module.dns
-#   ]
-# }
+  depends_on = [
+    module.dns
+  ]
+}
