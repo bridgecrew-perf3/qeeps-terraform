@@ -54,8 +54,10 @@ module "kvl" {
   resource_group = var.resource_group
   name           = "kvl-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
-    sbconnectionstring      = module.sb.connection_string,
-    signalrconnectionstring = module.signalr.connection_string
+    sbconnectionstring       = module.sb.connection_string,
+    signalrconnectionstring  = module.signalr.connection_string,
+    localsaconnectionstring  = module.sa.connection_string,
+    othersaconnectionstrings = join(",", [for k, sa in var.other_sas : format("%s->%s", replace(lower(sa.location), " ", ""), sa.connection_string)])
   }))
 }
 
@@ -76,11 +78,11 @@ locals {
       location                 = var.location,
       cron                     = var.is_main == true ? "0 */15 * * * *" : "",
       sbconnectionstring       = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)",
-      localsaconnectionstring  = module.sa.connection_string,
+      localsaconnectionstring  = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/localsaconnectionstring/)",
       scope                    = "${var.ad_audience}/.default",
       adgroupid                = var.ad_group_id,
       signalrconnectionstring  = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)",
-      othersaconnectionstrings = join(",", [for k, sa in var.other_sas : format("%s->%s", replace(lower(sa.location), " ", ""), sa.connection_string)])
+      othersaconnectionstrings = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/othersaconnectionstrings/)",
     })
   )
 
