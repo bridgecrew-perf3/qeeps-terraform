@@ -22,10 +22,10 @@ variable "access_tier" {
   type = string
 }
 
-variable "create_containers" {
+variable "is_main" {
   type = bool
 }
 
-variable "is_main" {
-  type = bool
+variable "all_locations" {
+  type = map(string)
 }

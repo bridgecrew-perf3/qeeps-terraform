@@ -102,6 +102,7 @@ module "zone_westeurope" {
   swa_sku_tier     = "Free"
   appi_retention   = 30
   appi_sku         = "PerGB2018"
+  all_locations    = var.all_locations
 }
 
 module "zone_westus2" {
@@ -137,6 +138,7 @@ module "zone_westus2" {
   swa_sku_tier     = "Free"
   appi_retention   = 30
   appi_sku         = "PerGB2018"
+  all_locations    = var.all_locations
 }
 
 module "dns" {

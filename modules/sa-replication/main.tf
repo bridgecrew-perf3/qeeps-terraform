@@ -13,5 +13,6 @@ resource "azurerm_storage_object_replication" "replication" {
     source_container_name        = var.container
     destination_container_name   = var.container
     filter_out_blobs_with_prefix = var.prefix == null ? null : [var.prefix]
+    copy_blobs_created_after     = "Everything"
   }
 }

@@ -99,3 +99,6 @@ variable "swa_sku_tier" {
 variable "swa_sku_size" {
   type = string
 }
+variable "all_locations" {
+  type = map(string)
+}

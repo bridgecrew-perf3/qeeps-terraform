@@ -16,15 +16,15 @@ module "appi" {
 }
 
 module "sa" {
-  source            = "../sa"
-  location          = var.location
-  resource_group    = var.resource_group
-  name              = "sa${var.app_name}${replace(lower(var.location), " ", "")}${var.env}"
-  tier              = "Standard"
-  replication_type  = "LRS"
-  access_tier       = "Hot"
-  create_containers = true
-  is_main           = var.is_main
+  source           = "../sa"
+  location         = var.location
+  resource_group   = var.resource_group
+  name             = "sa${var.app_name}${replace(lower(var.location), " ", "")}${var.env}"
+  tier             = "Standard"
+  replication_type = "LRS"
+  access_tier      = "Hot"
+  is_main          = var.is_main
+  all_locations    = var.all_locations
 }
 
 module "sb" {

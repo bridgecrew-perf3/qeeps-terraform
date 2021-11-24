@@ -21,11 +21,10 @@ resource "azurerm_storage_account" "storage_account" {
 }
 
 resource "azurerm_storage_container" "user_files_container" {
-  name                  = replace(lower(var.location), " ", "")
+  for_each              = var.all_locations
+  name                  = replace(lower(each.value), " ", "")
   storage_account_name  = azurerm_storage_account.storage_account.name
   container_access_type = "private"
-
-  count = var.create_containers == true ? 1 : 0
 }
 
 
@@ -34,5 +33,5 @@ resource "azurerm_storage_container" "graph_api_container" {
   storage_account_name  = azurerm_storage_account.storage_account.name
   container_access_type = "private"
 
-  count = var.create_containers == true && var.is_main == true ? 1 : 0
+  count = var.is_main == true ? 1 : 0
 }
