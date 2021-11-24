@@ -102,3 +102,6 @@ variable "swa_sku_size" {
 variable "all_locations" {
   type = map(string)
 }
+variable "cdb_multi_master" {
+  type = bool
+}

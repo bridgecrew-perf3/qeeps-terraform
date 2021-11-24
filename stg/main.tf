@@ -103,6 +103,7 @@ module "zone_westeurope" {
   appi_retention   = 30
   appi_sku         = "PerGB2018"
   all_locations    = var.all_locations
+  cdb_multi_master = module.cdb.multi_master
 }
 
 module "zone_westus2" {
@@ -139,6 +140,7 @@ module "zone_westus2" {
   appi_retention   = 30
   appi_sku         = "PerGB2018"
   all_locations    = var.all_locations
+  cdb_multi_master = module.cdb.multi_master
 }
 
 module "dns" {

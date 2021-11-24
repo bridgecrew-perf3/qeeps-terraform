@@ -68,6 +68,23 @@ module "appsp" {
 
 locals {
   access_roles = [for k, v in var.graph_api_app_roles_ids : "${var.graph_api_object_id},${v}" if k == "Group.Read.All" || k == "User.Read.All"]
+  commonsettings = merge(
+    zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
+    tomap({
+      ismain                   = var.is_main,
+      multimasterdatabase      = var.cdb_multi_master,
+      location                 = var.location,
+      cron                     = var.is_main == true ? "0 */15 * * * *" : "",
+      sbconnectionstring       = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)",
+      localsaconnectionstring  = module.sa.connection_string,
+      scope                    = "${var.ad_audience}/.default",
+      adgroupid                = var.ad_group_id,
+      signalrconnectionstring  = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)",
+      othersaconnectionstrings = join(",", [for k, sa in var.other_sas : format("%s->%s", replace(lower(sa.location), " ", ""), sa.connection_string)])
+    })
+  )
+
+
 }
 
 module "func_access" {
@@ -79,21 +96,13 @@ module "func_access" {
   storage_account_access_key = module.sa.access_key
   app_service_plan_id        = module.appsp.id
   kvl_id                     = module.kvl.id
-  app_configs = merge(
-    zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
-    tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
-    tomap({ adgroupid = var.ad_group_id }),
-    tomap({ location = var.location }),
-    tomap({ localsaconnectionstring = module.sa.connection_string }),
-    tomap({ ismain = var.is_main }),
-    tomap({ cron = var.is_main == true ? "0 */15 * * * *" : "" })
-  )
-  ad_audience              = var.ad_audience
-  ad_application_id        = var.ad_application_id
-  ad_application_secret    = var.ad_application_secret
-  ad_issuer                = var.ad_issuer
-  appi_instrumentation_key = module.appi.instrumentation_key
-  func_env                 = var.env == "stg" ? "Staging" : "Production"
+  app_configs                = local.commonsettings
+  ad_audience                = var.ad_audience
+  ad_application_id          = var.ad_application_id
+  ad_application_secret      = var.ad_application_secret
+  ad_issuer                  = var.ad_issuer
+  appi_instrumentation_key   = module.appi.instrumentation_key
+  func_env                   = var.env == "stg" ? "Staging" : "Production"
 
   roles = local.access_roles
 
@@ -110,19 +119,13 @@ module "func_files" {
   storage_account_access_key = module.sa.access_key
   app_service_plan_id        = module.appsp.id
   kvl_id                     = module.kvl.id
-  app_configs = merge(
-    zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
-    tomap({ location = var.location }),
-    tomap({ localsaconnectionstring = module.sa.connection_string }),
-    tomap({ ismain = var.is_main }),
-    tomap({ othersaconnectionstrings = join(",", [for k, sa in var.other_sas : format("%s->%s", replace(lower(sa.location), " ", ""), sa.connection_string)]) })
-  )
-  ad_audience              = var.ad_audience
-  ad_application_id        = var.ad_application_id
-  ad_application_secret    = var.ad_application_secret
-  ad_issuer                = var.ad_issuer
-  appi_instrumentation_key = module.appi.instrumentation_key
-  func_env                 = var.env == "stg" ? "Staging" : "Production"
+  app_configs                = local.commonsettings
+  ad_audience                = var.ad_audience
+  ad_application_id          = var.ad_application_id
+  ad_application_secret      = var.ad_application_secret
+  ad_issuer                  = var.ad_issuer
+  appi_instrumentation_key   = module.appi.instrumentation_key
+  func_env                   = var.env == "stg" ? "Staging" : "Production"
 
   roles = []
 
@@ -140,18 +143,11 @@ module "func_forms" {
   storage_account_access_key = module.sa.access_key
   app_service_plan_id        = module.appsp.id
   kvl_id                     = module.kvl.id
-  app_configs = merge(
-    zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
-    tomap({ location = var.location }),
-    tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
-    tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
-    tomap({ files_url = "https://${module.func_files.hostname}" }),
-    tomap({ access_url = "https://${module.func_access.hostname}" }),
-    tomap({ notifications_url = "https://${module.func_notifications.hostname}" }),
-    tomap({ scope = "${var.ad_audience}/.default" }),
-    tomap({ localsaconnectionstring = module.sa.connection_string }),
-    tomap({ ismain = var.is_main }),
-  )
+  app_configs = merge(local.commonsettings, tomap({
+    files_url         = "https://${module.func_files.hostname}",
+    access_url        = "https://${module.func_access.hostname}",
+    notifications_url = "https://${module.func_notifications.hostname}",
+  }))
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
   ad_application_secret    = var.ad_application_secret
@@ -174,18 +170,9 @@ module "func_notifications" {
   storage_account_access_key = module.sa.access_key
   app_service_plan_id        = module.appsp.id
   kvl_id                     = module.kvl.id
-  app_configs = merge(
-    zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
-    tomap({ location = var.location }),
-    tomap({ sbconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)" }),
-    tomap({ signalrconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)" }),
-    tomap({ files_url = "https://${module.func_files.hostname}" }),
-    tomap({ access_url = "https://${module.func_access.hostname}" }),
-    tomap({ scope = "${var.ad_audience}/.default" }),
-    tomap({ localsaconnectionstring = module.sa.connection_string }),
-    tomap({ ismain = var.is_main }),
-    tomap({ othersignalrconnectionstrings = join(",", var.other_signalr_connection_strings) })
-  )
+  app_configs = merge(local.commonsettings, tomap({
+    access_url = "https://${module.func_access.hostname}",
+  }))
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
   ad_application_secret    = var.ad_application_secret
