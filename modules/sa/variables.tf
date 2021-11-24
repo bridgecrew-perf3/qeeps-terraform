@@ -25,3 +25,7 @@ variable "access_tier" {
 variable "create_containers" {
   type = bool
 }
+
+variable "is_main" {
+  type = bool
+}

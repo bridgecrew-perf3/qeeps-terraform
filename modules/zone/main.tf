@@ -24,6 +24,7 @@ module "sa" {
   replication_type  = "LRS"
   access_tier       = "Hot"
   create_containers = true
+  is_main           = var.is_main
 }
 
 module "sb" {
@@ -213,11 +214,11 @@ module "swa" {
   })
 }
 
-# module "sa_replication" {
-#   for_each  = var.other_sas
-#   source    = "../sa-replication"
-#   src_id    = module.sa.id
-#   dest_id   = each.value.id
-#   prefix    = replace(lower(var.location), " ", "")
-#   container = "userfiles"
-# }
+module "sa_replication" {
+  for_each  = var.other_sas
+  source    = "../sa-replication"
+  src_id    = module.sa.id
+  dest_id   = each.value.id
+  prefix    = null
+  container = replace(lower(var.location), " ", "")
+}
