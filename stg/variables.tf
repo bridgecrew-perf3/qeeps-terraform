@@ -43,6 +43,6 @@ variable "all_locations" {
   type = map(string)
   default = {
     "West Europe" = "westeurope",
-    "West US 2"   = "westus2"
+    # "West US 2"   = "westus2"
   }
 }
