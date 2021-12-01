@@ -52,7 +52,7 @@ resource "azurerm_cosmosdb_sql_container" "users_access_cont" {
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.access_db.name
   partition_key_path    = "/Partition"
-  partition_key_version = 1
+  partition_key_version = 2
 }
 
 
@@ -62,7 +62,7 @@ resource "azurerm_cosmosdb_sql_container" "documents_access_cont" {
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.access_db.name
   partition_key_path    = "/Partition"
-  partition_key_version = 1
+  partition_key_version = 2
 }
 
 resource "azurerm_cosmosdb_sql_container" "organisations_access_cont" {
@@ -71,7 +71,7 @@ resource "azurerm_cosmosdb_sql_container" "organisations_access_cont" {
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.access_db.name
   partition_key_path    = "/Partition"
-  partition_key_version = 1
+  partition_key_version = 2
 }
 
 
@@ -81,7 +81,7 @@ resource "azurerm_cosmosdb_sql_container" "organisation_accesses_access_cont" {
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.access_db.name
   partition_key_path    = "/Partition"
-  partition_key_version = 1
+  partition_key_version = 2
 }
 
 
@@ -100,7 +100,7 @@ resource "azurerm_cosmosdb_sql_container" "push_subscriptions_notifications_cont
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.notifications_db.name
   partition_key_path    = "/UserId"
-  partition_key_version = 1
+  partition_key_version = 2
 }
 
 resource "azurerm_cosmosdb_sql_container" "notifications_notifications_cont" {
@@ -109,7 +109,7 @@ resource "azurerm_cosmosdb_sql_container" "notifications_notifications_cont" {
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.notifications_db.name
   partition_key_path    = "/UserId"
-  partition_key_version = 1
+  partition_key_version = 2
 }
 
 
@@ -127,7 +127,7 @@ resource "azurerm_cosmosdb_sql_container" "forms_forms_cont" {
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.forms_db.name
   partition_key_path    = "/UserId"
-  partition_key_version = 1
+  partition_key_version = 2
 }
 
 resource "azurerm_cosmosdb_sql_container" "forms_accesses_forms_cont" {
@@ -136,7 +136,7 @@ resource "azurerm_cosmosdb_sql_container" "forms_accesses_forms_cont" {
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.forms_db.name
   partition_key_path    = "/FormId"
-  partition_key_version = 1
+  partition_key_version = 2
 }
 
 resource "azurerm_cosmosdb_sql_container" "forms_datas_forms_cont" {
@@ -145,5 +145,5 @@ resource "azurerm_cosmosdb_sql_container" "forms_datas_forms_cont" {
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.forms_db.name
   partition_key_path    = "/FormId"
-  partition_key_version = 1
+  partition_key_version = 2
 }
