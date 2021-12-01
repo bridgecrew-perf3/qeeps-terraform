@@ -130,15 +130,6 @@ resource "azurerm_cosmosdb_sql_container" "forms_forms_cont" {
   partition_key_version = 2
 }
 
-resource "azurerm_cosmosdb_sql_container" "forms_accesses_forms_cont" {
-  name                  = "FormAccesses"
-  resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
-  account_name          = azurerm_cosmosdb_account.cdb.name
-  database_name         = azurerm_cosmosdb_sql_database.forms_db.name
-  partition_key_path    = "/FormId"
-  partition_key_version = 2
-}
-
 resource "azurerm_cosmosdb_sql_container" "forms_datas_forms_cont" {
   name                  = "FormDatas"
   resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
