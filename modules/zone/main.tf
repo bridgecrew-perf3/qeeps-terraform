@@ -172,9 +172,7 @@ module "func_notifications" {
   storage_account_access_key = module.sa.access_key
   app_service_plan_id        = module.appsp.id
   kvl_id                     = module.kvl.id
-  app_configs = merge(local.commonsettings, tomap({
-    access_url = "https://${module.func_access.hostname}",
-  }))
+  app_configs = local.commonsettings
   ad_audience              = var.ad_audience
   ad_application_id        = var.ad_application_id
   ad_application_secret    = var.ad_application_secret
