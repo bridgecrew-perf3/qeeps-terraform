@@ -83,6 +83,7 @@ locals {
       adgroupid                = var.ad_group_id,
       signalrconnectionstring  = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)",
       othersaconnectionstrings = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/othersaconnectionstrings/)",
+      adminemails              = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/adminemails/)",
     })
   )
 

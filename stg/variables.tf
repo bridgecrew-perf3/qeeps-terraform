@@ -46,3 +46,8 @@ variable "all_locations" {
     # "West US 2"   = "westus2"
   }
 }
+
+variable "adminemails" {
+  type      = string
+  sensitive = true
+}

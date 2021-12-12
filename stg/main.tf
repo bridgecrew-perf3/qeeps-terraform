@@ -65,7 +65,8 @@ locals {
     cdbconnectionstring = module.cdb.connection_string,
     publicvapidkey      = var.publicvapidkey
     privatevapidkey     = var.privatevapidkey,
-    sendgridapikey      = var.sendgridapikey
+    sendgridapikey      = var.sendgridapikey,
+    adminemails         = var.adminemails
   })
 }
 
