@@ -18,6 +18,6 @@ variable "capacity" {
   type = number
 }
 
-variable "create_dev_queue" {
+variable "create_dev_queues" {
   type = bool
 }

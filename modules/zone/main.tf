@@ -28,13 +28,13 @@ module "sa" {
 }
 
 module "sb" {
-  source           = "../sb"
-  location         = var.location
-  resource_group   = var.resource_group
-  name             = "sbs-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
-  sku              = var.sbs_sku
-  capacity         = var.sbs_capacity
-  create_dev_queue = var.create_dev_resources
+  source            = "../sb"
+  location          = var.location
+  resource_group    = var.resource_group
+  name              = "sbs-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
+  sku               = var.sbs_sku
+  capacity          = var.sbs_capacity
+  create_dev_queues = var.create_dev_resources
 }
 
 module "signalr" {
