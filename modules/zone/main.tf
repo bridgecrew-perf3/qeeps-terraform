@@ -89,28 +89,6 @@ locals {
 
 }
 
-module "func_access" {
-  source                     = "../func"
-  location                   = var.location
-  resource_group             = var.resource_group
-  name                       = "func-${var.app_name}-access-${replace(lower(var.location), " ", "")}-${var.env}"
-  storage_account_name       = module.sa.name
-  storage_account_access_key = module.sa.access_key
-  app_service_plan_id        = module.appsp.id
-  kvl_id                     = module.kvl.id
-  app_configs                = local.commonsettings
-  ad_audience                = var.ad_audience
-  ad_application_id          = var.ad_application_id
-  ad_application_secret      = var.ad_application_secret
-  ad_issuer                  = var.ad_issuer
-  appi_instrumentation_key   = module.appi.instrumentation_key
-  func_env                   = var.env == "stg" ? "Staging" : "Production"
-
-  roles = local.access_roles
-
-  internal_role_id         = var.internal_role_id
-  ad_application_object_id = var.ad_application_object_id
-}
 
 module "func_files" {
   source                     = "../func"
@@ -130,6 +108,32 @@ module "func_files" {
   func_env                   = var.env == "stg" ? "Staging" : "Production"
 
   roles = []
+
+  internal_role_id         = var.internal_role_id
+  ad_application_object_id = var.ad_application_object_id
+}
+
+
+module "func_access" {
+  source                     = "../func"
+  location                   = var.location
+  resource_group             = var.resource_group
+  name                       = "func-${var.app_name}-access-${replace(lower(var.location), " ", "")}-${var.env}"
+  storage_account_name       = module.sa.name
+  storage_account_access_key = module.sa.access_key
+  app_service_plan_id        = module.appsp.id
+  kvl_id                     = module.kvl.id
+  app_configs = merge(local.commonsettings, tomap({
+    files_url = "https://${module.func_files.hostname}"
+  }))
+  ad_audience              = var.ad_audience
+  ad_application_id        = var.ad_application_id
+  ad_application_secret    = var.ad_application_secret
+  ad_issuer                = var.ad_issuer
+  appi_instrumentation_key = module.appi.instrumentation_key
+  func_env                 = var.env == "stg" ? "Staging" : "Production"
+
+  roles = local.access_roles
 
   internal_role_id         = var.internal_role_id
   ad_application_object_id = var.ad_application_object_id
