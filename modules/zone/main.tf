@@ -84,6 +84,7 @@ locals {
       signalrconnectionstring  = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)",
       othersaconnectionstrings = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/othersaconnectionstrings/)",
       adminemails              = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/adminemails/)",
+      adappid                  = var.ad_application_id
     })
   )
 
