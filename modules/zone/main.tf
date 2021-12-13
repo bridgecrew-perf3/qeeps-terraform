@@ -69,7 +69,7 @@ module "appsp" {
 }
 
 locals {
-  access_roles = [for k, v in var.graph_api_app_roles_ids : "${var.graph_api_object_id},${v}" if k == "Group.Read.All" || k == "User.Read.All"]
+  access_roles = [for k, v in var.graph_api_app_roles_ids : "${var.graph_api_object_id},${v}"]
   commonsettings = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({
