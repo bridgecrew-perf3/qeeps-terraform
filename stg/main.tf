@@ -44,7 +44,7 @@ module "ad_app" {
 module "graph_api_sp" {
   source             = "../modules/data-ad-sp"
   name               = "Microsoft Graph"
-  allowed_role_names = ["User.Read.All", "Group.Read.All"]
+  allowed_role_names = ["User.Read.All", "Group.Read.All", "AppRoleAssignment.ReadWrite.All"]
 }
 
 
