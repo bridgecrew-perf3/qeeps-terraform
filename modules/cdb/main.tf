@@ -55,16 +55,6 @@ resource "azurerm_cosmosdb_sql_container" "users_access_cont" {
   partition_key_version = 2
 }
 
-
-resource "azurerm_cosmosdb_sql_container" "documents_access_cont" {
-  name                  = "Documents"
-  resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
-  account_name          = azurerm_cosmosdb_account.cdb.name
-  database_name         = azurerm_cosmosdb_sql_database.access_db.name
-  partition_key_path    = "/Partition"
-  partition_key_version = 2
-}
-
 resource "azurerm_cosmosdb_sql_container" "organisations_access_cont" {
   name                  = "Organisations"
   resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name

@@ -21,23 +21,8 @@ resource "azurerm_servicebus_queue" "notifications_queue" {
   enable_partitioning = true
 }
 
-resource "azurerm_servicebus_queue" "reset_contracts_queue" {
-  name                = "reset-contracts"
-  resource_group_name = azurerm_servicebus_namespace.sb_ns.resource_group_name
-  namespace_name      = azurerm_servicebus_namespace.sb_ns.name
-  enable_partitioning = true
-}
-
 resource "azurerm_servicebus_queue" "notifications_queue_dev" {
   name                = "notifications-dev"
-  resource_group_name = azurerm_servicebus_namespace.sb_ns.resource_group_name
-  namespace_name      = azurerm_servicebus_namespace.sb_ns.name
-  enable_partitioning = true
-  count               = var.create_dev_queues ? 1 : 0
-}
-
-resource "azurerm_servicebus_queue" "reset_contracts_queue_dev" {
-  name                = "reset-contracts-dev"
   resource_group_name = azurerm_servicebus_namespace.sb_ns.resource_group_name
   namespace_name      = azurerm_servicebus_namespace.sb_ns.name
   enable_partitioning = true
