@@ -39,7 +39,7 @@ module "ad_app" {
   name                       = var.domain_name
   redirect_url               = "app.${var.domain_name}"
   include_localhost_redirect = true
-  logo_b64                   = filebase64("${path.root}/resources/ad_app.png")
+  logo_b64                   = filebase64("${path.root}/../resources/ad_app.png")
 }
 
 module "graph_api_sp" {
