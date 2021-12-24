@@ -1,10 +1,14 @@
 variable "name" {
-    type = string
+  type = string
 }
 
 variable "include_localhost_redirect" {
-    type = bool
+  type = bool
 }
 variable "redirect_url" {
-    type = string
+  type = string
+}
+
+variable "logo_b64" {
+  type = string
 }

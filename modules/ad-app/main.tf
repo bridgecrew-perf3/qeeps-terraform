@@ -22,6 +22,7 @@ resource "azuread_application" "application" {
   identifier_uris  = ["https://${var.name}"]
   sign_in_audience = "AzureADMyOrg"
   owners           = [data.azuread_client_config.current.object_id]
+  logo_image       = var.logo_b64
 
   web {
     homepage_url = "https://${var.redirect_url}"
