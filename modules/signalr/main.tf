@@ -20,10 +20,7 @@ resource "azurerm_signalr_service" "signalr" {
     allowed_origins = var.allow_localhost ? ["https://localhost:4200", var.allowed_host] : [var.allowed_host]
   }
 
-  features {
-    flag  = "ServiceMode"
-    value = "Serverless"
-  }
+  service_mode = "Serverless"
 
   lifecycle {
     ignore_changes = [
