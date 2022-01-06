@@ -25,6 +25,12 @@ provider "azuread" {
 
 }
 
+module "sa-marsoffice" {
+  source         = "../modules/data-sa"
+  resource_group = "rg-marsoffice"
+  name           = "samarsoffice"
+}
+
 
 module "rg" {
   source   = "../modules/rg"
