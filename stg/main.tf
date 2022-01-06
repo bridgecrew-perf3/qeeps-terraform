@@ -25,7 +25,7 @@ provider "azuread" {
 
 }
 
-module "sa-marsoffice" {
+module "sa_marsoffice" {
   source         = "../modules/data-sa"
   resource_group = "rg-marsoffice"
   name           = "samarsoffice"
@@ -102,16 +102,17 @@ module "zone_westeurope" {
   other_signalr_connection_strings = [
     #module.zone_westus2.signalr.connection_string
   ]
-  sbs_capacity     = 0
-  sbs_sku          = "Basic"
-  signalr_capacity = 1
-  signalr_sku      = "Free_F1"
-  swa_sku_size     = null
-  swa_sku_tier     = "Free"
-  appi_retention   = 30
-  appi_sku         = "PerGB2018"
-  all_locations    = var.all_locations
-  cdb_multi_master = module.cdb.multi_master
+  sbs_capacity                    = 0
+  sbs_sku                         = "Basic"
+  signalr_capacity                = 1
+  signalr_sku                     = "Free_F1"
+  swa_sku_size                    = null
+  swa_sku_tier                    = "Free"
+  appi_retention                  = 30
+  appi_sku                        = "PerGB2018"
+  all_locations                   = var.all_locations
+  cdb_multi_master                = module.cdb.multi_master
+  marsoffice_sa_connection_string = module.sa_marsoffice.connection_string
 }
 
 # module "zone_westus2" {
@@ -149,6 +150,7 @@ module "zone_westeurope" {
 #   appi_sku         = "PerGB2018"
 #   all_locations    = var.all_locations
 #   cdb_multi_master = module.cdb.multi_master
+#   marsoffice_sa_connection_string = module.sa_marsoffice.connection_string
 # }
 
 module "dns" {

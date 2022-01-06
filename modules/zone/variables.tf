@@ -105,3 +105,6 @@ variable "all_locations" {
 variable "cdb_multi_master" {
   type = bool
 }
+variable "marsoffice_sa_connection_string" {
+  type = string
+}

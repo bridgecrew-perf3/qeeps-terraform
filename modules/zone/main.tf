@@ -54,10 +54,11 @@ module "kvl" {
   resource_group = var.resource_group
   name           = "kvl-${var.app_name}-${replace(lower(var.location), " ", "")}-${var.env}"
   secrets = merge(var.secrets, tomap({
-    sbconnectionstring       = module.sb.connection_string,
-    signalrconnectionstring  = module.signalr.connection_string,
-    localsaconnectionstring  = module.sa.connection_string,
-    othersaconnectionstrings = join(",", [for k, sa in var.other_sas : format("%s->%s", replace(lower(sa.location), " ", ""), sa.connection_string)])
+    sbconnectionstring           = module.sb.connection_string,
+    signalrconnectionstring      = module.signalr.connection_string,
+    localsaconnectionstring      = module.sa.connection_string,
+    marsofficesaconnectionstring = var.marsoffice_sa_connection_string,
+    othersaconnectionstrings     = join(",", [for k, sa in var.other_sas : format("%s->%s", replace(lower(sa.location), " ", ""), sa.connection_string)])
   }))
 }
 
@@ -73,18 +74,19 @@ locals {
   commonsettings = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({
-      ismain                   = var.is_main,
-      multimasterdatabase      = var.cdb_multi_master,
-      location                 = var.location,
-      cron                     = var.is_main == true ? "0 */15 * * * *" : "",
-      sbconnectionstring       = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)",
-      localsaconnectionstring  = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/localsaconnectionstring/)",
-      scope                    = "${var.ad_audience}/.default",
-      adgroupid                = var.ad_group_id,
-      signalrconnectionstring  = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)",
-      othersaconnectionstrings = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/othersaconnectionstrings/)",
-      adminemails              = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/adminemails/)",
-      adappid                  = var.ad_application_id
+      ismain                       = var.is_main,
+      multimasterdatabase          = var.cdb_multi_master,
+      location                     = var.location,
+      cron                         = var.is_main == true ? "0 */15 * * * *" : "",
+      sbconnectionstring           = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)",
+      localsaconnectionstring      = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/localsaconnectionstring/)",
+      scope                        = "${var.ad_audience}/.default",
+      adgroupid                    = var.ad_group_id,
+      signalrconnectionstring      = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/signalrconnectionstring/)",
+      marsofficesaconnectionstring = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/marsofficesaconnectionstring/)",
+      othersaconnectionstrings     = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/othersaconnectionstrings/)",
+      adminemails                  = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/adminemails/)",
+      adappid                      = var.ad_application_id
     })
   )
 
