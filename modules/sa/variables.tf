@@ -22,10 +22,6 @@ variable "access_tier" {
   type = string
 }
 
-variable "is_main" {
-  type = bool
-}
-
 variable "all_locations" {
   type = map(string)
 }

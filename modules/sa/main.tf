@@ -26,12 +26,3 @@ resource "azurerm_storage_container" "user_files_container" {
   storage_account_name  = azurerm_storage_account.storage_account.name
   container_access_type = "private"
 }
-
-
-resource "azurerm_storage_container" "graph_api_container" {
-  name                  = "graph-api"
-  storage_account_name  = azurerm_storage_account.storage_account.name
-  container_access_type = "private"
-
-  count = var.is_main == true ? 1 : 0
-}

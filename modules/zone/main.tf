@@ -23,7 +23,6 @@ module "sa" {
   tier             = "Standard"
   replication_type = "LRS"
   access_tier      = "Hot"
-  is_main          = var.is_main
   all_locations    = var.all_locations
 }
 
@@ -77,7 +76,6 @@ locals {
       ismain                       = var.is_main,
       multimasterdatabase          = var.cdb_multi_master,
       location                     = var.location,
-      cron                         = var.is_main == true ? "0 */15 * * * *" : "",
       sbconnectionstring           = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/sbconnectionstring/)",
       localsaconnectionstring      = "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/localsaconnectionstring/)",
       scope                        = "${var.ad_audience}/.default",
