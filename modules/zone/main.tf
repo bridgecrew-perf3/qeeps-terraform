@@ -69,7 +69,6 @@ module "appsp" {
 }
 
 locals {
-  access_roles = [for k, v in var.graph_api_app_roles_ids : "${var.graph_api_object_id},${v}"]
   commonsettings = merge(
     zipmap(keys(var.secrets), [for x in keys(var.secrets) : "@Microsoft.KeyVault(SecretUri=${module.kvl.url}secrets/${x}/)"]),
     tomap({
@@ -131,7 +130,7 @@ module "func_access" {
   appi_instrumentation_key   = module.appi.instrumentation_key
   func_env                   = var.env == "stg" ? "Staging" : "Production"
 
-  roles = local.access_roles
+  roles = []
 
   internal_role_id         = var.internal_role_id
   ad_application_object_id = var.ad_application_object_id

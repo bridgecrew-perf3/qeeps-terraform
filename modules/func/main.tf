@@ -78,7 +78,7 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy" {
   ]
 }
 
-module "graph_api_role_assignment" {
+module "role_assignment" {
   source       = "../ad-sp-app-role-assignment"
   principal_id = azurerm_function_app.function_app.identity[0].principal_id
   resource_id  = split(",", each.value)[0]

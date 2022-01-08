@@ -48,13 +48,6 @@ module "ad_app" {
   logo_b64                   = filebase64("${path.root}/../resources/ad_app.png")
 }
 
-module "graph_api_sp" {
-  source             = "../modules/data-ad-sp"
-  name               = "Microsoft Graph"
-  allowed_role_names = ["User.Read.All", "Group.Read.All", "Application.Read.All", "AppRoleAssignment.ReadWrite.All"]
-}
-
-
 module "cdb" {
   source         = "../modules/cdb"
   resource_group = module.rg.name
@@ -88,8 +81,6 @@ module "zone_westeurope" {
   ad_application_secret    = module.ad_app.application_secret
   ad_audience              = module.ad_app.audience
   ad_issuer                = module.ad_app.issuer
-  graph_api_object_id      = module.graph_api_sp.object_id
-  graph_api_app_roles_ids  = module.graph_api_sp.app_roles_ids
   ad_group_id              = module.ad_app.group_object_id
   internal_role_id         = module.ad_app.internal_role_id
   ad_application_object_id = module.ad_app.sp_object_id
@@ -126,8 +117,6 @@ module "zone_westeurope" {
 #   ad_application_secret    = module.ad_app.application_secret
 #   ad_audience              = module.ad_app.audience
 #   ad_issuer                = module.ad_app.issuer
-#   graph_api_object_id      = module.graph_api_sp.object_id
-#   graph_api_app_roles_ids  = module.graph_api_sp.app_roles_ids
 #   ad_group_id              = module.ad_app.group_object_id
 #   internal_role_id         = module.ad_app.internal_role_id
 #   ad_application_object_id = module.ad_app.sp_object_id
