@@ -35,10 +35,6 @@ variable "ad_issuer" {
   type = string
 }
 
-variable "ad_group_id" {
-  type = string
-}
-
 variable "internal_role_id" {
   type = string
 }

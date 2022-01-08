@@ -23,9 +23,6 @@ output "issuer" {
   value = "https://login.microsoftonline.com/${data.azuread_client_config.current.tenant_id}/"
 }
 
-output "group_object_id" {
-  value = azuread_group.qeeps_group.object_id
-}
 
 output "internal_role_id" {
   value = random_uuid.r_application_id.result
