@@ -46,35 +46,14 @@ resource "azurerm_cosmosdb_sql_database" "access_db" {
   account_name        = azurerm_cosmosdb_account.cdb.name
 }
 
-resource "azurerm_cosmosdb_sql_container" "users_access_cont" {
-  name                  = "Users"
+resource "azurerm_cosmosdb_sql_container" "user_preference_access_cont" {
+  name                  = "UserPreferences"
   resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
   account_name          = azurerm_cosmosdb_account.cdb.name
   database_name         = azurerm_cosmosdb_sql_database.access_db.name
   partition_key_path    = "/Partition"
   partition_key_version = 2
 }
-
-resource "azurerm_cosmosdb_sql_container" "organisations_access_cont" {
-  name                  = "Organisations"
-  resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
-  account_name          = azurerm_cosmosdb_account.cdb.name
-  database_name         = azurerm_cosmosdb_sql_database.access_db.name
-  partition_key_path    = "/Partition"
-  partition_key_version = 2
-}
-
-
-resource "azurerm_cosmosdb_sql_container" "organisation_accesses_access_cont" {
-  name                  = "OrganisationAccesses"
-  resource_group_name   = azurerm_cosmosdb_account.cdb.resource_group_name
-  account_name          = azurerm_cosmosdb_account.cdb.name
-  database_name         = azurerm_cosmosdb_sql_database.access_db.name
-  partition_key_path    = "/Partition"
-  partition_key_version = 2
-}
-
-
 
 
 
