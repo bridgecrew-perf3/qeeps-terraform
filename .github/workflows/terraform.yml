@@ -17,6 +17,8 @@ env:
   publicvapidkey: ${{ secrets.publicvapidkey }}
   privatevapidkey: ${{ secrets.privatevapidkey }}
   adminemails: ${{ secrets.adminemails }}
+  opaurl: ${{ secrets.opaurl }}
+  opatoken: ${{ secrets.opatoken }}
 
 defaults:
   run:

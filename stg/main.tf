@@ -66,7 +66,9 @@ locals {
     publicvapidkey      = var.publicvapidkey
     privatevapidkey     = var.privatevapidkey,
     sendgridapikey      = var.sendgridapikey,
-    adminemails         = var.adminemails
+    adminemails         = var.adminemails,
+    opaurl = var.opaurl,
+    opatoken = var.opatoken
   })
 }
 

@@ -51,3 +51,13 @@ variable "adminemails" {
   type      = string
   sensitive = true
 }
+
+variable "opaurl" {
+  type = string
+  sensitive = true
+}
+
+variable "opatoken" {
+  type = string
+  sensitive = true
+}
