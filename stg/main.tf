@@ -39,7 +39,6 @@ module "rg" {
 }
 
 
-
 module "ad_app" {
   source                     = "../modules/ad-app"
   name                       = var.domain_name
