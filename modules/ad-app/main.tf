@@ -24,6 +24,11 @@ resource "azuread_application" "application" {
   owners           = [data.azuread_client_config.current.object_id]
   logo_image       = var.logo_b64
 
+  feature_tags {
+    enterprise = true
+    hide = false
+  }
+
   web {
     homepage_url = "https://${var.redirect_url}"
   }
@@ -33,6 +38,8 @@ resource "azuread_application" "application" {
   }
 
   group_membership_claims = ["SecurityGroup"]
+
+  prevent_duplicate_names = true
 
   lifecycle {
     ignore_changes = [
