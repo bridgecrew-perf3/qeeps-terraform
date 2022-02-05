@@ -116,7 +116,7 @@ resource "azuread_service_principal" "enterprise_app" {
   application_id               = azuread_application.application.application_id
   app_role_assignment_required = true
   owners                       = [data.azuread_client_config.current.object_id]
-
+  notes = "${var.price_per_month}"
 
   feature_tags {
     gallery    = true

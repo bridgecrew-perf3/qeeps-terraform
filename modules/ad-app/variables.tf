@@ -12,3 +12,7 @@ variable "redirect_url" {
 variable "logo_b64" {
   type = string
 }
+
+variable "price_per_month" {
+  type = number
+}

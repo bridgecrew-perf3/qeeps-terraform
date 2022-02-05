@@ -45,6 +45,7 @@ module "ad_app" {
   redirect_url               = "app.${var.domain_name}"
   include_localhost_redirect = true
   logo_b64                   = filebase64("${path.root}/../resources/ad_app.png")
+  price_per_month = 40
 }
 
 module "cdb" {
