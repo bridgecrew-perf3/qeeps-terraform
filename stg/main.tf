@@ -142,25 +142,6 @@ module "zone_westeurope" {
 #   marsoffice_sa_connection_string = module.sa_marsoffice.connection_string
 # }
 
-module "dns" {
-  source         = "../modules/dns"
-  name           = var.domain_name
-  resource_group = module.rg.name
-  cname_value    = module.zone_westeurope.swa_hostname
-  cname          = "app"
-}
-
-
-module "swa_custom_domain" {
-  source         = "../modules/swa-custom-domain"
-  resource_group = module.rg.name
-  swa_name       = module.zone_westeurope.swa_name
-  domain         = var.app_hostname
-  depends_on = [
-    module.dns
-  ]
-}
-
 # module "fd" {
 #   source                = "../modules/fd"
 #   resource_group        = module.rg.name
